@@ -1,0 +1,90 @@
+{
+  "api": {
+    "titles": [
+      "Tile House",
+      "Nice, cozy, warm big bed apartment",
+      "House in countryside",
+      "Canal View Prinsengracht",
+      "The Joshua Tree House"
+    ],
+    "descriptions": [
+      "I am happy to welcome you to my apartment in the city center! Three words: location, cosy and chic!",
+      "Peaceful studio in the most wanted area in town. Quiet house Near of everything. Completely renovated. Lovely neighbourhood, lot of trendy shops, restaurants and bars in a walking distance.",
+      "This is a place for dreamers to reset, reflect, and create. Designed with a 'slow' pace in mind, our hope is that you enjoy every part of your stay; from making local coffee by drip in the morning, choosing the perfect record to put on as the sun sets.",
+      "Discover daily local life in city center, friendly neighborhood, clandestine casino, karaoke, old-style artisans, art gallery and artist studio downstairs.",
+      "Design interior in most sympathetic area! Completely renovated, well-equipped, cosy studio in idyllic, over 100 years old wooden house. Calm street, fast connection to center and airport."
+    ],
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "previewImages": [
+      "https://13.design.pages.academy/static/hotel/17.jpg",
+      "https://13.design.pages.academy/static/hotel/12.jpg",
+      "https://13.design.pages.academy/static/hotel/1.jpg",
+      "https://13.design.pages.academy/static/hotel/11.jpg",
+      "https://13.design.pages.academy/static/hotel/5.jpg"
+    ],
+    "photos": [
+      "https://13.design.pages.academy/static/hotel/1.jpg",
+      "https://13.design.pages.academy/static/hotel/2.jpg",
+      "https://13.design.pages.academy/static/hotel/3.jpg",
+      "https://13.design.pages.academy/static/hotel/4.jpg",
+      "https://13.design.pages.academy/static/hotel/5.jpg",
+      "https://13.design.pages.academy/static/hotel/6.jpg",
+      "https://13.design.pages.academy/static/hotel/7.jpg",
+      "https://13.design.pages.academy/static/hotel/8.jpg"
+    ],
+    "isPremium": [
+      "true",
+      "false"
+    ],
+    "isFavorite": [
+      "true",
+      "false"
+    ],
+    "types": [
+      "Apartment",
+      "House",
+      "Room",
+      "Hotel"
+    ],
+    "goods": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "users": [
+      "Angelina",
+      "Maria",
+      "Piter",
+      "Max",
+      "Julia"
+    ],
+    "emails": [
+      "test1@gmail.com",
+      "test2@gmail.com",
+      "test3@gmail.com",
+      "test4@gmail.com",
+      "test5@gmail.com"
+    ],
+    "avatars": [
+      "https://13.design.pages.academy/static/host/avatar-angelina.jpg"
+    ],
+    "locations": [
+      "48.868610000000004;2.342499",
+      "48.878610000000004;2.352499",
+      "48.858610000000004;2.362499",
+      "48.848610000000004;2.372499",
+      "48.838610000000004;2.382499"
+    ]
+  }
+}
