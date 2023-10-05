@@ -1,5 +1,4 @@
-import { TOffer, OfferType, TLocation, TUser } from '../types/index.js';
-import { TCity } from '../types/city.type.js';
+import { TOffer, OfferType, TUser } from '../types/index.js';
 
 export function createOffer(offerData: string): TOffer {
   const [
@@ -31,24 +30,14 @@ export function createOffer(offerData: string): TOffer {
     password,
     isPro: Boolean(isPremium)
   };
-  const [ lat, lng ] = offerLocation.split(';');
-  const location: TLocation = {
-    latitude: +lat,
-    longitude: +lng
-  };
-
-  const city: TCity = {
-    name: cityName,
-    location: location
-  };
 
   return {
     title,
     description,
     createdDate: new Date(createdDate),
-    city,
+    city: cityName,
     previewImage,
-    photo: photo.split(';'),
+    photo,
     isPremium: Boolean(isPremium),
     isFavorite: Boolean(isFavorite),
     rating: +rating,
@@ -58,6 +47,6 @@ export function createOffer(offerData: string): TOffer {
     price: +price,
     goods: goods.split(';'),
     user,
-    location
+    location: offerLocation.split(';')
   };
 }

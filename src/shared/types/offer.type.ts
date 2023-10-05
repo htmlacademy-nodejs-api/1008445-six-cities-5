@@ -1,22 +1,25 @@
-import { TCity } from './city.type.js';
+// import { TCity } from './city.type.js';
+// import { TUser } from './user.type.js';
+// import { TLocation } from './location.type.js';
+
 import { TUser } from './user.type.js';
-import { TLocation } from './location.type.js';
+import { OfferType } from './offer-type.enum.js';
 
 export type TOffer = {
   title: string;
   description: string;
-  createdDate: Date;
-  city: TCity;
+  city: string;
   previewImage: string;
-  photo: string[];
+  createdDate: Date;
+  photo: string;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
-  type: string;
+  type: OfferType;
   bedrooms: number;
   maxAdults: number;
   price: number;
   goods: string[];
   user: TUser;
-  location: TLocation;
+  location: string[];
 }
