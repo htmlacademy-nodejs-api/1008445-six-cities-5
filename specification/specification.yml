@@ -1,0 +1,799 @@
+openapi: 3.0.0
+info:
+  title: API сервер для проекта «Шесть городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+tags:
+  - name: offers
+    description: Действия с предложениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+  - name: favorites
+    description: Действия с избранными предложениями.
+paths:
+  /offers/:
+    post:
+      tags:
+        - offers
+      parameters:
+        [ {
+          in: "header",
+          name: "x-token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Авторизационный токен пользователя
+        } ]
+      summary: Создание нового предложения
+      description: Сервис предоставляет ресурс для создания новых предложений.
+
+      requestBody:
+        description: Информация для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        "201":
+          description: Предложение создано. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+  /offers/{offerCount}:
+    get:
+      tags:
+        - offers
+      parameters:
+        [ {
+          in: "query",
+          name: "offerCount",
+          schema: {
+            type: "number",
+          },
+          description: Количество предложений
+        } ]
+      summary: Получение списка предложений
+      description: Массив предложений. Каждое предложение описано в виде объекта. По умолчанию сервис возвращает не больше 60 предложений по аренде.
+
+      responses:
+        "200":
+          description: Массив предложений.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      parameters:
+        [ {
+          in: "query",
+          name: "offerId",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Идентификатор предложения
+        } ]
+      summary: Возвращает детальную информацию по одному предложению
+      description: Сервис предоставляет ресурс для получения детальной информации по одному предложению с идентификатором offerId.
+
+      responses:
+        "200":
+          description: Детальный объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fullOffer'
+
+        "404":
+          description: Предложение с таким offerId не существует.
+
+    put:
+      tags:
+        - offers
+      parameters:
+        [ {
+          in: "header",
+          name: "x-token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Авторизационный токен пользователя
+        },
+        {
+          in: "query",
+          name: "offerId",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Идентификатор предложения
+        } ]
+      summary: Редактирование предложения
+      description: Сервис предоставляет ресурс для редактирования предложения.
+
+      requestBody:
+        description: Информация для редактирования предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offer'
+        required: true
+
+      responses:
+        "201":
+          description: Предложение отредактировано. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "400":
+          description: Валидация не пройдена
+        "404":
+          description: Предложение с таким offerId не существует.
+
+    delete:
+      tags:
+        - offers
+      parameters:
+        [
+          {
+            in: "header",
+            name: "x-token",
+            required: true,
+            schema: {
+              type: "string",
+            },
+            description: Авторизационный токен пользователя
+          },
+          {
+            in: "query",
+            name: "offerId",
+            required: true,
+            schema: {
+              type: "string",
+          },
+          description: Идентификатор предложения
+        } ]
+      summary: Удаление предложения
+      description: Сервис предоставляет ресурс для удаления предложений по аренде. Клиент может удалять только свои предложения. При удалении предложения комментарии к предложению удаляются автоматически
+
+      responses:
+        "204":
+          description: Предложение удалено.
+
+        "403":
+          description: Нельзя удалить предложение другого пользователя.
+        "404":
+          description: Предложение с таким offerId не существует.
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - comments
+      parameters:
+        [ {
+          in: "query",
+          name: "offerId",
+          schema: {
+            type: "string",
+          },
+          description: Идентификатор предложения
+        } ]
+      summary: Получение списка комментариев
+      description: Сервис предоставляет ресурс для получения списка комментариев для определённого предложения. Каждый комментарий описан в виде объекта.
+
+      responses:
+        "200":
+          description: Массив комментариев.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comments'
+
+    post:
+      tags:
+        - comments
+      parameters:
+        [
+          {
+            in: "header",
+            name: "x-token",
+            required: true,
+            schema: {
+              type: "string",
+            },
+            description: Авторизационный токен пользователя
+          },
+          {
+          in: "query",
+          name: "offerId",
+          schema: {
+            type: "string",
+          },
+          description: Идентификатор предложения
+        } ]
+      summary: Получение списка комментариев
+      description: Сервис предоставляет ресурс для добавления комментариев к определённому предложению по аренде. Каждый комментарий описан в виде объекта.
+
+      requestBody:
+        description: Информация для создания нового комментария.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createComment'
+        required: true
+
+      responses:
+        "201":
+          description: Объект нового комментария.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+
+        "400":
+          description: Рейтинг должен быть числом в диапазоне от 1 до 5.
+
+        "401":
+          description: Доступ запрещен.
+
+        "404":
+          description: Предложение с id d6a066d9-cf96-40ab-8d56-eef39939f36c не найдено.
+
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Сервис предоставляет ресурс для создания нового пользователя.
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "400":
+          description: Пароль должен быть длинее 3 символов.
+
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Сервис предоставляет ресурс для аутентификации и авторизации пользователя на основе логина и пароля
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+        required: true
+
+      responses:
+        "201":
+          description: Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "400":
+          description: Неверный логин или пароль.
+
+        "404":
+          description: Пользователь с таким email не существует.
+
+    get:
+      tags:
+        - users
+      parameters:
+        [ {
+          in: "header",
+          name: "x-token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Авторизационный токен пользователя
+        } ]
+      summary: Проверка состояния пользователя
+      description: Сервис предоставляет ресурс для проверки состояния клиента.
+
+      responses:
+        "200":
+          description: Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "401":
+          description: Доступ запрещен.
+
+  /logout:
+    delete:
+      tags:
+        - users
+      parameters:
+        [ {
+          in: "header",
+          name: "x-token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Авторизационный токен пользователя
+        } ]
+      summary: Завершает сеанс работы
+      description: Сервис предоставляет ресурс для завершения пользовательского сеанса.
+
+      responses:
+        "204":
+          description: Сеанс завершен.
+
+  /favorite:
+    get:
+      tags:
+        - favorites
+      parameters:
+        [ {
+          in: "header",
+          name: "x-token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Авторизационный токен пользователя
+        } ]
+      summary: Получение списка избранных предложений
+      description: Сервис предоставляет ресурс для получения предложений, добавленных в избранное.
+
+      responses:
+        "200":
+          description: Список предложений.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
+        "401":
+          description: Доступ запрещен.
+
+  /offers/{city}:
+    get:
+      tags:
+        - offers
+      summary: Получение списка премиальных предложений города
+      description: Сервис предоставляет ресурс для получения списка премиальных предложений для определённого города.
+        Возвращает не больше 3 предложений с флагом «Premium»
+
+      responses:
+        "200":
+          description: Список премиальных предложений.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
+        "404":
+          description: Город не найден.
+
+  /favorite/{offerId}/status:
+    post:
+      tags:
+        - favorites
+      parameters:
+        [ {
+          in: "header",
+          name: "x-token",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Авторизационный токен пользователя
+        },
+        {
+          in: "query",
+          name: "offerId",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: Идентификатор предложения
+        },
+        {
+          in: "query",
+          name: "status",
+          required: true,
+          schema: {
+            type: "number",
+          },
+          example: 1,
+          description: Статус избранного предложения. Может быть 1 или 0, где 1 - добавляет, 0 - удаляет
+        } ]
+      summary: Получение списка премиальных предложений
+      description: Сервис предоставляет ресурс для получения списка премиальных предложений для определённого города.
+        Возвращает не больше 3 предложений с флагом «Premium»
+
+      responses:
+        "200":
+          description: Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "400":
+          description: Неверный статус при добавлении предложения в избранное.
+
+        "401":
+          description: Доступ запрещен.
+
+        "404":
+          description: Предложение с таким offerId не существует.
+
+        "409":
+          description: Предложение с таким offerId уже добавлено в избранное.
+
+components:
+  schemas:
+    location:
+      type: object
+      properties:
+        latitude:
+          type: number
+          example: 48.85661
+
+        longitude:
+          type: number
+          example: 2.351499
+
+    city:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Paris
+
+        location:
+          $ref: '#/components/schemas/location'
+
+    createOffer:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Tile House
+
+        description:
+          type: string
+          example: I am happy to welcome you to my apartment in the city center!
+
+        city:
+          $ref: '#/components/schemas/city'
+
+        previewImage:
+          type: string
+          example: Amsterdam
+
+        photo:
+          type: array
+          items:
+            type: string
+            example: [ https://13.design.pages.academy/static/hotel/16.jpg, https://13.design.pages.academy/static/hotel/17.jpg ]
+
+        isPremium:
+          type: boolean
+          example: false
+
+        type:
+          type: string
+          example: Apartment
+
+        bedrooms:
+          type: number
+          example: 2
+
+        maxAdults:
+          type: number
+          example: 2
+
+        price:
+          type: number
+          example: 100
+
+        postDate:
+          type: string
+          example: '2023-05-04T12:01:01'
+
+        rating:
+          type: number
+          example: 4.5
+
+        location:
+          $ref: '#/components/schemas/location'
+
+        goods:
+          type: array
+          items:
+            type: string
+            example: [ Breakfast, Washer ]
+
+    createUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatar:
+          type: string
+          example: test.jpg
+
+        name:
+          type: string
+          example: Keks
+
+        password:
+          type: string
+          example: abc123
+
+        isPro:
+          type: boolean
+          example: true
+
+    user:
+      type: object
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        avatarUrl:
+          type: string
+          example: https://url-to-image/test.jpg
+
+        name:
+          type: string
+          example: Keks
+
+        token:
+          type: string
+          example: 'Tsfdsfc224fd2rXfsdfDDASD20='
+
+        isPro:
+          type: boolean
+          example: true
+
+    loginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: keks@htmlacademy.ru
+
+        password:
+          type: string
+          example: abc123
+
+    offer:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
+
+        title:
+          type: string
+          example: Tile House
+
+        description:
+          type: string
+          example: I am happy to welcome you to my apartment in the city center!
+
+        city:
+          $ref: '#/components/schemas/city'
+
+        previewImage:
+          type: string
+          example: Amsterdam
+
+        photo:
+          type: array
+          items:
+            type: string
+            example: [ https://13.design.pages.academy/static/hotel/16.jpg, https://13.design.pages.academy/static/hotel/17.jpg ]
+
+        isPremium:
+          type: boolean
+          example: false
+
+        type:
+          type: string
+          example: Apartment
+
+        bedrooms:
+          type: number
+          example: 1
+
+        maxAdults:
+          type: number
+          example: 1
+
+        price:
+          type: number
+          example: 100
+
+        postDate:
+          type: string
+          example: '2023-05-04T12:01:01'
+
+        rating:
+          type: number
+          example: 4.5
+
+        location:
+          $ref: '#/components/schemas/location'
+
+        goods:
+          type: array
+          items:
+            type: string
+            example: [ Breakfast, Washer ]
+
+    fullOffer:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
+
+        title:
+          type: string
+          example: Tile House
+
+        description:
+          type: string
+          example: I am happy to welcome you to my apartment in the city center!
+
+        city:
+          $ref: '#/components/schemas/city'
+
+        previewImage:
+          type: string
+          example: Amsterdam
+
+        photo:
+          type: array
+          items:
+            type: string
+            example: [ https://13.design.pages.academy/static/hotel/16.jpg, https://13.design.pages.academy/static/hotel/17.jpg ]
+
+        isPremium:
+          type: boolean
+          example: false
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        type:
+          type: string
+          example: Apartment
+
+        bedrooms:
+          type: number
+          example: 1
+
+        commentCount:
+          type: number
+          example: 5
+
+        maxAdults:
+          type: number
+          example: 1
+
+        price:
+          type: number
+          example: 100
+
+        postDate:
+          type: string
+          example: '2023-05-04T12:01:01'
+
+        rating:
+          type: number
+          example: 4.5
+
+        location:
+          $ref: '#/components/schemas/location'
+
+        goods:
+          type: array
+          items:
+            type: string
+            example: [ Breakfast, Washer ]
+
+    offers:
+      type: array
+      items:
+        $ref: '#/components/schemas/offer'
+
+    createComment:
+      type: object
+      properties:
+        date:
+          type: string
+          example: '2023-05-04T12:01:01'
+
+        user:
+          $ref: '#/components/schemas/user'
+
+        comment:
+          type: string
+          example: A quiet place!
+
+        rating:
+          type: number
+          example: 2
+
+    comment:
+      type: object
+      properties:
+        id:
+          type: string
+          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
+
+        date:
+          type: string
+          example: '2023-05-04T12:01:01'
+
+        user:
+          $ref: '#/components/schemas/user'
+
+        comment:
+          type: string
+          example: A quiet place!
+
+        rating:
+          type: number
+          example: 2
+
+    comments:
+      type: array
+      items:
+        $ref: '#/components/schemas/comment'
