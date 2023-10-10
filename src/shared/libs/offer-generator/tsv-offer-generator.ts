@@ -13,7 +13,6 @@ const MIN_ADULTS = 1;
 const MAX_ADULTS = 10;
 const FIRST_WEEK_DAY = 1;
 const LAST_WEEK_DAY = 7;
-const DEFAULT_PASSWORD = 'av123';
 
 export class TSVOfferGenerator implements OfferGenerator {
   constructor(private readonly mockData: MockServerData) {}
@@ -36,15 +35,15 @@ export class TSVOfferGenerator implements OfferGenerator {
     const maxAdults = generateRandomValue(MIN_ADULTS, MAX_ADULTS).toString();
     const location = getRandomItem(this.mockData.locations);
     const city = getRandomItem(this.mockData.cities);
-    const password = DEFAULT_PASSWORD;
-    const createdDate = dayjs()
+    const postDate = dayjs()
       .subtract(generateRandomValue(FIRST_WEEK_DAY, LAST_WEEK_DAY), 'day')
       .toISOString();
 
     return [
-      title, description, previewImage, createdDate, password,
-      photo, type, price, isFavorite, isPremium, rating, city,
-      bedrooms, maxAdults, location, avatarUrl, goods, userName, email
+      title, description, previewImage, postDate,
+      photo, type, price, isFavorite, isPremium, rating,
+      city, bedrooms, maxAdults, location, avatarUrl,
+      goods, userName, email
     ].join('\t');
   }
 }

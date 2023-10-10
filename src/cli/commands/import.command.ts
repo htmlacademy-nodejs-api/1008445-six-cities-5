@@ -9,11 +9,12 @@ import { ConsoleLogger } from '../../shared/libs/logger/console.logger.js';
 import { DefaultUserService, UserModel } from '../../shared/modules/user/index.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { TOffer } from '../../shared/types/index.js';
+
 export class ImportCommand implements ICommand {
   private userService: IUserService;
   private offerService: IOfferService;
   private databaseClient: IDatabaseClient;
-  private logger: ILogger;
+  private readonly logger: ILogger;
   private salt: string;
 
   constructor() {
@@ -37,7 +38,7 @@ export class ImportCommand implements ICommand {
   }
 
   private onCompleteImport(count: number) {
-    console.info(`${ count } rows imported`);
+    this.logger.info(`${ count } rows imported`);
   }
 
   private async saveOffer(offer: TOffer) {
@@ -49,6 +50,7 @@ export class ImportCommand implements ICommand {
     await this.offerService.create({
       title: offer.title,
       description: offer.description,
+      postDate: offer.postDate,
       city: offer.city,
       previewImage: offer.previewImage,
       photo: offer.photo,
@@ -68,7 +70,7 @@ export class ImportCommand implements ICommand {
   public async execute(filename: string, login: string, password: string, host: string, dbname: string, salt: string): Promise<void> {
     this.logger.info(login, password, host, dbname);
     const uri = getMongoURI(login, password, host, DEFAULT_DB_PORT, dbname);
-    console.log(uri);
+    this.logger.info(uri);
     this.salt = salt;
 
     await this.databaseClient.connect(uri);

@@ -7,7 +7,6 @@ import { getErrorMessage } from '../../shared/helpers/index.js';
 
 export class GenerateCommand implements ICommand {
   private initData: MockServerData;
-
   private async load(url: string) {
     try {
       this.initData = await got.get(url).json();
