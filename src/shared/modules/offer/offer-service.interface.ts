@@ -8,9 +8,10 @@ export interface IOfferService {
   find(): Promise<DocumentType<OfferEntity>[]>;
   deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
+  findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]>;
+  findFavorites(offerId: string): Promise<DocumentType<OfferEntity>[]>;
+  setOfferFavoriteStatus(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
   incReviewsCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  findByCity(categoryId: string, count?: number): Promise<DocumentType<OfferEntity>[]>;
-  findNew(count: number): Promise<DocumentType<OfferEntity>[]>;
-  findDiscussed(count: number): Promise<DocumentType<OfferEntity>[]>;
+  //calcRating(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   exists(documentId: string): Promise<boolean>;
 }

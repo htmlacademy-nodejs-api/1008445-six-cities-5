@@ -35,6 +35,10 @@ export class ReviewEntity extends defaultClasses.TimeStamps {
 
   @prop({ default: 0 })
   public rating!: number;
+
+  /*public setOfferId(offerId: string) {
+    this.offerId = offerId;
+  }*/
 }
 
 export const ReviewModel = getModelForClass(ReviewEntity);
