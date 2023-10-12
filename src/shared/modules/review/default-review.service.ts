@@ -13,13 +13,13 @@ export class DefaultReviewService implements IReviewService {
     @inject(Component.ReviewModel) private readonly reviewModel: types.ModelType<ReviewEntity>,
   ) {}
 
-  public async create(dto: CreateReviewDto): Promise<DocumentType<ReviewEntity>> {
+  public async create(offerId: string, dto: CreateReviewDto): Promise<DocumentType<ReviewEntity>> {
     const review = await this.reviewModel.create(dto);
-    this.logger.info(`New review created ${ review.id }`);
+    this.logger.info(`New review of offer ${ offerId} created ${ review.id }`);
     return review;
   }
 
-  public async findByOfferId(offerId: string): Promise<DocumentType<ReviewEntity> | null> {
-    return this.reviewModel.findById({ offerId });
+  public async findByOfferId(offerId: string): Promise<DocumentType<ReviewEntity>[]> {
+    return this.reviewModel.find({ offerId });
   }
 }

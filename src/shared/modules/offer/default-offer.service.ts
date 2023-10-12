@@ -5,7 +5,7 @@ import { inject, injectable } from 'inversify';
 import { Component, SortType } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { CreateOfferDto } from '../offer/index.js';
-import { DEFAULT_OFFER_COUNT } from './offer.constant.js';
+import { DEFAULT_OFFER_COUNT, DEFAULT_PREMIUM_OFFER_COUNT } from './offer.constant.js';
 import { UpdateOfferDto } from './dto/update.offer-dto.js';
 
 @injectable()
@@ -37,7 +37,7 @@ export class DefaultOfferService implements IOfferService {
             from: 'reviews',
             let: { offerId: '$_id'},
             pipeline: [
-              { $match: { $expr: { $in: [ '$$offerId', '$users' ] } } },
+              { $match: { $expr: { $in: [ '$$offerId', '$reviews' ] } } },
               { $project: { _id: 1 }}
             ],
             as: 'reviews'
@@ -53,10 +53,10 @@ export class DefaultOfferService implements IOfferService {
       .exec();
   }
 
-  public async findByCity(city: string, count?: number): Promise<DocumentType<OfferEntity>[]> {
-    const limit = count ?? DEFAULT_OFFER_COUNT;
+  public async findPremiumByCity(city: string, isPremium: boolean = true): Promise<DocumentType<OfferEntity>[]> {
+    const limit = DEFAULT_PREMIUM_OFFER_COUNT;
     return this.offerModel
-      .find({ city }, {}, { limit })
+      .find({ city, isPremium }, {}, { limit })
       .populate([ 'userId' ])
       .exec();
   }
@@ -81,24 +81,24 @@ export class DefaultOfferService implements IOfferService {
 
   public async incReviewsCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
-      .findByIdAndUpdate(offerId, {'$inc': { reviewsCount: 1 }})
+      .findByIdAndUpdate(offerId, { '$inc': { reviewsCount: 1 } })
       .exec();
   }
 
-  public async findNew(count: number): Promise<DocumentType<OfferEntity>[]> {
+  setOfferFavoriteStatus(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
-      .find()
-      .sort({ createdAt: SortType.Down })
-      .limit(count)
+      .findByIdAndUpdate(offerId, dto, { new: true })
       .populate([ 'userId' ])
       .exec();
   }
 
-  public async findDiscussed(count: number): Promise<DocumentType<OfferEntity>[]> {
+  /*calcRating(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+
+  }*/
+
+  findFavorites(userId: string, isFavorite: boolean = true): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .find()
-      .sort({ reviewsCount: SortType.Down })
-      .limit(count)
+      .find({ userId, isFavorite })
       .populate([ 'userId' ])
       .exec();
   }

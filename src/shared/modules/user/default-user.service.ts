@@ -22,12 +22,20 @@ export class DefaultUserService implements IUserService {
     return result;
   }
 
-  public async findById(id: string): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel.findById({ id });
+  public async check(token: string): Promise<DocumentType<UserEntity> | null> {
+    return this.userModel.findOne({ token });
+  }
+
+  public async logout(token: string) {
+    return this.userModel.findOne({ token });
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
     return this.userModel.findOne({ email });
+  }
+
+  public async login(email: string, password: string): Promise<DocumentType<UserEntity> | null> {
+    return this.userModel.findOne({ email, password });
   }
 
   public async findOrCreate(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
