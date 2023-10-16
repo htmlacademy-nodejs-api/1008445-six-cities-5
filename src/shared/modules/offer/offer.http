@@ -1,0 +1,76 @@
+# Предложения
+### Получить список предложений
+GET http://localhost:5001/offers HTTP/1.1
+Content-Type: application/json
+### Получить список из 100 предложений
+GET http://localhost:5001/offers?limit=100 HTTP/1.1
+Content-Type: application/json
+### Получить детальную информацию по предложению с заданным offerId
+GET http://localhost:5001/offers/652962c756dbfdfd2d5dd165 HTTP/1.1
+Content-Type: application/json
+### Создание нового предложения
+POST http://localhost:5001/offers HTTP/1.1
+Content-Type: application/json
+
+{
+  "userId": "652962c756dbfdfd2d5dd159",
+  "title": "The Tile House",
+  "description": "I am happy to welcome you to my apartment in the city center! Yo!",
+  "city": "Paris",
+  "previewImage": "https://13.design.pages.academy/static/hotel/15.jpg",
+  "photo": [
+      "https://13.design.pages.academy/static/hotel/16.jpg",
+      "https://13.design.pages.academy/static/hotel/17.jpg"
+  ],
+  "isPremium": false,
+  "type": "Apartment",
+  "bedrooms": 1,
+  "maxAdults": 1,
+  "price": 1000,
+  "date": "2023-05-01T12:01:01",
+  "rating": 4.5,
+  "location": {
+    "latitude": 48.85661,
+    "longitude": 2.351499
+  },
+  "goods": [
+      "Breakfast",
+      "Washer"
+    ]
+}
+### Редактирование предложения
+PUT http://localhost:5001/offers/652962c756dbfdfd2d5dd168 HTTP/1.1
+Content-Type: application/json
+
+{
+  "userId": "652962c756dbfdfd2d5dd15b",
+  "title": "The Tile House!",
+  "description": "I am happy to welcome you to my apartment in the city center! Yo!",
+  "city": "Paris",
+  "previewImage": "https://13.design.pages.academy/static/hotel/15.jpg",
+  "photo": [
+    "https://13.design.pages.academy/static/hotel/16.jpg",
+    "https://13.design.pages.academy/static/hotel/17.jpg"
+  ],
+  "isPremium": false,
+  "type": "Apartment",
+  "bedrooms": 1,
+  "maxAdults": 1,
+  "price": 200,
+  "date": "2023-05-01T12:01:01",
+  "rating": 4,
+  "location": {
+    "latitude": 48.85661,
+    "longitude": 2.351499
+  },
+  "goods": [
+    "Breakfast",
+    "Washer"
+  ]
+}
+### Удаление предложения
+DELETE http://localhost:5001/offers/652962c756dbfdfd2d5dd168 HTTP/1.1
+Content-Type: application/json
+### Получить список премиальных предложений города
+GET http://localhost:5001/offers/premium/Paris HTTP/1.1
+Content-Type: application/json

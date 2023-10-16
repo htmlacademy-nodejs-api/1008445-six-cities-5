@@ -1,11 +1,11 @@
 import { OfferType } from '../../../types/index.js';
-import { TCity } from '../../../types/city.type.js';
+import { City } from '../../../types/city.enum.js';
 
 export class UpdateOfferDto {
   public title?: string;
   public description?: string;
-  public postDate?: Date;
-  public city?: TCity;
+  public date?: Date;
+  public city?: City;
   public previewImage?: string;
   public photo?: string;
   public isFavorite?: boolean;

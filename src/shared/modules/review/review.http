@@ -1,0 +1,5 @@
+# Отзывы
+## Получить список отзывов
+GET http://localhost:5001/reviews HTTP/1.1
+Content-Type: application/json
+###

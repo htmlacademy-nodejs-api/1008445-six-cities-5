@@ -7,8 +7,8 @@ export type TOffer = {
   description: string;
   city: City;
   previewImage: string;
-  postDate: Date;
-  photo: string;
+  date: Date;
+  photo: string[];
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;

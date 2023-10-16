@@ -17,7 +17,7 @@ export class DefaultOfferService implements IOfferService {
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
     const offer = await this.offerModel.create(dto);
-    this.logger.info(`New user created ${ offer.id }`);
+    this.logger.info(`New offer created ${ offer.id }`);
     return offer;
   }
 
@@ -29,26 +29,57 @@ export class DefaultOfferService implements IOfferService {
       .exec();
   }
 
-  public async find(): Promise<DocumentType<OfferEntity>[]> {
+  public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
+    const limit = count ?? DEFAULT_OFFER_COUNT;
     return await this.offerModel
       .aggregate([
         {
           $lookup: {
             from: 'reviews',
-            let: { offerId: '$_id'},
-            pipeline: [
-              { $match: { $expr: { $in: [ '$$offerId', '$reviews' ] } } },
-              { $project: { _id: 1 }}
-            ],
-            as: 'reviews'
+            localField: '_id',
+            foreignField: 'offerId',
+            as: 'reviews',
           },
         },
-        { $addFields:
-            { id: { $toString: '$_id' }, reviewsCount: { $size: '$reviews'} }
+        {
+          $addFields: {
+            rating: {
+              $divide: [
+                {
+                  $reduce: {
+                    input: '$reviews',
+                    initialValue: 0,
+                    in: {
+                      $add: ['$$value', '$$this.rating'],
+                    },
+                  },
+                },
+                {
+                  $cond: [
+                    {
+                      $ne: [
+                        {
+                          $size: '$reviews',
+                        },
+                        0,
+                      ],
+                    },
+                    {
+                      $size: '$reviews',
+                    },
+                    1,
+                  ],
+                },
+              ],
+            },
+            reviewsCount: {
+              $size: '$reviews',
+            },
+          },
         },
         { $unset: 'reviews' },
-        { $limit: DEFAULT_OFFER_COUNT },
-        { $sort: { reviewsCount: SortType.Down } }
+        { $limit: limit },
+        { $sort: { createdAt: SortType.Down } },
       ])
       .exec();
   }
@@ -74,32 +105,14 @@ export class DefaultOfferService implements IOfferService {
       .exec();
   }
 
-  public async exists(documentId: string): Promise<boolean> {
-    const offer = await this.offerModel.exists({ _id: documentId });
+  public async exists(offerId: string): Promise<boolean> {
+    const offer = await this.offerModel.exists({ _id: offerId });
     return offer !== null;
   }
 
   public async incReviewsCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, { '$inc': { reviewsCount: 1 } })
-      .exec();
-  }
-
-  setOfferFavoriteStatus(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findByIdAndUpdate(offerId, dto, { new: true })
-      .populate([ 'userId' ])
-      .exec();
-  }
-
-  /*calcRating(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-
-  }*/
-
-  findFavorites(userId: string, isFavorite: boolean = true): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel
-      .find({ userId, isFavorite })
-      .populate([ 'userId' ])
       .exec();
   }
 }
