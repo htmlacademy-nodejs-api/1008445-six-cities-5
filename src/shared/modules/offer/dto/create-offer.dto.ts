@@ -1,4 +1,4 @@
-import { OfferType } from '../../../types/index.js';
+import { OfferType, TLocation } from '../../../types/index.js';
 import { City } from '../../../types/city.enum.js';
 
 export class CreateOfferDto {
@@ -17,5 +17,5 @@ export class CreateOfferDto {
   public price: number;
   public goods: string[];
   public userId: string;
-  public location: string[];
+  public location: TLocation;
 }

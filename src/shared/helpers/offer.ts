@@ -30,6 +30,10 @@ export function createOffer(offerData: string): TOffer {
     isPro: Boolean(isPremium)
   };
 
+  const [ latitude , longitude] = offerLocation
+    .split(';')
+    .map((value) => +value);
+
   return {
     title,
     description,
@@ -46,6 +50,6 @@ export function createOffer(offerData: string): TOffer {
     price: +price,
     goods: goods.split(';'),
     user,
-    location: offerLocation.split(';'),
+    location: { latitude, longitude },
   };
 }

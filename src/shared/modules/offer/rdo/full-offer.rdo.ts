@@ -1,8 +1,11 @@
 import { Expose } from 'class-transformer';
 import { City } from '../../../types/city.enum.js';
-import { OfferType } from '../../../types/index.js';
+import { OfferType, TLocation } from '../../../types/index.js';
 
 export class FullOfferRdo {
+  @Expose()
+  public _id: string;
+
   @Expose()
   public title: string;
 
@@ -49,5 +52,5 @@ export class FullOfferRdo {
   public userId: string;
 
   @Expose()
-  public location: string[];
+  public location: TLocation;
 }

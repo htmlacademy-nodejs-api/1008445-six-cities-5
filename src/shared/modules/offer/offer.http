@@ -6,7 +6,7 @@ Content-Type: application/json
 GET http://localhost:5001/offers?limit=100 HTTP/1.1
 Content-Type: application/json
 ### Получить детальную информацию по предложению с заданным offerId
-GET http://localhost:5001/offers/652962c756dbfdfd2d5dd165 HTTP/1.1
+GET http://localhost:5001/offers/652e7557492c3e3808d19838 HTTP/1.1
 Content-Type: application/json
 ### Создание нового предложения
 POST http://localhost:5001/offers HTTP/1.1
@@ -26,7 +26,7 @@ Content-Type: application/json
   "type": "Apartment",
   "bedrooms": 1,
   "maxAdults": 1,
-  "price": 1000,
+  "price": 3333,
   "date": "2023-05-01T12:01:01",
   "rating": 4.5,
   "location": {

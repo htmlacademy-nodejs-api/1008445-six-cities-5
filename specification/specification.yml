@@ -492,6 +492,10 @@ components:
     createOffer:
       type: object
       properties:
+        id:
+          type: string
+          example: 652962c756dbfdfd2d5dd159
+
         userId:
           type: string
           example: 652962c756dbfdfd2d5dd159
@@ -618,7 +622,7 @@ components:
       properties:
         id:
           type: string
-          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
+          example: 652962c756dbfdfd2d5dd159
 
         title:
           type: string
@@ -666,7 +670,7 @@ components:
       properties:
         id:
           type: string
-          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
+          example: 652962c756dbfdfd2d5dd16b
 
         title:
           type: string
