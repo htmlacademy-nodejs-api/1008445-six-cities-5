@@ -19,10 +19,10 @@ export class GenerateCommand implements ICommand {
     return '--generate';
   }
 
-  private async write(filepath: string, reviewsCount: number) {
+  private async write(filepath: string, offersCount: number) {
     const tsvOfferGenerator = new TSVOfferGenerator(this.initData);
     const tsvFileWriter = new TSVFileWriter(filepath);
-    for (let i = 0; i < reviewsCount; i++) {
+    for (let i = 0; i < offersCount; i++) {
       await tsvFileWriter.write(tsvOfferGenerator.generate());
     }
   }

@@ -1,0 +1,22 @@
+# Пользователь
+### Зарегистрировать нового пользователя
+POST http://localhost:5001/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "keks@htmlacademy.ru",
+  "avatarUrl": "test.jpg",
+  "name": "Max",
+  "password": "abc123",
+  "isPro": "true"
+}
+
+### Авторизовать нового пользователя
+POST http://localhost:5001/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "keks@htmlacademy.ru",
+  "password": "abc123"
+}
+

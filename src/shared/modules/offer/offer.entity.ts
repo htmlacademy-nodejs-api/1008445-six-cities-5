@@ -28,7 +28,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public previewImage!: string;
 
   @prop()
-  public photo!: string;
+  public photo: string[];
 
   @prop()
   public isFavorite!: boolean;
@@ -71,9 +71,9 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     required: true,
-    default: []
+    default: {}
   })
-  public location: string[];
+  public location!: object;
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

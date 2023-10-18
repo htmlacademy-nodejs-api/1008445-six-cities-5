@@ -1,14 +1,15 @@
 import { TUser } from './user.type.js';
 import { OfferType } from './offer-type.enum.js';
 import { City } from './city.enum.js';
+import { TLocation } from './location.type.js';
 
 export type TOffer = {
   title: string;
   description: string;
   city: City;
   previewImage: string;
-  postDate: Date;
-  photo: string;
+  date: Date;
+  photo: string[];
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
@@ -18,5 +19,5 @@ export type TOffer = {
   price: number;
   goods: string[];
   user: TUser;
-  location: string[];
+  location: TLocation;
 }

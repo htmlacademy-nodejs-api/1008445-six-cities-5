@@ -1,0 +1,7 @@
+# Избранные предложения
+### Получить список избранных предложений
+GET http://localhost:5001/favorite/ HTTP/1.1
+Content-Type: application/json
+### Изменить статус избранного у предложения
+POST http://localhost:5001/favorite/652962c756dbfdfd2d5dd168/1 HTTP/1.1
+Content-Type: application/json

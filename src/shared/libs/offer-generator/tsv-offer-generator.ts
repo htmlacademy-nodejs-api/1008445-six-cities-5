@@ -35,12 +35,12 @@ export class TSVOfferGenerator implements OfferGenerator {
     const maxAdults = generateRandomValue(MIN_ADULTS, MAX_ADULTS).toString();
     const location = getRandomItem(this.mockData.locations);
     const city = getRandomItem(this.mockData.cities);
-    const postDate = dayjs()
+    const date = dayjs()
       .subtract(generateRandomValue(FIRST_WEEK_DAY, LAST_WEEK_DAY), 'day')
       .toISOString();
 
     return [
-      title, description, previewImage, postDate,
+      title, description, previewImage, date,
       photo, type, price, isFavorite, isPremium, rating,
       city, bedrooms, maxAdults, location, avatarUrl,
       goods, userName, email

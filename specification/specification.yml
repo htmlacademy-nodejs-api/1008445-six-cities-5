@@ -17,7 +17,7 @@ tags:
   - name: favorites
     description: Действия с избранными предложениями.
 paths:
-  /offers/:
+  /offers:
     post:
       tags:
         - offers
@@ -50,14 +50,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/offer'
 
-  /offers/{offerCount}:
+  /offers?limit<number>:
     get:
       tags:
         - offers
       parameters:
         [ {
           in: "query",
-          name: "offerCount",
+          name: "limit",
           schema: {
             type: "number",
           },
@@ -132,7 +132,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/offer'
+              $ref: '#/components/schemas/editFullOffer'
         required: true
 
       responses:
@@ -391,7 +391,7 @@ paths:
         "401":
           description: Доступ запрещен.
 
-  /offers/{city}:
+  /offers/premium/{city}:
     get:
       tags:
         - offers
@@ -410,7 +410,7 @@ paths:
         "404":
           description: Город не найден.
 
-  /favorite/{offerId}/status:
+  /favorite/{offerId}/{status}:
     post:
       tags:
         - favorites
@@ -492,6 +492,14 @@ components:
     createOffer:
       type: object
       properties:
+        id:
+          type: string
+          example: 652962c756dbfdfd2d5dd159
+
+        userId:
+          type: string
+          example: 652962c756dbfdfd2d5dd159
+
         title:
           type: string
           example: Tile House
@@ -501,17 +509,18 @@ components:
           example: I am happy to welcome you to my apartment in the city center!
 
         city:
-          $ref: '#/components/schemas/city'
+          type: string
+          example: Amsterdam
 
         previewImage:
           type: string
-          example: Amsterdam
+          example: https://13.design.pages.academy/static/hotel/15.jpg
 
         photo:
           type: array
           items:
             type: string
-            example: [ https://13.design.pages.academy/static/hotel/16.jpg, https://13.design.pages.academy/static/hotel/17.jpg ]
+            example: https://13.design.pages.academy/static/hotel/16.jpg, https://13.design.pages.academy/static/hotel/17.jpg
 
         isPremium:
           type: boolean
@@ -533,7 +542,7 @@ components:
           type: number
           example: 100
 
-        postDate:
+        date:
           type: string
           example: '2023-05-04T12:01:01'
 
@@ -548,7 +557,7 @@ components:
           type: array
           items:
             type: string
-            example: [ Breakfast, Washer ]
+            example: Breakfast, Washer
 
     createUser:
       type: object
@@ -563,7 +572,7 @@ components:
 
         name:
           type: string
-          example: Keks
+          example: Max
 
         password:
           type: string
@@ -613,50 +622,41 @@ components:
       properties:
         id:
           type: string
-          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
+          example: 652962c756dbfdfd2d5dd159
 
         title:
           type: string
           example: Tile House
 
-        description:
-          type: string
-          example: I am happy to welcome you to my apartment in the city center!
-
         city:
-          $ref: '#/components/schemas/city'
-
-        previewImage:
           type: string
           example: Amsterdam
 
-        photo:
-          type: array
-          items:
-            type: string
-            example: [ https://13.design.pages.academy/static/hotel/16.jpg, https://13.design.pages.academy/static/hotel/17.jpg ]
+        previewImage:
+          type: string
+          example: https://13.design.pages.academy/static/hotel/15.jpg
 
         isPremium:
           type: boolean
           example: false
 
+        isFavorite:
+          type: boolean
+          example: true
+
         type:
           type: string
           example: Apartment
-
-        bedrooms:
-          type: number
-          example: 1
-
-        maxAdults:
-          type: number
-          example: 1
 
         price:
           type: number
           example: 100
 
-        postDate:
+        reviewCount:
+          type: number
+          example: 5
+
+        date:
           type: string
           example: '2023-05-04T12:01:01'
 
@@ -664,22 +664,13 @@ components:
           type: number
           example: 4.5
 
-        location:
-          $ref: '#/components/schemas/location'
-
-        goods:
-          type: array
-          items:
-            type: string
-            example: [ Breakfast, Washer ]
-
     fullOffer:
       type: object
 
       properties:
         id:
           type: string
-          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
+          example: 652962c756dbfdfd2d5dd16b
 
         title:
           type: string
@@ -690,11 +681,12 @@ components:
           example: I am happy to welcome you to my apartment in the city center!
 
         city:
-          $ref: '#/components/schemas/city'
+          type: string
+          example: Amsterdam
 
         previewImage:
           type: string
-          example: Amsterdam
+          example: https://13.design.pages.academy/static/hotel/15.jpg
 
         photo:
           type: array
@@ -730,7 +722,82 @@ components:
           type: number
           example: 100
 
-        postDate:
+        date:
+          type: string
+          example: '2023-05-04T12:01:01'
+
+        rating:
+          type: number
+          example: 4.5
+
+        location:
+          $ref: '#/components/schemas/location'
+
+        goods:
+          type: array
+          items:
+            type: string
+            example: [ Breakfast, Washer ]
+
+    editFullOffer:
+      type: object
+
+      properties:
+        userId:
+          type: string
+          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
+
+        title:
+          type: string
+          example: Tile House
+
+        description:
+          type: string
+          example: I am happy to welcome you to my apartment in the city center!
+
+        city:
+          type: string
+          example: Amsterdam
+
+        previewImage:
+          type: string
+          example: https://13.design.pages.academy/static/hotel/15.jpg
+
+        photo:
+          type: array
+          items:
+            type: string
+            example: [ https://13.design.pages.academy/static/hotel/16.jpg, https://13.design.pages.academy/static/hotel/17.jpg ]
+
+        isPremium:
+          type: boolean
+          example: false
+
+        isFavorite:
+          type: boolean
+          example: true
+
+        type:
+          type: string
+          example: Apartment
+
+        bedrooms:
+          type: number
+          example: 1
+
+        commentCount:
+          type: number
+          example: 5
+
+        maxAdults:
+          type: number
+          example: 1
+
+        price:
+          type: number
+          example: 100
+
+        date:
           type: string
           example: '2023-05-04T12:01:01'
 

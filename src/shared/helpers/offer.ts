@@ -6,7 +6,7 @@ export function createOffer(offerData: string): TOffer {
     title,
     description,
     previewImage,
-    postDate,
+    date,
     photo,
     type,
     price,
@@ -30,13 +30,17 @@ export function createOffer(offerData: string): TOffer {
     isPro: Boolean(isPremium)
   };
 
+  const [ latitude , longitude] = offerLocation
+    .split(';')
+    .map((value) => +value);
+
   return {
     title,
     description,
-    postDate: new Date(postDate),
+    date: new Date(date),
     city: City[ city as keyof typeof City ],
     previewImage,
-    photo,
+    photo: photo.split(';'),
     isPremium: Boolean(isPremium),
     isFavorite: Boolean(isFavorite),
     rating: +rating,
@@ -46,6 +50,6 @@ export function createOffer(offerData: string): TOffer {
     price: +price,
     goods: goods.split(';'),
     user,
-    location: offerLocation.split(';'),
+    location: { latitude, longitude },
   };
 }
