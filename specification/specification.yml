@@ -50,7 +50,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/offer'
 
-  /offers?limit<number>:
     get:
       tags:
         - offers
@@ -183,7 +182,7 @@ paths:
         "404":
           description: Предложение с таким offerId не существует.
 
-  /comments/{offerId}:
+  /comments:
     get:
       tags:
         - comments
@@ -221,14 +220,7 @@ paths:
             },
             description: Авторизационный токен пользователя
           },
-          {
-          in: "query",
-          name: "offerId",
-          schema: {
-            type: "string",
-          },
-          description: Идентификатор предложения
-        } ]
+         ]
       summary: Добавление комментария
       description: Сервис предоставляет ресурс для добавления комментариев к определённому предложению по аренде.
 
@@ -516,7 +508,7 @@ components:
           type: string
           example: https://13.design.pages.academy/static/hotel/15.jpg
 
-        photo:
+        photos:
           type: array
           items:
             type: string
@@ -688,7 +680,7 @@ components:
           type: string
           example: https://13.design.pages.academy/static/hotel/15.jpg
 
-        photo:
+        photos:
           type: array
           items:
             type: string
@@ -763,7 +755,7 @@ components:
           type: string
           example: https://13.design.pages.academy/static/hotel/15.jpg
 
-        photo:
+        photos:
           type: array
           items:
             type: string
@@ -822,12 +814,13 @@ components:
     createComment:
       type: object
       properties:
-        date:
+        userId:
           type: string
-          example: '2023-05-04T12:01:01'
+          example: '652962c756dbfdfd2d5dd159'
 
-        user:
-          $ref: '#/components/schemas/user'
+        offerId:
+          type: string
+          example: '652962c756dbfdfd2d5dd159'
 
         comment:
           type: string

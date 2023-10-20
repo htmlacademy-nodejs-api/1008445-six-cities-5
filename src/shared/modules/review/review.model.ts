@@ -22,9 +22,9 @@ const reviewSchema = new Schema({
     type: String,
     required: true,
   },
-  publishedDate: {
-    type: Date,
-    required: true
+  offerId: {
+    type: String,
+    required: true,
   },
 }, { timestamps: true });
 

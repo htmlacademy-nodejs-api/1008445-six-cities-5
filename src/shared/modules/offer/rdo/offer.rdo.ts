@@ -4,7 +4,7 @@ import { OfferType } from '../../../types/index.js';
 
 export class OfferRdo {
   @Expose()
-  public _id: string;
+  public id: string;
 
   @Expose()
   public title: string;
@@ -19,9 +19,6 @@ export class OfferRdo {
   public previewImage: string;
 
   @Expose()
-  public isFavorite: boolean;
-
-  @Expose()
   public isPremium: boolean;
 
   @Expose()
@@ -34,5 +31,5 @@ export class OfferRdo {
   public price: number;
 
   @Expose()
-  public reviewCount: number;
+  public reviewsCount: number;
 }
