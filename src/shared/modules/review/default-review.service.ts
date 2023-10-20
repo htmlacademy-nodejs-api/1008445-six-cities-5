@@ -15,11 +15,22 @@ export class DefaultReviewService implements IReviewService {
 
   public async create(offerId: string, dto: CreateReviewDto): Promise<DocumentType<ReviewEntity>> {
     const review = await this.reviewModel.create(dto);
-    this.logger.info(`New review of offer ${ offerId} created ${ review.id }`);
+    this.logger.info(`New review of offer '${ offerId }' created`);
     return review;
   }
 
   public async findByOfferId(offerId: string): Promise<DocumentType<ReviewEntity>[]> {
-    return this.reviewModel.find({ offerId });
+    return this.reviewModel
+      .find({ offerId })
+      .populate([ 'userId' ])
+      .exec();
+  }
+
+  findById(reviewId: string): Promise<DocumentType<ReviewEntity> | null> {
+    return this
+      .reviewModel
+      .findById(reviewId)
+      .populate([ 'userId' ])
+      .exec();
   }
 }

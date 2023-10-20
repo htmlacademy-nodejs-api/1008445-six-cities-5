@@ -29,8 +29,8 @@ export class DefaultOfferService implements IOfferService {
       .exec();
   }
 
-  public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
-    const limit = count ?? DEFAULT_OFFER_COUNT;
+  public async find(limit?: string): Promise<DocumentType<OfferEntity>[]> {
+    const offersLimit = limit ? parseInt(limit, 10) : DEFAULT_OFFER_COUNT;
     return await this.offerModel
       .aggregate([
         {
@@ -78,16 +78,18 @@ export class DefaultOfferService implements IOfferService {
           },
         },
         { $unset: 'reviews' },
-        { $limit: limit },
+        { $limit: offersLimit },
         { $sort: { createdAt: SortType.Down } },
       ])
       .exec();
   }
 
-  public async findPremiumByCity(city: string, isPremium: boolean = true): Promise<DocumentType<OfferEntity>[]> {
-    const limit = DEFAULT_PREMIUM_OFFER_COUNT;
+  public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .find({ city, isPremium }, {}, { limit })
+      .find(
+        { city, isPremium: true },
+        {},
+        { limit: DEFAULT_PREMIUM_OFFER_COUNT })
       .populate([ 'userId' ])
       .exec();
   }

@@ -1,16 +1,14 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, HttpError } from '../../libs/rest/index.js';
+import { BaseController, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
 import { Request, Response } from 'express';
 import { IFavoriteService } from './favorite-service.interface.js';
 import { fillDTO } from '../../helpers/index.js';
-import { StatusCodes } from 'http-status-codes';
-import { OfferRdo } from '../offer/rdo/offer.rdo.js';
-import { IOfferService } from '../offer/index.js';
-import { OfferController } from '../offer/offer.controller.js';
-import { FAVORITE_STATUS, NOT_FAVORITE_STATUS } from './favorite.constant.js';
+import { IOfferService, OfferRdo } from '../offer/index.js';
+import { ValidateStatusMiddleware } from '../../libs/rest/middleware/validate-status.middleware.js';
+import { ValidateOfferExistMiddleware } from '../../libs/rest/middleware/validate-offer-exist.middleware.js';
 
 @injectable()
 export class FavoriteController extends BaseController {
@@ -22,32 +20,35 @@ export class FavoriteController extends BaseController {
     super(logger);
 
     this.logger.info('Register routes for FavoriteController');
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.getFavorites });
-    this.addRoute({ path: '/:offerId/:status', method: HttpMethod.Post, handler: this.setFavorite });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Get,
+      handler: this.index
+    });
+    this.addRoute({
+      path: '/:offerId/:status',
+      method: HttpMethod.Post,
+      handler: this.update,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateOfferExistMiddleware(this.offerService),
+        new ValidateStatusMiddleware('status')
+      ]
+    });
   }
 
-  public async getFavorites(_req: Request, res: Response): Promise<void> {
+  public async index(_req: Request, res: Response): Promise<void> {
     //TODO get header token
-    const userId = '652962c756dbfdfd2d5dd159';
-    const offers = await this.favoriteService.findFavorites(userId);
+    const offers = await this.favoriteService.findFavorites();
     const responseData = fillDTO(OfferRdo, offers);
     this.ok(res, responseData);
   }
 
-  public async setFavorite(req: Request, res: Response): Promise<void> {
+  public async update(req: Request, res: Response): Promise<void> {
     //TODO get header token
     const { offerId, status } = req.params;
-    if (![ FAVORITE_STATUS, NOT_FAVORITE_STATUS ].includes(status)) {
-      throw new HttpError(
-        StatusCodes.BAD_REQUEST,
-        `Favorite status of offer id '${ offerId }' is incorrect, must be 0 or 1`,
-        'OfferController'
-      );
-    }
-    await OfferController.validateOffer(offerId, this.offerService);
-    //const userId = '652962c756dbfdfd2d5dd159';
-    const offers = await this.favoriteService.setOfferFavoriteStatus(offerId, status);
-    const responseData = fillDTO(OfferRdo, offers);
+    const offer = await this.favoriteService.addOrRemoveOfferFavoriteStatus(offerId, status);
+    const responseData = fillDTO(OfferRdo, offer);
     this.ok(res, responseData);
   }
 }

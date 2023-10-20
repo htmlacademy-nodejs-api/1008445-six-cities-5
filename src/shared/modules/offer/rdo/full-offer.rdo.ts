@@ -1,10 +1,11 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { City } from '../../../types/city.enum.js';
 import { OfferType, TLocation } from '../../../types/index.js';
+import { UserRdo } from '../../user/rdo/user.rdo.js';
 
 export class FullOfferRdo {
   @Expose()
-  public _id: string;
+  public id: string;
 
   @Expose()
   public title: string;
@@ -22,10 +23,7 @@ export class FullOfferRdo {
   public previewImage: string;
 
   @Expose()
-  public photo: string;
-
-  @Expose()
-  public isFavorite: boolean;
+  public photos: string[];
 
   @Expose()
   public isPremium: boolean;
@@ -48,9 +46,13 @@ export class FullOfferRdo {
   @Expose()
   public goods: string[];
 
-  @Expose()
-  public userId: string;
+  @Expose({ name: 'userId' })
+  @Type(() => UserRdo)
+  public user: UserRdo;
 
   @Expose()
   public location: TLocation;
+
+  @Expose()
+  public reviewsCount: number;
 }

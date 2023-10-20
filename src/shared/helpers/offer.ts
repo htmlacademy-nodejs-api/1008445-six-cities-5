@@ -1,5 +1,6 @@
 import { TOffer, OfferType, TUser } from '../types/index.js';
 import { City } from '../types/city.enum.js';
+import { Goods } from '../types/goods.enum.js';
 
 export function createOffer(offerData: string): TOffer {
   const [
@@ -7,10 +8,9 @@ export function createOffer(offerData: string): TOffer {
     description,
     previewImage,
     date,
-    photo,
+    photos,
     type,
     price,
-    isFavorite,
     isPremium,
     rating,
     city,
@@ -40,15 +40,14 @@ export function createOffer(offerData: string): TOffer {
     date: new Date(date),
     city: City[ city as keyof typeof City ],
     previewImage,
-    photo: photo.split(';'),
+    photos: photos.split(';'),
     isPremium: Boolean(isPremium),
-    isFavorite: Boolean(isFavorite),
     rating: +rating,
-    type: OfferType[ type as keyof typeof OfferType ],
+    type: type as OfferType,
     bedrooms: +bedrooms,
     maxAdults: +maxAdults,
     price: +price,
-    goods: goods.split(';'),
+    goods: goods.split(';') as Goods[],
     user,
     location: { latitude, longitude },
   };

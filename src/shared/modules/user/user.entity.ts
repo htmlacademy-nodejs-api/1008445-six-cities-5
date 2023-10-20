@@ -42,6 +42,12 @@ export class UserEntity extends defaultClasses.TimeStamps implements TUser {
   })
   public isPro: boolean;
 
+  @prop({
+    required: true,
+    default: []
+  })
+  public favoriteOffers: string[];
+
   constructor(userData: TUser) {
     super();
 
@@ -49,6 +55,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements TUser {
     this.name = userData.name;
     this.avatarUrl = userData.avatarUrl;
     this.isPro = userData.isPro;
+    this.favoriteOffers = [];
   }
 
   public setPassword(password: string, salt: string) {

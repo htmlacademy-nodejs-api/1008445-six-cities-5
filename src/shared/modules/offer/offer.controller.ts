@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, HttpError } from '../../libs/rest/index.js';
+import { BaseController, ValidateDtoMiddleware, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
@@ -7,11 +7,18 @@ import { Request, Response } from 'express';
 import { IOfferService } from './offer-service.interface.js';
 import { fillDTO } from '../../helpers/index.js';
 import { FullOfferRdo } from './rdo/full-offer.rdo.js';
-import { StatusCodes } from 'http-status-codes';
-import { CreateOfferRequest } from './create-offer-request-type.js';
+import { CreateOfferRequest } from './types/create-offer-request-type.js';
 import { UpdateOfferRequest } from './update-offer-request-type.js';
 import { OfferRdo } from './rdo/offer.rdo.js';
 import { City } from '../../types/city.enum.js';
+import { ParamOfferId } from './types/param-offer-id.type.js';
+import { ParamCity } from './types/param-city.type.js';
+import { RequestQuery } from './types/request-query.type.js';
+import { CreateOfferDto } from './dto/create-offer.dto.js';
+import { UpdateOfferDto } from './dto/update.offer-dto.js';
+import { ValidateCityMiddleware } from '../../libs/rest/middleware/validate-city.middleware.js';
+import { ValidateLimitMiddleware } from '../../libs/rest/middleware/validate-limit.middleware.js';
+import { ValidateOfferExistMiddleware } from '../../libs/rest/middleware/validate-offer-exist.middleware.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -22,25 +29,63 @@ export class OfferController extends BaseController {
     super(logger);
 
     this.logger.info('Register routes for OfferController');
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.getFullOffer });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Put, handler: this.editOffer });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.deleteOffer });
-    this.addRoute({ path: '/premium/:city', method: HttpMethod.Get, handler: this.getPremiumByCity });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Get,
+      handler: this.index,
+      middlewares: [ new ValidateLimitMiddleware('limit') ]
+    });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [ new ValidateDtoMiddleware(CreateOfferDto) ]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Get,
+      handler: this.show,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateOfferExistMiddleware(this.offerService)
+      ]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Patch,
+      handler: this.update,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateOfferExistMiddleware(this.offerService),
+        new ValidateDtoMiddleware(UpdateOfferDto)
+      ]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.delete,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateOfferExistMiddleware(this.offerService),
+      ]
+    });
+    this.addRoute({
+      path: '/premium/:city',
+      method: HttpMethod.Get,
+      handler: this.getPremiumByCity,
+      middlewares: [ new ValidateCityMiddleware('city')]
+    });
   }
 
-  public async index(req: Request, res: Response): Promise<void> {
-    const { limit } = req.query;
-    const offerCount = limit ? +limit : undefined;
-    const offers = await this.offerService.find(offerCount);
+  public async index({ query }: Request<unknown, unknown, unknown, RequestQuery>, res: Response): Promise<void> {
+    const { limit } = query;
+    const offers = await this.offerService.find(limit);
     const responseData = fillDTO(OfferRdo, offers);
     this.ok(res, responseData);
   }
 
-  public async getFullOffer(req: Request, res: Response): Promise<void> {
-    const { offerId} = req.params;
-    await OfferController.validateOffer(offerId, this.offerService);
+  public async show({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+    const { offerId} = params;
     const offer = await this.offerService.findById(offerId);
     const responseData = fillDTO(FullOfferRdo, offer);
     this.ok(res, responseData);
@@ -48,55 +93,30 @@ export class OfferController extends BaseController {
 
   public async create({ body }: CreateOfferRequest, res: Response): Promise<void> {
     //TODO get header token
-    const offer = await this.offerService.create(body);
+    const { id } = await this.offerService.create(body);
+    const offer = await this.offerService.findById(id);
     this.created(res, fillDTO(FullOfferRdo, offer));
   }
 
-  public async editOffer({ body, params }: UpdateOfferRequest, res: Response): Promise<void> {
+  public async update({ body, params }: UpdateOfferRequest, res: Response): Promise<void> {
     //TODO get header token
     const { offerId } = params;
-    await OfferController.validateOffer(offerId as string, this.offerService);
-    const offer = await this.offerService.updateById(offerId as string, body);
+    const offer = await this.offerService.updateById(offerId, body);
     this.ok(res, fillDTO(FullOfferRdo, offer));
   }
 
-  public async deleteOffer(req: Request, res: Response): Promise<void> {
+  public async delete({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
     //TODO get header token
-    const { offerId } = req.params;
-    await OfferController.validateOffer(offerId, this.offerService);
+    const { offerId } = params;
     const offer = await this.offerService.deleteById(offerId);
     //TODO delete reviews
-    this.noContent(res, fillDTO(FullOfferRdo, offer));
+    this.noContent(res, offer);
   }
 
-  public async getPremiumByCity(req: Request, res: Response): Promise<void> {
-    const { city } = req.params;
-    if (!Object.values(City).includes(city as City)) {
-      throw new HttpError(
-        StatusCodes.BAD_REQUEST,
-        `City name '${ city }' is incorrect`,
-        'OfferController'
-      );
-    }
-    const offers = await this.offerService.findPremiumByCity(city as City);
+  public async getPremiumByCity({ params }: Request<ParamCity>, res: Response): Promise<void> {
+    const { city } = params;
+    const currentCity = city as City;
+    const offers = await this.offerService.findPremiumByCity(currentCity);
     this.ok(res, fillDTO(FullOfferRdo, offers));
-  }
-
-  static async validateOffer(offerId: string, offerService: IOfferService) {
-    if (!offerId.match(/^[0-9a-fA-F]{24}$/)) {
-      throw new HttpError(
-        StatusCodes.BAD_REQUEST,
-        `Offer id '${ offerId }' is incorrect`,
-        'OfferController'
-      );
-    }
-    const isExist = await offerService.exists(offerId);
-    if (!isExist) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Offer id "${ offerId }" not found`,
-        'OfferController'
-      );
-    }
   }
 }

@@ -45,3 +45,4 @@ export const CityMap: Record<City, TCity> = {
     }
   },
 } as const;
+export const DEFAULT_CONTENT_TYPE = 'application/json';

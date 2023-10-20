@@ -6,19 +6,19 @@ Content-Type: application/json
 GET http://localhost:5001/offers?limit=100 HTTP/1.1
 Content-Type: application/json
 ### Получить детальную информацию по предложению с заданным offerId
-GET http://localhost:5001/offers/652e7557492c3e3808d19838 HTTP/1.1
+GET http://localhost:5001/offers/6532955b5da3fa262da1acf2 HTTP/1.1
 Content-Type: application/json
 ### Создание нового предложения
 POST http://localhost:5001/offers HTTP/1.1
 Content-Type: application/json
 
 {
-  "userId": "652962c756dbfdfd2d5dd159",
+  "userId": "6532955b5da3fa262da1acf5",
   "title": "The Tile House",
   "description": "I am happy to welcome you to my apartment in the city center! Yo!",
   "city": "Paris",
   "previewImage": "https://13.design.pages.academy/static/hotel/15.jpg",
-  "photo": [
+  "photos": [
       "https://13.design.pages.academy/static/hotel/16.jpg",
       "https://13.design.pages.academy/static/hotel/17.jpg"
   ],
@@ -26,9 +26,9 @@ Content-Type: application/json
   "type": "Apartment",
   "bedrooms": 1,
   "maxAdults": 1,
-  "price": 3333,
+  "price": 100,
   "date": "2023-05-01T12:01:01",
-  "rating": 4.5,
+  "rating": 4,
   "location": {
     "latitude": 48.85661,
     "longitude": 2.351499
@@ -39,16 +39,16 @@ Content-Type: application/json
     ]
 }
 ### Редактирование предложения
-PUT http://localhost:5001/offers/652962c756dbfdfd2d5dd168 HTTP/1.1
+PATCH http://localhost:5001/offers/652962c756dbfdfd2d5dd168 HTTP/1.1
 Content-Type: application/json
 
 {
-  "userId": "652962c756dbfdfd2d5dd15b",
+  "userId": "6532955b5da3fa262da1acf5",
   "title": "The Tile House!",
   "description": "I am happy to welcome you to my apartment in the city center! Yo!",
   "city": "Paris",
   "previewImage": "https://13.design.pages.academy/static/hotel/15.jpg",
-  "photo": [
+  "photos": [
     "https://13.design.pages.academy/static/hotel/16.jpg",
     "https://13.design.pages.academy/static/hotel/17.jpg"
   ],
