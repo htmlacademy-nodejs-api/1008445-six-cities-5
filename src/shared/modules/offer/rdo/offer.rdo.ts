@@ -10,7 +10,7 @@ export class OfferRdo {
   public title: string;
 
   @Expose()
-  public date: Date;
+  public postDate: Date;
 
   @Expose()
 

@@ -35,6 +35,14 @@ export class DefaultOfferService implements IOfferService {
           },
         },
         {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'userId',
+          },
+        },
+        {
           $addFields: {
             rating: {
               $divide: [
@@ -73,6 +81,14 @@ export class DefaultOfferService implements IOfferService {
             localField: '_id',
             foreignField: 'offerId',
             as: 'reviews',
+          },
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'userId',
           },
         },
         {

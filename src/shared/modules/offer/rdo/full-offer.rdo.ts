@@ -4,7 +4,7 @@ import { OfferType, TLocation } from '../../../types/index.js';
 import { UserRdo } from '../../user/rdo/user.rdo.js';
 
 export class FullOfferRdo {
-  @Expose()
+  @Expose({ name: '_id' })
   public id: string;
 
   @Expose()
@@ -14,7 +14,7 @@ export class FullOfferRdo {
   public description: string;
 
   @Expose()
-  public date: Date;
+  public postDate: Date;
 
   @Expose()
   public city: City;

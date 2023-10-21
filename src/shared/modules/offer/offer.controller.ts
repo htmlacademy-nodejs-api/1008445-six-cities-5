@@ -80,7 +80,7 @@ export class OfferController extends BaseController {
   public async index({ query }: Request<unknown, unknown, unknown, RequestQuery>, res: Response): Promise<void> {
     const { limit } = query;
     const offers = await this.offerService.find(limit);
-    const responseData = fillDTO(OfferRdo, offers.slice(0, 1));
+    const responseData = fillDTO(OfferRdo, offers);
     this.ok(res, responseData);
   }
 
