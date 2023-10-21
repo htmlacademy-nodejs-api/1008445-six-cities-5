@@ -3,7 +3,7 @@ import { OfferType } from '../../../types/index.js';
 import { TCity } from '../../../types/city.type.js';
 
 export class OfferRdo {
-  @Expose({ name: '_id' })
+  @Expose()
   public id: string;
 
   @Expose()

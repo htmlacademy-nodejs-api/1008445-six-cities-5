@@ -23,6 +23,8 @@ export class DefaultOfferService implements IOfferService {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    console.log(offerId);
+    console.log(new mongoose.Types.ObjectId(offerId));
     const [ offer ] = await this.offerModel
       .aggregate([
         { $match: { _id: new mongoose.Types.ObjectId(offerId) } },
@@ -67,6 +69,7 @@ export class DefaultOfferService implements IOfferService {
         },
         {
           $project: {
+            id: { $toString: '$_id' },
             rating: { $round: [ '$rating', 1 ] },
             title: 1,
             bedrooms: 1,
@@ -88,6 +91,7 @@ export class DefaultOfferService implements IOfferService {
         { $unset: 'reviews' },
       ])
       .exec();
+    console.log(offer);
     return offer;
   }
 
@@ -136,6 +140,7 @@ export class DefaultOfferService implements IOfferService {
         },
         {
           $project: {
+            id: { $toString: '$_id' },
             rating: { $round: [ '$rating', 1 ] },
             title: 1,
             city: 1,
