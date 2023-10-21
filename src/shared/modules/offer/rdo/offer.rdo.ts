@@ -13,7 +13,6 @@ export class OfferRdo {
   public postDate: Date;
 
   @Expose()
-
   public city: TCity;
 
   @Expose()

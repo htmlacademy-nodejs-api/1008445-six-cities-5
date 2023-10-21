@@ -65,6 +65,26 @@ export class DefaultOfferService implements IOfferService {
             reviewsCount: { $size: '$reviews' },
           },
         },
+        {
+          $project: {
+            rating: { $round: [ '$rating', 1 ] },
+            title: 1,
+            bedrooms: 1,
+            city: 1,
+            description: 1,
+            goods: 1,
+            isPremium: 1,
+            location: 1,
+            maxAdults: 1,
+            photos: 1,
+            postDate: 1,
+            previewImage: 1,
+            price: 1,
+            reviewsCount: 1,
+            type: 1,
+            userId: { $arrayElemAt: [ '$userId', 0 ] }
+          }
+        },
         { $unset: 'reviews' },
       ])
       .exec();
@@ -113,6 +133,20 @@ export class DefaultOfferService implements IOfferService {
             },
             reviewsCount: { $size: '$reviews' },
           },
+        },
+        {
+          $project: {
+            rating: { $round: [ '$rating', 1 ] },
+            title: 1,
+            city: 1,
+            isPremium: 1,
+            postDate: 1,
+            previewImage: 1,
+            price: 1,
+            reviewsCount: 1,
+            type: 1,
+            userId: { $arrayElemAt: [ '$userId', 0 ] }
+          }
         },
         { $unset: 'reviews' },
         { $limit: offersLimit },
