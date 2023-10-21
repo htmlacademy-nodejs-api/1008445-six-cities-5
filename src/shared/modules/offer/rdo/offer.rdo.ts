@@ -1,9 +1,9 @@
 import { Expose } from 'class-transformer';
-import { City } from '../../../types/city.enum.js';
 import { OfferType } from '../../../types/index.js';
+import { TCity } from '../../../types/city.type.js';
 
 export class OfferRdo {
-  @Expose()
+  @Expose({ name: '_id' })
   public id: string;
 
   @Expose()
@@ -13,7 +13,8 @@ export class OfferRdo {
   public date: Date;
 
   @Expose()
-  public city: City;
+
+  public city: TCity;
 
   @Expose()
   public previewImage: string;

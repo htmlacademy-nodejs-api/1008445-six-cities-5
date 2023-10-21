@@ -3,7 +3,8 @@ import { DocumentType } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
 import { UpdateOfferDto } from './dto/update.offer-dto.js';
 import { City } from '../../types/city.enum.js';
-export interface IOfferService {
+import { IDocumentExists } from '../../libs/rest/index.js';
+export interface IOfferService extends IDocumentExists {
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
   findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   find(limit?: string): Promise<DocumentType<OfferEntity>[]>;

@@ -16,14 +16,16 @@ export class DefaultFavoriteService implements IFavoriteService {
 
   public async addOrRemoveOfferFavoriteStatus(offerId: string, status: string) {
     //TODO get userId from token
-    const userId = '6532955b5da3fa262da1acef';
+    const userId = '6533b70719c994f5a07a4b89';
+    const isSetStatus = status === '1';
     await this.userModel
       .updateOne(
         { _id: userId },
-        { [`$${ status === '1' ? 'push' : 'pull' }`]: { favoriteOffers: offerId } })
+        { [`$${ isSetStatus ? 'push' : 'pull' }`]: { favoriteOffers: offerId } })
       .exec();
 
-    this.logger.info(`${ status === '1' ? 'Add' : 'Remove' } offer id '${ offerId }' ${ status === '1' ? 'in' : 'from' } favorites of user = '${ userId }'`);
+    this.logger.info(`${ isSetStatus ? 'Add' : 'Remove' } offer id '${ offerId }'
+      ${ isSetStatus ? 'in' : 'from' } favorites of user = '${ userId }'`);
     return this
       .offerModel
       .findById(offerId)
@@ -33,7 +35,7 @@ export class DefaultFavoriteService implements IFavoriteService {
 
   public async findFavorites(): Promise<DocumentType<OfferEntity>[]> {
     //TODO get userId from token
-    const userId = '6532955b5da3fa262da1acef';
+    const userId = '6533b70719c994f5a07a4b89';
     const { favoriteOffers} = await this.userModel.findById(userId).exec() as UserEntity;
     return this.offerModel.find({ '_id': { $in: favoriteOffers } });
   }

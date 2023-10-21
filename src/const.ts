@@ -1,7 +1,16 @@
 import { TCity } from './shared/types/city.type.js';
 import { City } from './shared/types/city.enum.js';
-
-export const CityMap: Record<City, TCity> = {
+export const GeneratorValues = {
+  MIN_PRICE: 100,
+  MAX_PRICE: 1000,
+  MIN_BEDROOMS: 1,
+  MAX_BEDROOMS: 8,
+  MIN_ADULTS: 1,
+  MAX_ADULTS: 10,
+  FIRST_WEEK_DAY: 1,
+  LAST_WEEK_DAY: 7,
+};
+export const Cities: Record<City, TCity> = {
   [ City.Paris ]: {
     name: City.Paris,
     location: {

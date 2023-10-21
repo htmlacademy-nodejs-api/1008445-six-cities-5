@@ -7,16 +7,11 @@ export const CreateOfferValidationMessage = {
     minLength: 'Minimum description length must be 20',
     maxLength: 'Maximum description length must be 1024',
   },
-  date: {
+  postDate: {
     invalidFormat: 'postDate must be a valid ISO date',
   },
   image: {
     maxLength: 'Too short for field «image»',
-  },
-  rating: {
-    invalidFormat: 'Price must be an integer',
-    minValue: 'Minimum title length must be 1',
-    maxValue: 'Maximum title length must be 5',
   },
   bedrooms: {
     invalidFormat: 'Price must be an integer',

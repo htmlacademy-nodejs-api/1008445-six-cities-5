@@ -7,6 +7,7 @@ import { ILogger } from '../../libs/logger/index.js';
 import { CreateOfferDto } from '../offer/index.js';
 import { DEFAULT_OFFER_COUNT, DEFAULT_PREMIUM_OFFER_COUNT } from './offer.constant.js';
 import { UpdateOfferDto } from './dto/update.offer-dto.js';
+import mongoose from 'mongoose';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -22,16 +23,49 @@ export class DefaultOfferService implements IOfferService {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this
-      .offerModel
-      .findById(offerId)
-      .populate([ 'userId' ])
+    const [ offer ] = await this.offerModel
+      .aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(offerId) } },
+        {
+          $lookup: {
+            from: 'reviews',
+            localField: '_id',
+            foreignField: 'offerId',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            rating: {
+              $divide: [
+                {
+                  $reduce: {
+                    input: '$reviews',
+                    initialValue: 0,
+                    in: { $add: ['$$value', '$$this.rating'] },
+                  },
+                },
+                {
+                  $cond: {
+                    if: { $ne: [ { $size: '$reviews' }, 0 ] },
+                    then: { $size: '$reviews' },
+                    else: 1,
+                  },
+                },
+              ],
+            },
+            reviewsCount: { $size: '$reviews' },
+          },
+        },
+        { $unset: 'reviews' },
+      ])
       .exec();
+    return offer;
   }
 
   public async find(limit?: string): Promise<DocumentType<OfferEntity>[]> {
     const offersLimit = limit ? parseInt(limit, 10) : DEFAULT_OFFER_COUNT;
-    return await this.offerModel
+    return this.offerModel
       .aggregate([
         {
           $lookup: {
@@ -49,32 +83,19 @@ export class DefaultOfferService implements IOfferService {
                   $reduce: {
                     input: '$reviews',
                     initialValue: 0,
-                    in: {
-                      $add: ['$$value', '$$this.rating'],
-                    },
+                    in: { $add: ['$$value', '$$this.rating'] },
                   },
                 },
                 {
-                  $cond: [
-                    {
-                      $ne: [
-                        {
-                          $size: '$reviews',
-                        },
-                        0,
-                      ],
-                    },
-                    {
-                      $size: '$reviews',
-                    },
-                    1,
-                  ],
+                  $cond: {
+                    if: { $ne: [ { $size: '$reviews' }, 0 ] },
+                    then: { $size: '$reviews' },
+                    else: 1,
+                  },
                 },
               ],
             },
-            reviewsCount: {
-              $size: '$reviews',
-            },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         { $unset: 'reviews' },
@@ -87,7 +108,7 @@ export class DefaultOfferService implements IOfferService {
   public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .find(
-        { city, isPremium: true },
+        { 'city.name': city, isPremium: true },
         {},
         { limit: DEFAULT_PREMIUM_OFFER_COUNT })
       .populate([ 'userId' ])
