@@ -32,4 +32,7 @@ export class OfferRdo {
 
   @Expose()
   public reviewsCount: number;
+
+  @Expose()
+  public isFavorite: boolean;
 }

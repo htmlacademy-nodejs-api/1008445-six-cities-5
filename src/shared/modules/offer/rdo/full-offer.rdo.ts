@@ -55,4 +55,7 @@ export class FullOfferRdo {
 
   @Expose()
   public reviewsCount: number;
+
+  @Expose()
+  public isFavorite: boolean;
 }

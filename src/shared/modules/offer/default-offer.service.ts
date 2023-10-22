@@ -7,7 +7,7 @@ import { ILogger } from '../../libs/logger/index.js';
 import { CreateOfferDto } from '../offer/index.js';
 import { DEFAULT_OFFER_COUNT, DEFAULT_PREMIUM_OFFER_COUNT } from './offer.constant.js';
 import { UpdateOfferDto } from './dto/update.offer-dto.js';
-import mongoose from 'mongoose';
+import { Types } from 'mongoose';
 
 @injectable()
 export class DefaultOfferService implements IOfferService {
@@ -23,11 +23,10 @@ export class DefaultOfferService implements IOfferService {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    console.log(offerId);
-    console.log(new mongoose.Types.ObjectId(offerId));
+    const offerObjId = new Types.ObjectId(offerId);
     const [ offer ] = await this.offerModel
       .aggregate([
-        { $match: { _id: new mongoose.Types.ObjectId(offerId) } },
+        { $match: { _id: offerObjId } },
         {
           $lookup: {
             from: 'reviews',
@@ -41,7 +40,7 @@ export class DefaultOfferService implements IOfferService {
             from: 'users',
             localField: 'userId',
             foreignField: '_id',
-            as: 'userId',
+            as: 'user',
           },
         },
         {
@@ -65,6 +64,15 @@ export class DefaultOfferService implements IOfferService {
               ],
             },
             reviewsCount: { $size: '$reviews' },
+            isFavorite: {
+              $cond: {
+                if: {
+                  $in: [ offerObjId, '$user.favoritesOffers' ]
+                },
+                then: true,
+                else: false
+              },
+            },
           },
         },
         {
@@ -85,13 +93,14 @@ export class DefaultOfferService implements IOfferService {
             price: 1,
             reviewsCount: 1,
             type: 1,
-            userId: { $arrayElemAt: [ '$userId', 0 ] }
+            userId: { $arrayElemAt: [ '$user', 0 ] },
+            isFavorite: 1
           }
         },
         { $unset: 'reviews' },
       ])
       .exec();
-    console.log(offer);
+
     return offer;
   }
 
@@ -112,7 +121,7 @@ export class DefaultOfferService implements IOfferService {
             from: 'users',
             localField: 'userId',
             foreignField: '_id',
-            as: 'userId',
+            as: 'user',
           },
         },
         {
@@ -136,6 +145,15 @@ export class DefaultOfferService implements IOfferService {
               ],
             },
             reviewsCount: { $size: '$reviews' },
+            isFavorite: {
+              $cond: {
+                if: {
+                  $in: [ '$_id', '$user.favoritesOffers' ]
+                },
+                then: true,
+                else: false
+              },
+            },
           },
         },
         {
@@ -150,7 +168,8 @@ export class DefaultOfferService implements IOfferService {
             price: 1,
             reviewsCount: 1,
             type: 1,
-            userId: { $arrayElemAt: [ '$userId', 0 ] }
+            userId: { $arrayElemAt: [ '$user', 0 ] },
+            isFavorite: 1
           }
         },
         { $unset: 'reviews' },
