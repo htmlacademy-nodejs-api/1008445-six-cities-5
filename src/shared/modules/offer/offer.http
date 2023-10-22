@@ -6,17 +6,23 @@ Content-Type: application/json
 GET http://localhost:5001/offers?limit=100 HTTP/1.1
 Content-Type: application/json
 ### Получить детальную информацию по предложению с заданным offerId
-GET http://localhost:5001/offers/6532955b5da3fa262da1acf2 HTTP/1.1
+GET http://localhost:5001/offers/6533b70719c994f5a07a4b7e HTTP/1.1
 Content-Type: application/json
 ### Создание нового предложения
 POST http://localhost:5001/offers HTTP/1.1
 Content-Type: application/json
 
 {
-  "userId": "6532955b5da3fa262da1acf5",
+  "userId": "6533b70719c994f5a07a4b7c",
   "title": "The Tile House",
   "description": "I am happy to welcome you to my apartment in the city center! Yo!",
-  "city": "Paris",
+  "city": {
+    "name": "Brussels",
+    "location": {
+      "latitude": 50.846557,
+      "longitude": 4.351697
+    }
+  },
   "previewImage": "https://13.design.pages.academy/static/hotel/15.jpg",
   "photos": [
       "https://13.design.pages.academy/static/hotel/16.jpg",
@@ -27,8 +33,7 @@ Content-Type: application/json
   "bedrooms": 1,
   "maxAdults": 1,
   "price": 100,
-  "date": "2023-05-01T12:01:01",
-  "rating": 4,
+  "postDate": "2023-05-01T12:01:01",
   "location": {
     "latitude": 48.85661,
     "longitude": 2.351499
@@ -39,14 +44,21 @@ Content-Type: application/json
     ]
 }
 ### Редактирование предложения
-PATCH http://localhost:5001/offers/652962c756dbfdfd2d5dd168 HTTP/1.1
+PATCH http://localhost:5001/offers/6533a144cb990d6d93c5c345 HTTP/1.1
 Content-Type: application/json
 
 {
-  "userId": "6532955b5da3fa262da1acf5",
+  "userId": "6533a144cb990d6d93c5c343",
   "title": "The Tile House!",
   "description": "I am happy to welcome you to my apartment in the city center! Yo!",
-  "city": "Paris",
+  "postDate": "2023-10-15T09:44:46.438Z",
+  "city": {
+    "name": "Brussels",
+    "location": {
+      "latitude": 50.846557,
+      "longitude": 4.351697
+    }
+  },
   "previewImage": "https://13.design.pages.academy/static/hotel/15.jpg",
   "photos": [
     "https://13.design.pages.academy/static/hotel/16.jpg",
@@ -58,7 +70,6 @@ Content-Type: application/json
   "maxAdults": 1,
   "price": 200,
   "date": "2023-05-01T12:01:01",
-  "rating": 4,
   "location": {
     "latitude": 48.85661,
     "longitude": 2.351499
@@ -72,5 +83,5 @@ Content-Type: application/json
 DELETE http://localhost:5001/offers/652962c756dbfdfd2d5dd168 HTTP/1.1
 Content-Type: application/json
 ### Получить список премиальных предложений города
-GET http://localhost:5001/offers/premium/Paris HTTP/1.1
+GET http://localhost:5001/offers/premium/Brussels HTTP/1.1
 Content-Type: application/json

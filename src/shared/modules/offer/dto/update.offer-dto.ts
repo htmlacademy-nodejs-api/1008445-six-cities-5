@@ -1,5 +1,4 @@
 import { OfferType } from '../../../types/index.js';
-import { City } from '../../../types/city.enum.js';
 import {
   IsArray,
   IsBoolean,
@@ -16,6 +15,7 @@ import { UpdateOfferValidationMessage } from './update-offer.messages.js';
 import { Goods } from '../../../types/goods.enum.js';
 import { Type } from 'class-transformer';
 import { LocationDto } from './offer-location.dto.js';
+import { OfferCityDto } from './offer-city.dto.js';
 
 export class UpdateOfferDto {
   @MinLength(10, { message: UpdateOfferValidationMessage.title.minLength })
@@ -26,11 +26,12 @@ export class UpdateOfferDto {
   @MaxLength(1024, { message: UpdateOfferValidationMessage.description.maxLength })
   public description?: string;
 
-  @IsDateString({}, { message: UpdateOfferValidationMessage.date.invalidFormat })
-  public date?: Date;
+  @IsDateString({}, { message: UpdateOfferValidationMessage.postDate.invalidFormat })
+  public postDate?: Date;
 
-  @IsEnum(City, { message: UpdateOfferValidationMessage.city.invalid })
-  public city?: City;
+  @ValidateNested()
+  @Type(() => OfferCityDto)
+  public city: OfferCityDto;
 
   @MaxLength(256, { message: UpdateOfferValidationMessage.image.maxLength })
   public previewImage?: string;
@@ -40,11 +41,6 @@ export class UpdateOfferDto {
 
   @IsBoolean({ message:  UpdateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium?: boolean;
-
-  @IsInt({ message:  UpdateOfferValidationMessage.rating.invalidFormat })
-  @Min(1, { message:  UpdateOfferValidationMessage.rating.minValue })
-  @Max(5, { message:  UpdateOfferValidationMessage.rating.maxValue })
-  public rating?: number;
 
   @IsEnum(OfferType, { message:  UpdateOfferValidationMessage.type.invalid })
   public type?: OfferType;

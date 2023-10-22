@@ -1,6 +1,7 @@
-import { OfferType } from '../../types/index.js';
-import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
+import { OfferType, TLocation } from '../../types/index.js';
+import { defaultClasses, getModelForClass, modelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
 import { UserEntity } from '../user/index.js';
+import { TCity } from '../../types/city.type.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}
@@ -8,7 +9,10 @@ export interface OfferEntity extends defaultClasses.Base {}
 @modelOptions({
   schemaOptions: {
     collection: 'offers'
-  }
+  },
+  options: {
+    allowMixed: Severity.ALLOW,
+  },
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
@@ -18,11 +22,14 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   )
   public title!: string;
 
+  @prop()
+  public postDate!: Date;
+
   @prop({ trim: true })
   public description!: string;
 
   @prop()
-  public city!: string;
+  public city!: TCity;
 
   @prop()
   public previewImage!: string;
@@ -31,13 +38,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public photos: string[];
 
   @prop()
-  public isFavorite!: boolean;
-
-  @prop()
   public isPremium!: boolean;
-
-  @prop()
-  public rating!: number;
 
   @prop({
     type: () => String,
@@ -73,7 +74,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     required: true,
     default: {}
   })
-  public location!: object;
+  public location!: TLocation;
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

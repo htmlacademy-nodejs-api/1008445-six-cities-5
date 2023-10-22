@@ -14,7 +14,7 @@ export class FullOfferRdo {
   public description: string;
 
   @Expose()
-  public date: Date;
+  public postDate: Date;
 
   @Expose()
   public city: City;
@@ -55,4 +55,7 @@ export class FullOfferRdo {
 
   @Expose()
   public reviewsCount: number;
+
+  @Expose()
+  public isFavorite: boolean;
 }

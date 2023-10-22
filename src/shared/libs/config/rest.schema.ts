@@ -9,13 +9,14 @@ export type TRestSchema = {
   DB_PASSWORD: string;
   DB_NAME: string;
   DB_PORT: string;
+  UPLOAD_DIRECTORY: string;
 }
 
 convict.addFormats(validator);
 
 export const configRestSchema = convict<TRestSchema>({
   PORT: {
-    doc: 'Port for incoming connectios',
+    doc: 'Port for incoming connections',
     format: 'port',
     env: 'PORT',
     default: 4000
@@ -55,5 +56,11 @@ export const configRestSchema = convict<TRestSchema>({
     format: String,
     env: 'DB_NAME',
     default: 'six-cities'
+  },
+  UPLOAD_DIRECTORY: {
+    doc: 'Directory for upload files',
+    format: String,
+    env: 'UPLOAD_DIRECTORY',
+    default: null
   },
 });

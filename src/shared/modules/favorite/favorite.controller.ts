@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
+import { BaseController, DocumentExistsMiddleware, ValidateObjectIdMiddleware, ValidateStatusMiddleware } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
@@ -7,8 +7,6 @@ import { Request, Response } from 'express';
 import { IFavoriteService } from './favorite-service.interface.js';
 import { fillDTO } from '../../helpers/index.js';
 import { IOfferService, OfferRdo } from '../offer/index.js';
-import { ValidateStatusMiddleware } from '../../libs/rest/middleware/validate-status.middleware.js';
-import { ValidateOfferExistMiddleware } from '../../libs/rest/middleware/validate-offer-exist.middleware.js';
 
 @injectable()
 export class FavoriteController extends BaseController {
@@ -31,8 +29,8 @@ export class FavoriteController extends BaseController {
       handler: this.update,
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
-        new ValidateOfferExistMiddleware(this.offerService),
-        new ValidateStatusMiddleware('status')
+        new ValidateStatusMiddleware('status'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
       ]
     });
   }

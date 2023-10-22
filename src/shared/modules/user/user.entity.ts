@@ -1,5 +1,5 @@
 import { TUser } from '../../types/index.js';
-import { defaultClasses, getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
+import { defaultClasses, getModelForClass, modelOptions, prop, Severity } from '@typegoose/typegoose';
 import { createSHA256 } from '../../helpers/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -7,9 +7,13 @@ export interface UserEntity extends defaultClasses.Base {}
 
 @modelOptions({
   schemaOptions: {
-    collection: 'users'
+    collection: 'users',
+  },
+  options: {
+    allowMixed: Severity.ALLOW,
   }
 })
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class UserEntity extends defaultClasses.TimeStamps implements TUser {
   @prop({

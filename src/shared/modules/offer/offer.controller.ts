@@ -16,9 +16,9 @@ import { ParamCity } from './types/param-city.type.js';
 import { RequestQuery } from './types/request-query.type.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update.offer-dto.js';
-import { ValidateCityMiddleware } from '../../libs/rest/middleware/validate-city.middleware.js';
-import { ValidateLimitMiddleware } from '../../libs/rest/middleware/validate-limit.middleware.js';
-import { ValidateOfferExistMiddleware } from '../../libs/rest/middleware/validate-offer-exist.middleware.js';
+import { ValidateCityMiddleware } from '../../libs/rest/index.js';
+import { ValidateLimitMiddleware } from '../../libs/rest/index.js';
+import { DocumentExistsMiddleware } from '../../libs/rest/index.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -47,7 +47,7 @@ export class OfferController extends BaseController {
       handler: this.show,
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
-        new ValidateOfferExistMiddleware(this.offerService)
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
       ]
     });
     this.addRoute({
@@ -56,7 +56,7 @@ export class OfferController extends BaseController {
       handler: this.update,
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
-        new ValidateOfferExistMiddleware(this.offerService),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto)
       ]
     });
@@ -66,7 +66,7 @@ export class OfferController extends BaseController {
       handler: this.delete,
       middlewares: [
         new ValidateObjectIdMiddleware('offerId'),
-        new ValidateOfferExistMiddleware(this.offerService),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
       ]
     });
     this.addRoute({

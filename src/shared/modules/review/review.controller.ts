@@ -1,5 +1,10 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, ValidateDtoMiddleware, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
+import {
+  BaseController,
+  DocumentExistsMiddleware,
+  ValidateDtoMiddleware,
+  ValidateObjectIdMiddleware
+} from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
@@ -26,7 +31,10 @@ export class ReviewController extends BaseController {
       path: '/:offerId',
       method: HttpMethod.Get,
       handler: this.index,
-      middlewares: [ new ValidateObjectIdMiddleware('offerId') ]
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
     });
     this.addRoute({
       path: '/',
