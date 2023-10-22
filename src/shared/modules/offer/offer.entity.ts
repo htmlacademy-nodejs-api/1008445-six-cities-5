@@ -1,5 +1,5 @@
 import { OfferType, TLocation } from '../../types/index.js';
-import { defaultClasses, getModelForClass, modelOptions, prop, Ref } from '@typegoose/typegoose';
+import { defaultClasses, getModelForClass, modelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
 import { UserEntity } from '../user/index.js';
 import { TCity } from '../../types/city.type.js';
 
@@ -9,7 +9,10 @@ export interface OfferEntity extends defaultClasses.Base {}
 @modelOptions({
   schemaOptions: {
     collection: 'offers'
-  }
+  },
+  options: {
+    allowMixed: Severity.ALLOW,
+  },
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
