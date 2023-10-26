@@ -12,8 +12,8 @@ export class DocumentExistsMiddleware implements IMiddleware {
   ) {}
 
   public async execute({ params }: Request, _res: Response, next: NextFunction): Promise<void> {
-    const documentId = params[this.param];
-    if (! await this.service.exists(documentId)) {
+    const documentId = params[ this.param ];
+    if (!await this.service.exists(documentId)) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `${ this.entityName } with ${ documentId } not found.`,

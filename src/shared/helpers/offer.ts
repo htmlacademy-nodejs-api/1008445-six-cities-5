@@ -1,7 +1,7 @@
 import { TOffer, OfferType, TUser } from '../types/index.js';
 import { City } from '../types/city.enum.js';
 import { Goods } from '../types/goods.enum.js';
-import { Cities } from '../../const.js';
+import { CITIES } from '../../const.js';
 
 export function createOffer(offerData: string): TOffer {
   const [
@@ -38,7 +38,7 @@ export function createOffer(offerData: string): TOffer {
     title,
     description,
     postDate: new Date(postDate),
-    city: Cities[ city as City ],
+    city: CITIES[ city as City ],
     previewImage,
     photos: photos.split(';'),
     isPremium: Boolean(isPremium),

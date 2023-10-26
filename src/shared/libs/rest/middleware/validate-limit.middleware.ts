@@ -2,7 +2,12 @@ import { IMiddleware } from './middleware.interface.js';
 import { NextFunction, Request, Response } from 'express';
 import { HttpError } from '../errors/index.js';
 import { StatusCodes } from 'http-status-codes';
-import { isNumeric } from '../../../../utils.js';
+
+function isValidLimit(limit: unknown) {
+  return typeof limit === 'string' &&
+    !isNaN(Number(limit)) &&
+    parseInt(limit, 10) > 0;
+}
 
 export class ValidateLimitMiddleware implements IMiddleware {
   constructor(private param: string) {}
@@ -12,8 +17,7 @@ export class ValidateLimitMiddleware implements IMiddleware {
     if (!limit) {
       return next();
     }
-    const offerLimit = limit as string;
-    if (isNumeric(offerLimit) && parseInt(offerLimit, 10) > 0) {
+    if (isValidLimit(limit)) {
       return next();
     }
 

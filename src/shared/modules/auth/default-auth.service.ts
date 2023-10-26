@@ -16,7 +16,7 @@ export class DefaultAuthService implements IAuthService {
   constructor(
     @inject(Component.Logger) private readonly logger: ILogger,
     @inject(Component.Config) private readonly config: Config<TRestSchema>,
-    @inject(Component.UserService) private readonly userSerivce: IUserService,
+    @inject(Component.UserService) private readonly userService: IUserService,
   ) {}
 
   public async authenticate(user: UserEntity): Promise<string> {
@@ -36,7 +36,7 @@ export class DefaultAuthService implements IAuthService {
   }
 
   public async verify(dto: LoginUserDto): Promise<UserEntity> {
-    const user = await this.userSerivce.findByEmail(dto.email);
+    const user = await this.userService.findByEmail(dto.email);
     if (!user) {
       this.logger.warn(`User with ${ dto.email } not found`);
       throw new UserNotFoundException();

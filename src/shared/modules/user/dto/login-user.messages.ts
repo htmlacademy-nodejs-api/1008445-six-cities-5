@@ -1,8 +1,8 @@
 export const LoginUserMessages = {
-  email: {
-    invalidFormat: 'email must be a valid address'
+  EMAIL: {
+    INVALID_FORMAT: 'email must be a valid address'
   },
-  password: {
-    invalidFormat: 'password is required',
+  PASSWORD: {
+    INVALID_FORMAT: 'password is required',
   },
 } as const;

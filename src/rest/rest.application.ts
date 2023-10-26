@@ -37,10 +37,6 @@ export class RestApplication {
   private async initMiddleware() {
     const authMiddleware = new ParseTokenMiddleware(this.config.get('JWT_SECRET'));
     this.server.use(express.json());
-    this.server.use(
-      '/upload',
-      express.static(this.config.get('UPLOAD_DIRECTORY'))
-    );
     this.server.use(authMiddleware.execute.bind(authMiddleware));
   }
 

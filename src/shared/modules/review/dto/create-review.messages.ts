@@ -1,17 +1,17 @@
-export const CreateReviewValidationMessage = {
-  comment: {
-    minLength: 'Minimum title length must be 5',
-    maxLength: 'Maximum title length must be 1024',
+export const CREATE_REVIEW_VALIDATION_MESSAGE = {
+  COMMENT: {
+    MIN_LENGTH: 'Minimum title length must be 5',
+    MAX_LENGTH: 'Maximum title length must be 1024',
   },
-  rating: {
-    invalidFormat: 'Price must be an integer',
-    minValue: 'Minimum title length must be 1',
-    maxValue: 'Maximum title length must be 5',
+  RATING: {
+    INVALID_FORMAT: 'Price must be an integer',
+    MIN_VALUE: 'Minimum title length must be 1',
+    MAX_VALUE: 'Maximum title length must be 5',
   },
-  userId: {
-    invalidId: 'userId field must be a valid id',
+  USER_ID: {
+    INVALID_ID: 'userId field must be a valid id',
   },
-  offerId: {
-    invalidId: 'offerId field must be a valid id',
+  OFFER_ID: {
+    INVALID_ID: 'offerId field must be a valid id',
   },
 } as const;

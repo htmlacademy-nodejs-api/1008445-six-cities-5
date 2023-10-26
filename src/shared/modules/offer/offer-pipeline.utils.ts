@@ -1,5 +1,6 @@
 import { PipelineStage, Types } from 'mongoose';
 import { SortType } from '../../types/index.js';
+import { DEFAULT_OFFER_COUNT } from './offer.constant.js';
 
 const getMatchOfferId = (offerId: string) => (
   { $match: { _id: new Types.ObjectId(offerId) } }
@@ -89,7 +90,7 @@ const project = ({
 });
 const getLimitRestriction = (offersLimit: number) => ({ $limit: offersLimit });
 const sort = ({ $sort: { createdAt: SortType.Down } });
-export const getFullOfferPipeline = (currentUserId: string | null, offerId: string) :PipelineStage[] =>
+export const getFullOfferPipeline = (offerId: string, currentUserId?: string) :PipelineStage[] =>
   currentUserId
     ? [
       getMatchOfferId(offerId),
@@ -111,8 +112,9 @@ export const getFullOfferPipeline = (currentUserId: string | null, offerId: stri
       unsetReviews,
       project
     ];
-export const getOfferPipeline = (currentUserId: string | null, offersLimit: number) :PipelineStage[] =>
-  currentUserId
+export const getOfferPipeline = (currentUserId?: string, limit?: string) :PipelineStage[] => {
+  const offersLimit = limit ? parseInt(limit, 10) : DEFAULT_OFFER_COUNT;
+  return currentUserId
     ? [
       lookupReviews,
       lookupOfferUser,
@@ -135,3 +137,4 @@ export const getOfferPipeline = (currentUserId: string | null, offersLimit: numb
       sort,
       project
     ];
+};

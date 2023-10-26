@@ -6,24 +6,24 @@ export interface IReviewDocument extends TReview, Document {
 }
 
 const reviewSchema = new Schema({
-  comment: {
-    type: String,
+  COMMENT: {
+    TYPE: String,
     required: true,
-    minLength: [ 5, 'Min length for comment is 5' ],
-    maxLength: [ 1024, 'Max length for comment is 1024']
+    MIN_LENGTH: [ 5, 'Min length for comment is 5' ],
+    MAX_LENGTH: [ 1024, 'Max length for comment is 1024']
   },
-  rating: {
-    type: Number,
+  RATING: {
+    TYPE: Number,
     required: true,
-    minLength: [ 1, 'Min length for rating is 1' ],
-    maxLength: [ 5, 'Max length for rating is 5']
+    MIN_LENGTH: [ 1, 'Min length for rating is 1' ],
+    MAX_LENGTH: [ 5, 'Max length for rating is 5']
   },
-  userId: {
-    type: String,
+  USER_ID: {
+    TYPE: String,
     required: true,
   },
-  offerId: {
-    type: String,
+  OFFER_ID: {
+    TYPE: String,
     required: true,
   },
 }, { timestamps: true });

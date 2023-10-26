@@ -15,16 +15,16 @@ import { FullOfferRdo } from './rdo/full-offer.rdo.js';
 import { CreateOfferRequest } from './types/create-offer-request-type.js';
 import { UpdateOfferRequest } from './update-offer-request-type.js';
 import { OfferRdo } from './rdo/offer.rdo.js';
-import { City } from '../../types/city.enum.js';
 import { ParamOfferId } from './types/param-offer-id.type.js';
 import { ParamCity } from './types/param-city.type.js';
-import { RequestQuery } from './types/request-query.type.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update.offer-dto.js';
 import { ValidateCityMiddleware } from '../../libs/rest/index.js';
 import { ValidateLimitMiddleware } from '../../libs/rest/index.js';
 import { DocumentExistsMiddleware } from '../../libs/rest/index.js';
 import { IReviewService } from '../review/review-service.interface.js';
+import { City } from '../../types/city.enum.js';
+import { RequestQuery } from './types/request-query.type.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -97,8 +97,7 @@ export class OfferController extends BaseController {
     this.ok(res, responseData);
   }
 
-  public async show({ params, tokenPayload }: Request<ParamOfferId>, res: Response): Promise<void> {
-    const { offerId} = params;
+  public async show({ params: { offerId }, tokenPayload }: Request<ParamOfferId>, res: Response): Promise<void> {
     const userId = tokenPayload ? tokenPayload.id : null;
     const offer = await this.offerService.findById(userId, offerId);
     const responseData = fillDTO(FullOfferRdo, offer);
@@ -112,23 +111,19 @@ export class OfferController extends BaseController {
     this.created(res, fillDTO(FullOfferRdo, offer));
   }
 
-  public async update({ body, params }: UpdateOfferRequest, res: Response): Promise<void> {
-    const { offerId } = params;
+  public async update({ body, params: { offerId } }: UpdateOfferRequest, res: Response): Promise<void> {
     const offer = await this.offerService.updateById(offerId, body);
     this.ok(res, fillDTO(FullOfferRdo, offer));
   }
 
-  public async delete({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
-    const { offerId } = params;
+  public async delete({ params: { offerId } }: Request<ParamOfferId>, res: Response): Promise<void> {
     const offer = await this.offerService.deleteById(offerId);
     await this.reviewService.deleteByOfferId(offerId);
     this.noContent(res, offer);
   }
 
-  public async getPremiumByCity({ params }: Request<ParamCity>, res: Response): Promise<void> {
-    const { city } = params;
-    const currentCity = city as City;
-    const offers = await this.offerService.findPremiumByCity(currentCity);
+  public async getPremiumByCity({ params: { city } }: Request<ParamCity>, res: Response): Promise<void> {
+    const offers = await this.offerService.findPremiumByCity(city as City);
     this.ok(res, fillDTO(FullOfferRdo, offers));
   }
 }
