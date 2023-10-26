@@ -1,5 +1,10 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, ValidateDtoMiddleware, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
+import {
+  BaseController,
+  PrivateRouteMiddleware,
+  ValidateDtoMiddleware,
+  ValidateObjectIdMiddleware
+} from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
@@ -19,12 +24,14 @@ import { UpdateOfferDto } from './dto/update.offer-dto.js';
 import { ValidateCityMiddleware } from '../../libs/rest/index.js';
 import { ValidateLimitMiddleware } from '../../libs/rest/index.js';
 import { DocumentExistsMiddleware } from '../../libs/rest/index.js';
+import { IReviewService } from '../review/review-service.interface.js';
 
 @injectable()
 export class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: ILogger,
-    @inject(Component.OfferService) private readonly offerService: IOfferService
+    @inject(Component.OfferService) private readonly offerService: IOfferService,
+    @inject(Component.ReviewService) private readonly reviewService: IReviewService,
   ) {
     super(logger);
 
@@ -39,7 +46,10 @@ export class OfferController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [ new ValidateDtoMiddleware(CreateOfferDto) ]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto)
+      ]
     });
     this.addRoute({
       path: '/:offerId',
@@ -55,6 +65,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto)
@@ -65,6 +76,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
       ]
@@ -77,39 +89,39 @@ export class OfferController extends BaseController {
     });
   }
 
-  public async index({ query }: Request<unknown, unknown, unknown, RequestQuery>, res: Response): Promise<void> {
+  public async index({ query, tokenPayload }: Request<unknown, unknown, unknown, RequestQuery>, res: Response): Promise<void> {
     const { limit } = query;
-    const offers = await this.offerService.find(limit);
+    const userId = tokenPayload ? tokenPayload.id : null;
+    const offers = await this.offerService.find(userId, limit);
     const responseData = fillDTO(OfferRdo, offers);
     this.ok(res, responseData);
   }
 
-  public async show({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+  public async show({ params, tokenPayload }: Request<ParamOfferId>, res: Response): Promise<void> {
     const { offerId} = params;
-    const offer = await this.offerService.findById(offerId);
+    const userId = tokenPayload ? tokenPayload.id : null;
+    const offer = await this.offerService.findById(userId, offerId);
     const responseData = fillDTO(FullOfferRdo, offer);
     this.ok(res, responseData);
   }
 
-  public async create({ body }: CreateOfferRequest, res: Response): Promise<void> {
-    //TODO get header token
-    const { id } = await this.offerService.create(body);
-    const offer = await this.offerService.findById(id);
+  public async create({ body, tokenPayload }: CreateOfferRequest, res: Response): Promise<void> {
+    const userId = tokenPayload.id;
+    const { id } = await this.offerService.create({ ...body, userId });
+    const offer = await this.offerService.findById(userId,id);
     this.created(res, fillDTO(FullOfferRdo, offer));
   }
 
   public async update({ body, params }: UpdateOfferRequest, res: Response): Promise<void> {
-    //TODO get header token
     const { offerId } = params;
     const offer = await this.offerService.updateById(offerId, body);
     this.ok(res, fillDTO(FullOfferRdo, offer));
   }
 
   public async delete({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
-    //TODO get header token
     const { offerId } = params;
     const offer = await this.offerService.deleteById(offerId);
-    //TODO delete reviews
+    await this.reviewService.deleteByOfferId(offerId);
     this.noContent(res, offer);
   }
 

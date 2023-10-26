@@ -2,7 +2,6 @@ import { CreateReviewValidationMessage } from './create-review.messages.js';
 import { IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
 
 export class CreateReviewDto {
-  @IsMongoId({ message: CreateReviewValidationMessage.userId.invalidId })
   public userId: string;
 
   @IsMongoId({ message: CreateReviewValidationMessage.offerId.invalidId })

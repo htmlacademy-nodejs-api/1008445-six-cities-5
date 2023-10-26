@@ -14,9 +14,7 @@ export class DefaultFavoriteService implements IFavoriteService {
     @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>,
   ) {}
 
-  public async addOrRemoveOfferFavoriteStatus(offerId: string, status: string) {
-    //TODO get userId from token
-    const userId = '6533b70719c994f5a07a4b89';
+  public async addOrRemoveOfferFavoriteStatus(userId: string, offerId: string, status: string) {
     const isSetStatus = status === '1';
     await this.userModel
       .updateOne(
@@ -33,9 +31,7 @@ export class DefaultFavoriteService implements IFavoriteService {
       .exec();
   }
 
-  public async findFavorites(): Promise<DocumentType<OfferEntity>[]> {
-    //TODO get userId from token
-    const userId = '6533b70719c994f5a07a4b89';
+  public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
     const { favoriteOffers} = await this.userModel.findById(userId).exec() as UserEntity;
     return this.offerModel.find({ '_id': { $in: favoriteOffers } });
   }

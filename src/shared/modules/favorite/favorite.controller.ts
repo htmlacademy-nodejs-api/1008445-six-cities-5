@@ -1,5 +1,11 @@
 import { inject, injectable } from 'inversify';
-import { BaseController, DocumentExistsMiddleware, ValidateObjectIdMiddleware, ValidateStatusMiddleware } from '../../libs/rest/index.js';
+import {
+  BaseController,
+  DocumentExistsMiddleware,
+  PrivateRouteMiddleware,
+  ValidateObjectIdMiddleware,
+  ValidateStatusMiddleware
+} from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
@@ -21,13 +27,15 @@ export class FavoriteController extends BaseController {
     this.addRoute({
       path: '/',
       method: HttpMethod.Get,
-      handler: this.index
+      handler: this.index,
+      middlewares: [ new PrivateRouteMiddleware() ]
     });
     this.addRoute({
       path: '/:offerId/:status',
       method: HttpMethod.Post,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateStatusMiddleware('status'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
@@ -35,17 +43,16 @@ export class FavoriteController extends BaseController {
     });
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
-    //TODO get header token
-    const offers = await this.favoriteService.findFavorites();
+  public async index({ tokenPayload }: Request, res: Response): Promise<void> {
+    const offers = await this.favoriteService.findFavorites(tokenPayload.id);
     const responseData = fillDTO(OfferRdo, offers);
     this.ok(res, responseData);
   }
 
-  public async update(req: Request, res: Response): Promise<void> {
-    //TODO get header token
-    const { offerId, status } = req.params;
-    const offer = await this.favoriteService.addOrRemoveOfferFavoriteStatus(offerId, status);
+  public async update({ tokenPayload, params }: Request, res: Response): Promise<void> {
+    const { offerId, status } = params;
+    const offer =
+      await this.favoriteService.addOrRemoveOfferFavoriteStatus(tokenPayload.id, offerId, status);
     const responseData = fillDTO(OfferRdo, offer);
     this.ok(res, responseData);
   }

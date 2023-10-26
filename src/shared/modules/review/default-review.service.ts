@@ -13,9 +13,9 @@ export class DefaultReviewService implements IReviewService {
     @inject(Component.ReviewModel) private readonly reviewModel: types.ModelType<ReviewEntity>,
   ) {}
 
-  public async create(offerId: string, dto: CreateReviewDto): Promise<DocumentType<ReviewEntity>> {
+  public async create(dto: CreateReviewDto): Promise<DocumentType<ReviewEntity>> {
     const review = await this.reviewModel.create(dto);
-    this.logger.info(`New review of offer '${ offerId }' created`);
+    this.logger.info(`New review of offer '${ dto.offerId }' created`);
     return review;
   }
 
@@ -30,6 +30,14 @@ export class DefaultReviewService implements IReviewService {
     return this
       .reviewModel
       .findById(reviewId)
+      .populate([ 'userId' ])
+      .exec();
+  }
+
+  deleteByOfferId(offerId: string) {
+    return this
+      .reviewModel
+      .deleteMany({ offerId })
       .populate([ 'userId' ])
       .exec();
   }

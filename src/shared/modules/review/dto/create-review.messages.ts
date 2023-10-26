@@ -3,9 +3,6 @@ export const CreateReviewValidationMessage = {
     minLength: 'Minimum title length must be 5',
     maxLength: 'Maximum title length must be 1024',
   },
-  date: {
-    invalidFormat: 'postDate must be a valid ISO date',
-  },
   rating: {
     invalidFormat: 'Price must be an integer',
     minValue: 'Minimum title length must be 1',

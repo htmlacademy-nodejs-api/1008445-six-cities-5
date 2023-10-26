@@ -13,4 +13,5 @@ export * from './middleware/validate-city.middleware.js';
 export * from './middleware/validate-limit.middleware.js';
 export * from './types/document-exist.interface.js';
 export * from './middleware/validate-status.middleware.js';
-export * from './middleware/upload-file.middleware.js';
+export * from './middleware/parse-token.middleware.js';
+export * from './middleware/private-route.middleware.js';

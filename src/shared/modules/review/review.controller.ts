@@ -3,7 +3,8 @@ import {
   BaseController,
   DocumentExistsMiddleware,
   ValidateDtoMiddleware,
-  ValidateObjectIdMiddleware
+  ValidateObjectIdMiddleware,
+  PrivateRouteMiddleware
 } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
@@ -40,7 +41,10 @@ export class ReviewController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [ new ValidateDtoMiddleware(CreateReviewDto) ]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateReviewDto)
+      ]
     });
   }
 
@@ -51,9 +55,8 @@ export class ReviewController extends BaseController {
     this.ok(res, responseData);
   }
 
-  public async create({ body }: CreateReviewRequest, res: Response): Promise<void> {
-    //TODO get header token
-    const { id } = await this.reviewService.create(body.offerId, body);
+  public async create({ body, tokenPayload }: CreateReviewRequest, res: Response): Promise<void> {
+    const { id } = await this.reviewService.create({ ...body, userId: tokenPayload.id });
     await this.offerService.incReviewsCount(body.offerId);
     const review = await this.reviewService.findById(id);
     this.created(res, fillDTO(ReviewRdo, review));

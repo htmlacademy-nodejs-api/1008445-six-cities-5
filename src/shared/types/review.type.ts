@@ -1,7 +1,7 @@
 import { TUser } from './user.type.js';
 
 export type TReview = {
-  date: string;
+  postDate: Date;
   user: TUser;
   comment: string;
   rating: number;

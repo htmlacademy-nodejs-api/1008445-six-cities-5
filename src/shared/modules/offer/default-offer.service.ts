@@ -22,8 +22,9 @@ export class DefaultOfferService implements IOfferService {
     return offer;
   }
 
-  public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async findById(authUserId: string, offerId: string): Promise<DocumentType<OfferEntity> | null> {
     const offerObjId = new Types.ObjectId(offerId);
+    const authUserObjId = new Types.ObjectId(authUserId);
     const [ offer ] = await this.offerModel
       .aggregate([
         { $match: { _id: offerObjId } },
@@ -44,6 +45,15 @@ export class DefaultOfferService implements IOfferService {
           },
         },
         {
+          $lookup: {
+            from: 'users',
+            pipeline: [
+              { $match: { _id: authUserObjId } }
+            ],
+            as: 'authUser'
+          }
+        },
+        {
           $addFields: {
             rating: {
               $divide: [
@@ -64,17 +74,14 @@ export class DefaultOfferService implements IOfferService {
               ],
             },
             reviewsCount: { $size: '$reviews' },
-            isFavorite: {
-              $cond: {
-                if: {
-                  $in: [ offerObjId, '$user.favoritesOffers' ]
-                },
-                then: true,
-                else: false
-              },
-            },
           },
         },
+        {
+          $addFields: {
+            favorites: '$authUser.favoriteOffers'
+          },
+        },
+        { $unwind: '$favorites' },
         {
           $project: {
             id: { $toString: '$_id' },
@@ -94,7 +101,7 @@ export class DefaultOfferService implements IOfferService {
             reviewsCount: 1,
             type: 1,
             userId: { $arrayElemAt: [ '$user', 0 ] },
-            isFavorite: 1
+            isFavorite: { $in: [ { $toString: '$_id' }, '$favorites'] }
           }
         },
         { $unset: 'reviews' },
@@ -104,7 +111,7 @@ export class DefaultOfferService implements IOfferService {
     return offer;
   }
 
-  public async find(limit?: string): Promise<DocumentType<OfferEntity>[]> {
+  public async find(authUserId: string, limit?: string): Promise<DocumentType<OfferEntity>[]> {
     const offersLimit = limit ? parseInt(limit, 10) : DEFAULT_OFFER_COUNT;
     return this.offerModel
       .aggregate([
@@ -125,6 +132,14 @@ export class DefaultOfferService implements IOfferService {
           },
         },
         {
+          $lookup: {
+            from: 'users',
+            localField: authUserId,
+            foreignField: '_id',
+            as: 'authUser',
+          },
+        },
+        {
           $addFields: {
             rating: {
               $divide: [
@@ -148,7 +163,7 @@ export class DefaultOfferService implements IOfferService {
             isFavorite: {
               $cond: {
                 if: {
-                  $in: [ '$_id', '$user.favoritesOffers' ]
+                  $in: [ '$_id', '$authUser.favoritesOffers' ]
                 },
                 then: true,
                 else: false
@@ -185,6 +200,7 @@ export class DefaultOfferService implements IOfferService {
         { 'city.name': city, isPremium: true },
         {},
         { limit: DEFAULT_PREMIUM_OFFER_COUNT })
+      .sort({ createdAt: SortType.Down })
       .populate([ 'userId' ])
       .exec();
   }

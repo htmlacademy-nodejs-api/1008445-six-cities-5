@@ -334,27 +334,6 @@ paths:
         "401":
           description: Доступ запрещен.
 
-  /logout:
-    delete:
-      tags:
-        - users
-      parameters:
-        [ {
-          in: "header",
-          name: "x-token",
-          required: true,
-          schema: {
-            type: "string",
-          },
-          description: Авторизационный токен пользователя
-        } ]
-      summary: Завершает сеанс работы
-      description: Сервис предоставляет ресурс для завершения пользовательского сеанса.
-
-      responses:
-        "204":
-          description: Сеанс завершен.
-
   /favorite:
     get:
       tags:
