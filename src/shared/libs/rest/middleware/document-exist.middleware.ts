@@ -8,12 +8,12 @@ export class DocumentExistsMiddleware implements IMiddleware {
   constructor(
     private readonly service: IDocumentExists,
     private readonly entityName: string,
-    private readonly paramName: string,
+    private readonly param: string,
   ) {}
 
   public async execute({ params }: Request, _res: Response, next: NextFunction): Promise<void> {
-    const documentId = params[this.paramName];
-    if (! await this.service.exists(documentId)) {
+    const documentId = params[ this.param ];
+    if (!await this.service.exists(documentId)) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `${ this.entityName } with ${ documentId } not found.`,

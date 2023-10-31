@@ -10,7 +10,7 @@ import { DEFAULT_CONTENT_TYPE } from '../../../../const.js';
 
 @injectable()
 export abstract class BaseController implements IController {
-  readonly router: Router;
+  public readonly router: Router;
   constructor(protected readonly logger:ILogger) {
     this.router = Router();
   }

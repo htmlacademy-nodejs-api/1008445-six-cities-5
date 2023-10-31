@@ -12,7 +12,7 @@ export class ReviewRdo {
   public rating: number;
 
   @Expose({ name: 'createdAt' })
-  public date: string;
+  public postDate: string;
 
   @Expose({ name: 'userId' })
   @Type(() => UserRdo)

@@ -1,54 +1,51 @@
-export const CreateOfferValidationMessage = {
-  title: {
-    minLength: 'Minimum title length must be 10',
-    maxLength: 'Maximum title length must be 100',
+export const CREATE_OFFER_VALIDATION_MESSAGE = {
+  TITLE: {
+    MIN_LENGTH: 'Minimum title length must be 10',
+    MAX_LENGTH: 'Maximum title length must be 100',
   },
-  description: {
-    minLength: 'Minimum description length must be 20',
-    maxLength: 'Maximum description length must be 1024',
+  DESCRIPTION: {
+    MIN_LENGTH: 'Minimum description length must be 20',
+    MAX_LENGTH: 'Maximum description length must be 1024',
   },
-  postDate: {
-    invalidFormat: 'postDate must be a valid ISO date',
+  POST_DATE: {
+    INVALID_FORMAT: 'postDate must be a valid ISO date',
   },
-  image: {
-    maxLength: 'Too short for field «image»',
+  IMAGE: {
+    MAX_LENGTH: 'Too short for field «image»',
   },
-  bedrooms: {
-    invalidFormat: 'Price must be an integer',
-    minValue: 'Minimum title length must be 1',
-    maxValue: 'Maximum title length must be 8',
+  BEDROOMS: {
+    INVALID_FORMAT: 'Price must be an integer',
+    MIN_VALUE: 'Minimum title length must be 1',
+    MAX_VALUE: 'Maximum title length must be 8',
   },
-  maxAdults: {
-    invalidFormat: 'Price must be an integer',
-    minValue: 'Minimum title length must be 1',
-    maxValue: 'Maximum title length must be 10',
+  MAX_ADULTS: {
+    INVALID_FORMAT: 'Price must be an integer',
+    MIN_VALUE: 'Minimum title length must be 1',
+    MAX_VALUE: 'Maximum title length must be 10',
   },
-  city: {
-    invalid: 'type must be Paris, Cologne, Brussels, Amsterdam, Hamburg or Dusseldorf',
+  CITY: {
+    INVALID: 'type must be Paris, Cologne, Brussels, Amsterdam, Hamburg or Dusseldorf',
   },
-  type: {
-    invalid: 'type must be Apartment, House, Room or Hotel',
+  TYPE: {
+    INVALID: 'type must be Apartment, House, Room or Hotel',
   },
-  goods: {
-    invalidFormat: 'Field goods must be an array',
-    invalid: 'goods must be Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels or Fridge',
+  GOODS: {
+    INVALID_FORMAT: 'Field goods must be an array',
+    INVALID: 'goods must be Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels or Fridge',
   },
-  price: {
-    invalidFormat: 'Price must be an integer',
-    minValue: 'Minimum price is 100',
-    maxValue: 'Maximum price is 100000',
+  PRICE: {
+    INVALID_FORMAT: 'Price must be an integer',
+    MIN_VALUE: 'Minimum price is 100',
+    MAX_VALUE: 'Maximum price is 100000',
   },
-  isPremium: {
-    invalidFormat: 'Premium value must be a boolean',
+  IS_PREMIUM: {
+    INVALID_FORMAT: 'Premium value must be a boolean',
   },
-  photos: {
-    invalidFormat: 'Field photos must be an array',
-    maxLength: 'Too short for field «image»',
+  PHOTOS: {
+    INVALID_FORMAT: 'Field photos must be an array',
+    MAX_LENGTH: 'Too short for field «image»',
   },
-  userId: {
-    invalidId: 'userId field must be a valid id',
-  },
-  location: {
-    invalidFormat: 'Latitude or longitude must be a coordinate',
+  LOCATION: {
+    INVALID_FORMAT: 'Latitude or longitude must be a coordinate',
   },
 } as const;

@@ -1,6 +1,6 @@
 import { TCity } from './shared/types/city.type.js';
 import { City } from './shared/types/city.enum.js';
-export const GeneratorValues = {
+export const GENERATOR_VALUES = {
   MIN_PRICE: 100,
   MAX_PRICE: 1000,
   MIN_BEDROOMS: 1,
@@ -10,7 +10,7 @@ export const GeneratorValues = {
   FIRST_WEEK_DAY: 1,
   LAST_WEEK_DAY: 7,
 };
-export const Cities: Record<City, TCity> = {
+export const CITIES: Record<City, TCity> = {
   [ City.Paris ]: {
     name: City.Paris,
     location: {

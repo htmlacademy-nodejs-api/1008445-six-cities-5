@@ -13,7 +13,7 @@ export interface ReviewEntity extends defaultClasses.Base {}
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class ReviewEntity extends defaultClasses.TimeStamps {
   @prop()
-  public publishedDate: Date;
+  public postDate: Date;
 
   @prop({
     ref: UserEntity,
@@ -35,10 +35,6 @@ export class ReviewEntity extends defaultClasses.TimeStamps {
 
   @prop({ default: 0 })
   public rating!: number;
-
-  /*public setOfferId(offerId: string) {
-    this.offerId = offerId;
-  }*/
 }
 
 export const ReviewModel = getModelForClass(ReviewEntity);

@@ -1,21 +1,21 @@
-import { CreateUserMessages } from './create-user.messages.js';
+import { CREATE_USER_VALIDATION_MESSAGES } from './create-user.messages.js';
 import { IsBoolean, IsEmail, IsString, Length } from 'class-validator';
 
 export class CreateUserDto {
-  @IsEmail({}, { message: CreateUserMessages.email.invalidFormat })
+  @IsEmail({}, { message: CREATE_USER_VALIDATION_MESSAGES.EMAIL.INVALID_FORMAT })
   public email: string;
 
-  @IsString({ message: CreateUserMessages.avatarUrl.invalidFormat })
+  @IsString({ message: CREATE_USER_VALIDATION_MESSAGES.AVATAR_URL.INVALID_FORMAT })
   public avatarUrl: string;
 
-  @IsString({ message: CreateUserMessages.name.invalidFormat })
-  @Length(1, 15, { message: CreateUserMessages.name.lengthField })
+  @IsString({ message: CREATE_USER_VALIDATION_MESSAGES.NAME.INVALID_FORMAT })
+  @Length(1, 15, { message: CREATE_USER_VALIDATION_MESSAGES.NAME.LENGTH_FIELD })
   public name: string;
 
-  @IsString({ message: CreateUserMessages.password.invalidFormat })
-  @Length(6, 12, { message: CreateUserMessages.password.lengthField })
+  @IsString({ message: CREATE_USER_VALIDATION_MESSAGES.PASSWORD.INVALID_FORMAT })
+  @Length(6, 12, { message: CREATE_USER_VALIDATION_MESSAGES.PASSWORD.LENGTH_FIELD })
   public password: string;
 
-  @IsBoolean({ message: CreateUserMessages.isPro.invalidFormat })
+  @IsBoolean({ message: CREATE_USER_VALIDATION_MESSAGES.IS_PRO.INVALID_FORMAT })
   public isPro: boolean;
 }

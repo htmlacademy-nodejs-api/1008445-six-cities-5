@@ -9,7 +9,7 @@ export type TRestSchema = {
   DB_PASSWORD: string;
   DB_NAME: string;
   DB_PORT: string;
-  UPLOAD_DIRECTORY: string;
+  JWT_SECRET: string;
 }
 
 convict.addFormats(validator);
@@ -57,10 +57,10 @@ export const configRestSchema = convict<TRestSchema>({
     env: 'DB_NAME',
     default: 'six-cities'
   },
-  UPLOAD_DIRECTORY: {
-    doc: 'Directory for upload files',
+  JWT_SECRET: {
+    doc: 'Secret for sign JWT',
     format: String,
-    env: 'UPLOAD_DIRECTORY',
+    env: 'JWT_SECRET',
     default: null
   },
 });

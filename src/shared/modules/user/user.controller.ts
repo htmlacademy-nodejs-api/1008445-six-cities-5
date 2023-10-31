@@ -2,9 +2,7 @@ import { inject, injectable } from 'inversify';
 import {
   BaseController,
   HttpError,
-  UploadFileMiddleware,
   ValidateDtoMiddleware,
-  ValidateObjectIdMiddleware
 } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
@@ -19,6 +17,8 @@ import { CreateUserRequest } from './create-user-request-type.js';
 import { LoginUserRequest } from './login-user-request-type.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { LoginUserDto } from './dto/login-user.dto.js';
+import { IAuthService } from '../auth/index.js';
+import { LoggedUserRdo } from './rdo/logged-user.rdo.js';
 
 @injectable()
 export class UserController extends BaseController {
@@ -26,6 +26,7 @@ export class UserController extends BaseController {
     @inject(Component.Logger) protected readonly logger: ILogger,
     @inject(Component.UserService) private readonly userService: IUserService,
     @inject(Component.Config) private readonly configService: IConfig<TRestSchema>,
+    @inject(Component.AuthService) private readonly authService: IAuthService,
   ) {
     super(logger);
 
@@ -43,57 +44,38 @@ export class UserController extends BaseController {
       middlewares: [ new ValidateDtoMiddleware(LoginUserDto) ]
     });
     this.addRoute({
-      path: '/logout',
-      method: HttpMethod.Delete,
-      handler: this.logout
-    });
-    this.addRoute({
-      path: '/check',
+      path: '/login',
       method: HttpMethod.Get,
-      handler: this.check
-    });
-    this.addRoute({
-      path: '/:userId/avatar',
-      method: HttpMethod.Post,
-      handler: this.uploadAvatar,
-      middlewares: [
-        new ValidateObjectIdMiddleware('userId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
-      ]
+      handler: this.checkAuth
     });
   }
 
-  public async login({ body }: LoginUserRequest, _res: Response): Promise<void> {
-    const existUser = await this.userService.findByEmail(body.email);
-    if (!existUser) {
-      throw new HttpError(
-        StatusCodes.UNAUTHORIZED,
-        `User with email "${ body.email }" not found`,
-        'UserController'
-      );
+  public async login({ body }: LoginUserRequest, res: Response): Promise<void> {
+    const user = await this.authService.verify(body);
+    const token = await this.authService.authenticate(user);
+    const userData = fillDTO(LoggedUserRdo, {
+      email: user.email,
+      token
+    });
+    this.ok(res, userData);
+  }
+
+  public async checkAuth({ tokenPayload }: Request, res: Response) {
+    const notAuthError = new HttpError(
+      StatusCodes.UNAUTHORIZED,
+      'Unauthorized',
+      'UserController'
+    );
+    if (!tokenPayload) {
+      throw notAuthError;
+    }
+    const { email } = tokenPayload;
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw notAuthError;
     }
 
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController'
-    );
-  }
-
-  public async check(_req: Request, _res: Response): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController'
-    );
-  }
-
-  public async logout(_req: Request, _res: Response): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController'
-    );
+    this.ok(res, fillDTO(LoggedUserRdo, user));
   }
 
   public async create({ body }: CreateUserRequest, res: Response): Promise<void> {
@@ -108,11 +90,5 @@ export class UserController extends BaseController {
 
     const user = await this.userService.create(body, this.configService.get('SALT'));
     this.created(res, fillDTO(UserRdo, user));
-  }
-
-  public async uploadAvatar(req: Request, res: Response) {
-    this.created(res, {
-      filepath: req.file?.path
-    });
   }
 }

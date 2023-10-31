@@ -5,67 +5,65 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
-  IsMongoId,
   Max,
   MaxLength,
   Min,
   MinLength,
   ValidateNested
 } from 'class-validator';
-import { CreateOfferValidationMessage } from './create-offer.messages.js';
+import { CREATE_OFFER_VALIDATION_MESSAGE } from './create-offer.messages.js';
 import { Type } from 'class-transformer';
 import { LocationDto } from './offer-location.dto.js';
 import { Goods } from '../../../types/goods.enum.js';
 import { OfferCityDto } from './offer-city.dto.js';
 
 export class CreateOfferDto {
-  @MinLength(10, { message: CreateOfferValidationMessage.title.minLength })
-  @MaxLength(100, { message: CreateOfferValidationMessage.title.maxLength })
+  @MinLength(10, { message: CREATE_OFFER_VALIDATION_MESSAGE.TITLE.MIN_LENGTH })
+  @MaxLength(100, { message: CREATE_OFFER_VALIDATION_MESSAGE.TITLE.MAX_LENGTH })
   public title: string;
 
-  @MinLength(20, { message: CreateOfferValidationMessage.description.minLength })
-  @MaxLength(1024, { message: CreateOfferValidationMessage.description.maxLength })
+  @MinLength(20, { message: CREATE_OFFER_VALIDATION_MESSAGE.DESCRIPTION.MIN_LENGTH })
+  @MaxLength(1024, { message: CREATE_OFFER_VALIDATION_MESSAGE.DESCRIPTION.MAX_LENGTH })
   public description: string;
 
-  @IsDateString({}, { message: CreateOfferValidationMessage.postDate.invalidFormat })
+  @IsDateString({}, { message: CREATE_OFFER_VALIDATION_MESSAGE.POST_DATE.INVALID_FORMAT })
   public postDate: Date;
 
   @ValidateNested()
   @Type(() => OfferCityDto)
   public city: OfferCityDto;
 
-  @MaxLength(256, { message: CreateOfferValidationMessage.image.maxLength })
+  @MaxLength(256, { message: CREATE_OFFER_VALIDATION_MESSAGE.IMAGE.MAX_LENGTH })
   public previewImage: string;
 
-  @IsArray({ message: CreateOfferValidationMessage.photos.invalidFormat })
+  @IsArray({ message: CREATE_OFFER_VALIDATION_MESSAGE.PHOTOS.INVALID_FORMAT })
   public photos: string[];
 
-  @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
+  @IsBoolean({ message: CREATE_OFFER_VALIDATION_MESSAGE.IS_PREMIUM.INVALID_FORMAT })
   public isPremium: boolean;
 
-  @IsEnum(OfferType, { message: CreateOfferValidationMessage.type.invalid })
+  @IsEnum(OfferType, { message: CREATE_OFFER_VALIDATION_MESSAGE.TYPE.INVALID })
   public type: OfferType;
 
-  @IsInt({ message: CreateOfferValidationMessage.price.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.price.minValue })
-  @Max(8, { message: CreateOfferValidationMessage.price.maxValue })
+  @IsInt({ message: CREATE_OFFER_VALIDATION_MESSAGE.PRICE.INVALID_FORMAT })
+  @Min(1, { message: CREATE_OFFER_VALIDATION_MESSAGE.PRICE.MIN_VALUE })
+  @Max(8, { message: CREATE_OFFER_VALIDATION_MESSAGE.PRICE.MAX_VALUE })
   public bedrooms: number;
 
-  @IsInt({ message: CreateOfferValidationMessage.maxAdults.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.maxAdults.minValue })
-  @Max(10, { message: CreateOfferValidationMessage.maxAdults.maxValue })
+  @IsInt({ message: CREATE_OFFER_VALIDATION_MESSAGE.MAX_ADULTS.INVALID_FORMAT })
+  @Min(1, { message: CREATE_OFFER_VALIDATION_MESSAGE.MAX_ADULTS.MIN_VALUE })
+  @Max(10, { message: CREATE_OFFER_VALIDATION_MESSAGE.MAX_ADULTS.MAX_VALUE })
   public maxAdults: number;
 
-  @IsInt({ message: CreateOfferValidationMessage.price.invalidFormat })
-  @Min(100, { message: CreateOfferValidationMessage.price.minValue })
-  @Max(100000, { message: CreateOfferValidationMessage.price.maxValue })
+  @IsInt({ message: CREATE_OFFER_VALIDATION_MESSAGE.PRICE.INVALID_FORMAT })
+  @Min(100, { message: CREATE_OFFER_VALIDATION_MESSAGE.PRICE.MIN_VALUE })
+  @Max(100000, { message: CREATE_OFFER_VALIDATION_MESSAGE.PRICE.MAX_VALUE })
   public price: number;
 
-  @IsArray({ message: CreateOfferValidationMessage.goods.invalidFormat })
-  @IsEnum(Goods, { each: true, message: CreateOfferValidationMessage.goods.invalid })
+  @IsArray({ message: CREATE_OFFER_VALIDATION_MESSAGE.GOODS.INVALID_FORMAT })
+  @IsEnum(Goods, { each: true, message: CREATE_OFFER_VALIDATION_MESSAGE.GOODS.INVALID })
   public goods: Goods[];
 
-  @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   public userId: string;
 
   @ValidateNested()
