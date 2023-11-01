@@ -1,4 +1,4 @@
-import { OfferType } from '../../../types/index.js';
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -13,7 +13,7 @@ import {
 } from 'class-validator';
 import { UPDATE_OFFER_VALIDATION_MESSAGE } from './update-offer.messages.js';
 import { Goods } from '../../../types/goods.enum.js';
-import { Type } from 'class-transformer';
+import { OfferType } from '../../../types/index.js';
 import { LocationDto } from './offer-location.dto.js';
 import { OfferCityDto } from './offer-city.dto.js';
 

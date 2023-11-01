@@ -1,4 +1,6 @@
 import { inject, injectable } from 'inversify';
+import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import {
   BaseController,
   HttpError,
@@ -7,11 +9,9 @@ import {
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
-import { Request, Response } from 'express';
 import { IUserService } from './user-service.interface.js';
 import { fillDTO } from '../../helpers/index.js';
 import { UserRdo } from './rdo/user.rdo.js';
-import { StatusCodes } from 'http-status-codes';
 import { IConfig, TRestSchema } from '../../libs/config/index.js';
 import { CreateUserRequest } from './create-user-request-type.js';
 import { LoginUserRequest } from './login-user-request-type.js';
@@ -53,11 +53,8 @@ export class UserController extends BaseController {
   public async login({ body }: LoginUserRequest, res: Response): Promise<void> {
     const user = await this.authService.verify(body);
     const token = await this.authService.authenticate(user);
-    const userData = fillDTO(LoggedUserRdo, {
-      email: user.email,
-      token
-    });
-    this.ok(res, userData);
+    const userData = fillDTO(LoggedUserRdo, user);
+    this.ok(res, Object.assign(userData, { token }));
   }
 
   public async checkAuth({ tokenPayload }: Request, res: Response) {
@@ -87,7 +84,6 @@ export class UserController extends BaseController {
         'UserController'
       );
     }
-
     const user = await this.userService.create(body, this.configService.get('SALT'));
     this.created(res, fillDTO(UserRdo, user));
   }

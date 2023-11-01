@@ -1,7 +1,6 @@
 import { Expose } from 'class-transformer';
 import { OfferType } from '../../../types/index.js';
 import { TCity } from '../../../types/city.type.js';
-
 export class OfferRdo {
   @Expose()
   public id: string;

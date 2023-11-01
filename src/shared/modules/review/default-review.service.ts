@@ -1,10 +1,11 @@
-import { IReviewService } from './review-service.interface.js';
+import { inject, injectable } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { ReviewEntity } from './review.entity.js';
 import { CreateReviewDto } from './dto/create-review.dto.js';
-import { inject, injectable } from 'inversify';
-import { Component } from '../../types/index.js';
+import { IReviewService } from './review-service.interface.js';
+import { Component, SortType } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
+import { DEFAULT_REVIEW_COUNT } from './review.constant.js';
 
 @injectable()
 export class DefaultReviewService implements IReviewService {
@@ -21,7 +22,11 @@ export class DefaultReviewService implements IReviewService {
 
   public async findByOfferId(offerId: string): Promise<DocumentType<ReviewEntity>[]> {
     return this.reviewModel
-      .find({ offerId })
+      .find(
+        { offerId },
+        {},
+        { limit: DEFAULT_REVIEW_COUNT })
+      .sort({ createdAt: SortType.Down })
       .populate([ 'userId' ])
       .exec();
   }

@@ -1,8 +1,8 @@
 import { Container } from 'inversify';
+import { types } from '@typegoose/typegoose';
 import { IReviewService } from './review-service.interface.js';
 import { Component } from '../../types/index.js';
 import { DefaultReviewService } from './default-review.service.js';
-import { types } from '@typegoose/typegoose';
 import { ReviewModel, ReviewEntity } from './review.entity.js';
 import { IController } from '../../libs/rest/index.js';
 import { ReviewController } from './review.controller.js';

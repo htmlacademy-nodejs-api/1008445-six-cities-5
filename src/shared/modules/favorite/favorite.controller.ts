@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { Request, Response } from 'express';
 import {
   BaseController,
   DocumentExistsMiddleware,
@@ -9,7 +10,6 @@ import {
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
-import { Request, Response } from 'express';
 import { IFavoriteService } from './favorite-service.interface.js';
 import { fillDTO } from '../../helpers/index.js';
 import { IOfferService, OfferRdo } from '../offer/index.js';

@@ -10,6 +10,7 @@ export type TRestSchema = {
   DB_NAME: string;
   DB_PORT: string;
   JWT_SECRET: string;
+  HOST: string;
 }
 
 convict.addFormats(validator);
@@ -62,5 +63,11 @@ export const configRestSchema = convict<TRestSchema>({
     format: String,
     env: 'JWT_SECRET',
     default: null
+  },
+  HOST: {
+    doc: 'Host where started service',
+    format: String,
+    env: 'HOST',
+    default: 'localhost'
   },
 });

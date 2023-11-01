@@ -1,5 +1,5 @@
-import { TUser } from '../../types/index.js';
 import { defaultClasses, getModelForClass, modelOptions, prop, Severity } from '@typegoose/typegoose';
+import { TUser } from '../../types/index.js';
 import { createSHA256 } from '../../helpers/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

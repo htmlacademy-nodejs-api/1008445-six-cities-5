@@ -1,7 +1,7 @@
 import { IMiddleware } from './middleware.interface.js';
 import { NextFunction, Request, Response } from 'express';
-import { HttpError } from '../errors/index.js';
 import { StatusCodes } from 'http-status-codes';
+import { HttpError } from '../errors/index.js';
 
 function isValidLimit(limit: unknown) {
   return typeof limit === 'string' &&

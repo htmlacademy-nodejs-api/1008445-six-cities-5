@@ -1,8 +1,8 @@
-import { IConfig } from './config.interface.js';
 import { config } from 'dotenv';
+import { injectable, inject } from 'inversify';
+import { IConfig } from './config.interface.js';
 import { ILogger } from '../logger/index.js';
 import { TRestSchema, configRestSchema } from './rest.schema.js';
-import { injectable, inject } from 'inversify';
 import { Component } from '../../types/index.js';
 @injectable()
 export class RestConfig implements IConfig<TRestSchema> {

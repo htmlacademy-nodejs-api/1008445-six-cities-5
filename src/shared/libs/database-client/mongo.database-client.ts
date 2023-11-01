@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
-import { IDatabaseClient } from './database-client.interface.js';
 import * as Mongoose from 'mongoose';
+import { IDatabaseClient } from './database-client.interface.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../logger/index.js';
 import { setTimeout } from 'node:timers/promises';

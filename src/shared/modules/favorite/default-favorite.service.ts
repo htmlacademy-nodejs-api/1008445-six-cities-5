@@ -1,8 +1,8 @@
-import { IFavoriteService } from './favorite-service.interface.js';
 import { DocumentType, types } from '@typegoose/typegoose';
-import { OfferEntity } from '../offer/index.js';
 import { inject, injectable } from 'inversify';
-import { Component } from '../../types/index.js';
+import { OfferEntity } from '../offer/index.js';
+import { IFavoriteService } from './favorite-service.interface.js';
+import { Component, SortType } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { UserEntity } from '../user/index.js';
 
@@ -32,7 +32,10 @@ export class DefaultFavoriteService implements IFavoriteService {
   }
 
   public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
-    const { favoriteOffers} = await this.userModel.findById(userId).exec() as UserEntity;
+    const { favoriteOffers} = await this.userModel
+      .findById(userId)
+      .sort({ postDate: SortType.Down })
+      .exec() as UserEntity;
     return this.offerModel.find({ '_id': { $in: favoriteOffers } });
   }
 }

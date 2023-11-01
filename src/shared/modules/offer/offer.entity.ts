@@ -1,5 +1,5 @@
-import { OfferType, TLocation } from '../../types/index.js';
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
+import { OfferType, TLocation } from '../../types/index.js';
 import { UserEntity } from '../user/index.js';
 import { TCity } from '../../types/city.type.js';
 

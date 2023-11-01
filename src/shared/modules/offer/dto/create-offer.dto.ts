@@ -1,4 +1,4 @@
-import { OfferType } from '../../../types/index.js';
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -11,8 +11,8 @@ import {
   MinLength,
   ValidateNested
 } from 'class-validator';
+import { OfferType } from '../../../types/index.js';
 import { CREATE_OFFER_VALIDATION_MESSAGE } from './create-offer.messages.js';
-import { Type } from 'class-transformer';
 import { LocationDto } from './offer-location.dto.js';
 import { Goods } from '../../../types/goods.enum.js';
 import { OfferCityDto } from './offer-city.dto.js';
