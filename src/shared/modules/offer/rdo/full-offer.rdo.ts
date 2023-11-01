@@ -2,7 +2,6 @@ import { Expose, Type } from 'class-transformer';
 import { City } from '../../../types/city.enum.js';
 import { OfferType, TLocation } from '../../../types/index.js';
 import { UserRdo } from '../../user/rdo/user.rdo.js';
-
 export class FullOfferRdo {
   @Expose()
   public id: string;

@@ -1,12 +1,12 @@
 import { IMiddleware } from './middleware.interface.js';
+import { StatusCodes } from 'http-status-codes';
 import { NextFunction, Request, Response } from 'express';
 import { HttpError } from '../errors/index.js';
-import { StatusCodes } from 'http-status-codes';
-import { FAVORITE_STATUS, NOT_FAVORITE_STATUS } from '../../../modules/favorite/index.js';
+import { OFFER_STATUSES } from '../../../modules/favorite/index.js';
 
 function isValidStatus(status: string) {
   return !isNaN(Number(status)) &&
-    [ NOT_FAVORITE_STATUS, FAVORITE_STATUS ].includes(parseInt(status, 10));
+    Object.values(OFFER_STATUSES).includes(parseInt(status, 10));
 }
 
 export class ValidateStatusMiddleware implements IMiddleware {

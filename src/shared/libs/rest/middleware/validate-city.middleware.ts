@@ -1,5 +1,5 @@
-import { IMiddleware } from './middleware.interface.js';
 import { NextFunction, Request, Response } from 'express';
+import { IMiddleware } from './middleware.interface.js';
 import { HttpError } from '../errors/index.js';
 import { StatusCodes } from 'http-status-codes';
 import { City } from '../../../types/city.enum.js';

@@ -1,2 +1,5 @@
-export const FAVORITE_STATUS = 1;
-export const NOT_FAVORITE_STATUS = 0;
+export const OFFER_STATUSES = {
+  FAVORITE: 1,
+  NOT_FAVORITE: 0
+};
+

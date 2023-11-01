@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import { Request, Response } from 'express';
 import {
   BaseController,
   PrivateRouteMiddleware,
@@ -8,7 +9,6 @@ import {
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
-import { Request, Response } from 'express';
 import { IOfferService } from './offer-service.interface.js';
 import { fillDTO } from '../../helpers/index.js';
 import { FullOfferRdo } from './rdo/full-offer.rdo.js';

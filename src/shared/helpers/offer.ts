@@ -2,7 +2,6 @@ import { TOffer, OfferType, TUser } from '../types/index.js';
 import { City } from '../types/city.enum.js';
 import { Goods } from '../types/goods.enum.js';
 import { CITIES } from '../../const.js';
-
 export function createOffer(offerData: string): TOffer {
   const [
     title,

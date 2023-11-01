@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { RestApplication } from './rest/index.js';
 import { Container } from 'inversify';
+import { RestApplication } from './rest/index.js';
 import { Component } from './shared/types/index.js';
 import { createRestApplicationContainer } from './rest/index.js';
 import { createUserContainer } from './shared/modules/user/index.js';

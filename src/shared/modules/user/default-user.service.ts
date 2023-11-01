@@ -1,8 +1,8 @@
-import { IUserService } from './user-service.interface.js';
+import { inject, injectable } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { UserEntity } from './user.entity.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
-import { inject, injectable } from 'inversify';
+import { IUserService } from './user-service.interface.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 

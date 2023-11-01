@@ -1,10 +1,11 @@
+import cors from 'cors';
+import express, { Express } from 'express';
 import { ILogger } from '../shared/libs/logger/index.js';
 import { IConfig, TRestSchema } from '../shared/libs/config/index.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../shared/types/index.js';
 import { IDatabaseClient } from '../shared/libs/database-client/index.js';
-import { getMongoURI } from '../shared/helpers/index.js';
-import express, { Express } from 'express';
+import { getFullServerPath, getMongoURI } from '../shared/helpers/index.js';
 import { IController, IExceptionFilter, ParseTokenMiddleware } from '../shared/libs/rest/index.js';
 
 @injectable()
@@ -20,6 +21,8 @@ export class RestApplication {
     @inject(Component.FavoriteController) private readonly favoriteController: IController,
     @inject(Component.ExceptionFilter) private readonly appExceptionFilter: IExceptionFilter,
     @inject(Component.AuthExceptionFilter) private readonly authExceptionFilter: IExceptionFilter,
+    @inject(Component.HttpExceptionFilter) private readonly httpExceptionFilter: IExceptionFilter,
+    @inject(Component.ValidationExceptionFilter) private readonly validationExceptionFilter: IExceptionFilter,
   ) {}
 
   private async initServer() {
@@ -38,10 +41,13 @@ export class RestApplication {
     const authMiddleware = new ParseTokenMiddleware(this.config.get('JWT_SECRET'));
     this.server.use(express.json());
     this.server.use(authMiddleware.execute.bind(authMiddleware));
+    this.server.use(cors());
   }
 
   private async initExceptionFilters() {
     this.server.use(this.authExceptionFilter.catch.bind(this.authExceptionFilter));
+    this.server.use(this.validationExceptionFilter.catch.bind(this.validationExceptionFilter));
+    this.server.use(this.httpExceptionFilter.catch.bind(this.httpExceptionFilter));
     this.server.use(this.appExceptionFilter.catch.bind(this.appExceptionFilter));
   }
 
@@ -77,6 +83,6 @@ export class RestApplication {
 
     this.logger.info('Try to init server...');
     await this.initServer();
-    this.logger.info(`Server started on http://localhost:${ this.config.get('PORT') }`);
+    this.logger.info(`Server started on ${ getFullServerPath(this.config.get('HOST'), this.config.get('PORT')) }`);
   }
 }

@@ -48,7 +48,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offer'
+                $ref: '#/components/schemas/fullOffer'
 
     get:
       tags:
@@ -131,7 +131,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/editFullOffer'
+              $ref: '#/components/schemas/fullOffer'
         required: true
 
       responses:
@@ -140,7 +140,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offer'
+                $ref: '#/components/schemas/fullOffer'
 
         "400":
           description: Валидация не пройдена
@@ -247,7 +247,7 @@ paths:
           description: Доступ запрещен.
 
         "404":
-          description: Предложение с id d6a066d9-cf96-40ab-8d56-eef39939f36c не найдено.
+          description: Предложение с таким offerId не найдено.
 
   /users/register:
     post:
@@ -434,9 +434,6 @@ paths:
         "404":
           description: Предложение с таким offerId не существует.
 
-        "409":
-          description: Предложение с таким offerId уже добавлено в избранное.
-
 components:
   schemas:
     location:
@@ -463,10 +460,6 @@ components:
     createOffer:
       type: object
       properties:
-        id:
-          type: string
-          example: 652962c756dbfdfd2d5dd159
-
         userId:
           type: string
           example: 652962c756dbfdfd2d5dd159
@@ -515,10 +508,6 @@ components:
         postDate:
           type: string
           example: '2023-05-04T12:01:01'
-
-        rating:
-          type: number
-          example: 4.5
 
         location:
           $ref: '#/components/schemas/location'
@@ -625,7 +614,7 @@ components:
           type: number
           example: 5
 
-        date:
+        postDate:
           type: string
           example: '2023-05-04T12:01:01'
 
@@ -690,81 +679,7 @@ components:
           type: number
           example: 100
 
-        date:
-          type: string
-          example: '2023-05-04T12:01:01'
-
-        rating:
-          type: number
-          example: 4.5
-
-        location:
-          $ref: '#/components/schemas/location'
-
-        goods:
-          type: array
-          items:
-            type: string
-            example: [ Breakfast, Washer ]
-
-    editFullOffer:
-      type: object
-
-      properties:
-        userId:
-          type: string
-          example: d6a066d9-cf96-40ab-8d56-eef39939f36c
-
-        title:
-          type: string
-          example: Tile House
-
-        description:
-          type: string
-          example: I am happy to welcome you to my apartment in the city center!
-
-        city:
-          $ref: '#/components/schemas/city'
-
-        previewImage:
-          type: string
-          example: https://13.design.pages.academy/static/hotel/15.jpg
-
-        photos:
-          type: array
-          items:
-            type: string
-            example: [ https://13.design.pages.academy/static/hotel/16.jpg, https://13.design.pages.academy/static/hotel/17.jpg ]
-
-        isPremium:
-          type: boolean
-          example: false
-
-        isFavorite:
-          type: boolean
-          example: true
-
-        type:
-          type: string
-          example: Apartment
-
-        bedrooms:
-          type: number
-          example: 1
-
-        commentCount:
-          type: number
-          example: 5
-
-        maxAdults:
-          type: number
-          example: 1
-
-        price:
-          type: number
-          example: 100
-
-        date:
+        postDate:
           type: string
           example: '2023-05-04T12:01:01'
 
@@ -795,7 +710,7 @@ components:
 
         offerId:
           type: string
-          example: '652962c756dbfdfd2d5dd159'
+          example: '333962c756dbfdfd2d5dd159'
 
         comment:
           type: string
@@ -812,7 +727,7 @@ components:
           type: string
           example: d6a066d9-cf96-40ab-8d56-eef39939f36c
 
-        date:
+        postDate:
           type: string
           example: '2023-05-04T12:01:01'
 

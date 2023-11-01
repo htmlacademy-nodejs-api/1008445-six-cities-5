@@ -1,7 +1,7 @@
-import { IOfferService } from './offer-service.interface.js';
+import { inject, injectable } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
-import { inject, injectable } from 'inversify';
+import { IOfferService } from './offer-service.interface.js';
 import { Component, SortType } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { CreateOfferDto } from '../offer/index.js';
@@ -40,7 +40,7 @@ export class DefaultOfferService implements IOfferService {
         { 'city.name': city, isPremium: true },
         {},
         { limit: DEFAULT_PREMIUM_OFFER_COUNT })
-      .sort({ createdAt: SortType.Down })
+      .sort({ postDate: SortType.Down })
       .populate([ 'userId' ])
       .exec();
   }

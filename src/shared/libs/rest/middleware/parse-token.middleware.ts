@@ -19,12 +19,10 @@ export class ParseTokenMiddleware implements IMiddleware {
   constructor(private readonly jwtSecret: string) {}
 
   public async execute(req: Request, _res: Response, next: NextFunction): Promise<void> {
-    const authorizationHeader = req.headers?.authorization?.split(' ');
-    if (!authorizationHeader) {
+    const token = req.headers?.authorization?.replace(/Bearer/, '')?.trim();
+    if (!token) {
       return next();
     }
-
-    const [, token] = authorizationHeader;
 
     try {
       const { payload } = await jwtVerify(token, createSecretKey(this.jwtSecret, 'utf-8'));

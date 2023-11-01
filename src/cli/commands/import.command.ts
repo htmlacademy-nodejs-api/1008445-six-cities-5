@@ -1,14 +1,13 @@
 import { ICommand } from './command.interface.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/index.js';
-import { IUserService } from '../../shared/modules/user/user-service.interface.js';
 import { createOffer, getErrorMessage, getMongoURI } from '../../shared/helpers/index.js';
 import { DefaultOfferService, OfferModel, IOfferService } from '../../shared/modules/offer/index.js';
 import { IDatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { ILogger } from '../../shared/libs/logger/index.js';
 import { ConsoleLogger } from '../../shared/libs/logger/console.logger.js';
-import { DefaultUserService, UserModel } from '../../shared/modules/user/index.js';
-import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
+import { DefaultUserService, UserModel, IUserService } from '../../shared/modules/user/index.js';
 import { TOffer } from '../../shared/types/index.js';
+import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 
 export class ImportCommand implements ICommand {
   private userService: IUserService;
