@@ -1,10 +1,8 @@
-import { IsInt, IsMongoId, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { IsInt, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { CREATE_REVIEW_VALIDATION_MESSAGE } from './create-review.messages.js';
 export class CreateReviewDto {
-  @IsMongoId({ message: CREATE_REVIEW_VALIDATION_MESSAGE.USER_ID.INVALID_ID })
   public userId: string;
 
-  @IsMongoId({ message: CREATE_REVIEW_VALIDATION_MESSAGE.OFFER_ID.INVALID_ID })
   public offerId: string;
 
   @MinLength(5, { message: CREATE_REVIEW_VALIDATION_MESSAGE.COMMENT.MIN_LENGTH })

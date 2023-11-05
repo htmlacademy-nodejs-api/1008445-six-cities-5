@@ -20,18 +20,19 @@ export function createOffer(offerData: string): TOffer {
     goods,
     userName,
     email,
+    userType
   ] = offerData.replace('\n', '').split('\t');
 
   const user: TUser = {
     email,
     name: userName,
     avatarUrl,
-    isPro: Boolean(isPremium)
+    type: userType
   };
 
   const [ latitude , longitude] = offerLocation
     .split(';')
-    .map((value) => parseInt(value, 10));
+    .map((value) => parseFloat(value));
 
   return {
     title,
@@ -40,7 +41,7 @@ export function createOffer(offerData: string): TOffer {
     city: CITIES[ city as City ],
     previewImage,
     photos: photos.split(';'),
-    isPremium: Boolean(isPremium),
+    isPremium: isPremium === 'true',
     type: type as OfferType,
     bedrooms: parseInt(bedrooms, 10),
     maxAdults: parseInt(maxAdults, 10),

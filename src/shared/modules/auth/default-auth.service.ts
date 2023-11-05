@@ -9,7 +9,7 @@ import { TRestSchema } from '../../libs/config/index.js';
 import { TTokenPayload } from './types/token-payload.js';
 import { JWT_ALGORITHM, JWT_EXPIRED } from './auth.constant.js';
 import { LoginUserDto, UserEntity, IUserService } from '../user/index.js';
-import { UserPasswordIncorrectException, UserNotFoundException } from './errors/index.js';
+import { UserNotFoundException, UserPasswordIncorrectException } from './errors/index.js';
 
 @injectable()
 export class DefaultAuthService implements IAuthService {
@@ -39,11 +39,11 @@ export class DefaultAuthService implements IAuthService {
     const user = await this.userService.findByEmail(dto.email);
     if (!user) {
       this.logger.warn(`User with ${ dto.email } not found`);
-      throw new UserNotFoundException();
+      throw new UserNotFoundException(dto.email);
     }
     if (!user.verifyPassword(dto.password, this.config.get('SALT'))) {
       this.logger.warn(`Incorrect password for ${ dto.email }`);
-      throw new UserPasswordIncorrectException();
+      throw new UserPasswordIncorrectException(dto.email);
     }
 
     return user;

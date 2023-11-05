@@ -23,21 +23,23 @@
       "Dusseldorf"
     ],
     "previewImages": [
-      "https://13.design.pages.academy/static/hotel/17.jpg",
-      "https://13.design.pages.academy/static/hotel/12.jpg",
-      "https://13.design.pages.academy/static/hotel/1.jpg",
-      "https://13.design.pages.academy/static/hotel/11.jpg",
-      "https://13.design.pages.academy/static/hotel/5.jpg"
+      "11.jpg",
+      "12.jpg",
+      "13.jpg",
+      "14.jpg",
+      "15.jpg"
     ],
     "photos": [
-      "https://13.design.pages.academy/static/hotel/1.jpg",
-      "https://13.design.pages.academy/static/hotel/2.jpg",
-      "https://13.design.pages.academy/static/hotel/3.jpg",
-      "https://13.design.pages.academy/static/hotel/4.jpg",
-      "https://13.design.pages.academy/static/hotel/5.jpg",
-      "https://13.design.pages.academy/static/hotel/6.jpg",
-      "https://13.design.pages.academy/static/hotel/7.jpg",
-      "https://13.design.pages.academy/static/hotel/8.jpg"
+      "1.jpg",
+      "2.jpg",
+      "3.jpg",
+      "4.jpg",
+      "5.jpg",
+      "6.jpg",
+      "7.jpg",
+      "8.jpg",
+      "9.jpg",
+      "10.jpg"
     ],
     "isPremium": [
       "true",
@@ -62,6 +64,10 @@
       "Towels",
       "Fridge"
     ],
+    "userType": [
+      "pro",
+      "regular"
+    ],
     "users": [
       "Angelina",
       "Maria",
@@ -77,15 +83,52 @@
       "test5@gmail.com"
     ],
     "avatars": [
-      "https://13.design.pages.academy/static/host/avatar-angelina.jpg"
+      "avatar-angelina.jpg"
     ],
-    "locations": [
-      "48.868610000000004;2.342499",
-      "48.878610000000004;2.352499",
-      "48.858610000000004;2.362499",
-      "48.848610000000004;2.372499",
-      "48.838610000000004;2.382499"
-    ],
+    "locations": {
+        "Paris": [
+          "48.85661;2.352499",
+          "48.86661;2.359499",
+          "48.85861;2.353499",
+          "48.85361;2.355499",
+          "48.85161;2.341499"
+        ],
+        "Cologne": [
+          "50.928361;6.954974",
+          "50.932361;6.953974",
+          "50.928361;6.959174",
+          "50.933361;6.951974",
+          "50.931361;6.969974"
+        ],
+        "Amsterdam": [
+          "52.36454;4.887976",
+          "52.35454;4.877976",
+          "52.37154;4.891976",
+          "52.37754;4.895976",
+          "52.37954;4.899976"
+        ],
+        "Brussels": [
+          "50.846557;4.361697",
+          "50.836557;4.341697",
+          "50.841557;4.354697",
+          "50.848557;4.357697",
+          "50.842557;4.352697"
+        ],
+        "Hamburg": [
+          "53.550341;10.010654",
+          "53.560341;10.020654",
+          "53.570341;10.007654",
+          "53.555341;10.005654",
+          "53.558341;10.003654"
+        ],
+        "Dusseldorf": [
+          "51.226402;6.796314",
+          "51.235402;6.786314",
+          "51.215402;6.771314",
+          "51.229402;6.773314",
+          "51.221402;6.779314"
+        ]
+    },
     "reviewTexts": [
       "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
       "Bathed in the nature. Completely unplugged. Unforgettable.",

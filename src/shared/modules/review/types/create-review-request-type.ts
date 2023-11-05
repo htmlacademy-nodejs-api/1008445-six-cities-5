@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { RequestParams } from '../../../types/request.params.type.js';
 import { RequestBody } from '../../../types/request-body-type.js';
 import { CreateReviewDto } from '../dto/create-review.dto.js';
+import { ParamOfferId } from '../../offer/types/param-offer-id.type.js';
 
-export type CreateReviewRequest = Request<RequestParams, RequestBody, CreateReviewDto>
+export type CreateReviewRequest = Request<ParamOfferId, RequestBody, CreateReviewDto>

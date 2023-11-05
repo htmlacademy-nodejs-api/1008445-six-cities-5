@@ -1,9 +1,9 @@
 # Избранные предложения
 ### Получить список избранных предложений
-GET http://localhost:5001/favorite/ HTTP/1.1
+GET http://localhost:5001/favorites/ HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4MjI1MTQ3LCJleHAiOjE2OTgzOTc5NDd9.DRV-oYfOFKTtriKnF3iU0pyt--IchoJSknv2mB4zDrk
 Content-Type: application/json
 ### Изменить статус избранного у предложения
-POST http://localhost:5001/favorite/6533b70719c994f5a07a4b99/1 HTTP/1.1
+POST http://localhost:5001/favorites/6533b70719c994f5a07a4b99/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4MjI1MTQ3LCJleHAiOjE2OTgzOTc5NDd9.DRV-oYfOFKTtriKnF3iU0pyt--IchoJSknv2mB4zDrk
 Content-Type: application/json

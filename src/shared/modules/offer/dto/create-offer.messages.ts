@@ -10,8 +10,8 @@ export const CREATE_OFFER_VALIDATION_MESSAGE = {
   POST_DATE: {
     INVALID_FORMAT: 'postDate must be a valid ISO date',
   },
-  IMAGE: {
-    MAX_LENGTH: 'Too short for field «image»',
+  PREVIEW_IMAGE: {
+    MAX_LENGTH: 'Too long for field «preview image»',
   },
   BEDROOMS: {
     INVALID_FORMAT: 'Price must be an integer',
@@ -43,7 +43,7 @@ export const CREATE_OFFER_VALIDATION_MESSAGE = {
   },
   PHOTOS: {
     INVALID_FORMAT: 'Field photos must be an array',
-    MAX_LENGTH: 'Too short for field «image»',
+    MAX_LENGTH: 'Too short for field «photo»',
   },
   LOCATION: {
     INVALID_FORMAT: 'Latitude or longitude must be a coordinate',

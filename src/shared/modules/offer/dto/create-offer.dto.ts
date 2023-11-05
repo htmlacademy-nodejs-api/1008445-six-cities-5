@@ -33,11 +33,11 @@ export class CreateOfferDto {
   @Type(() => OfferCityDto)
   public city: OfferCityDto;
 
-  @MaxLength(256, { message: CREATE_OFFER_VALIDATION_MESSAGE.IMAGE.MAX_LENGTH })
-  public previewImage: string;
+  @MaxLength(256, { message: CREATE_OFFER_VALIDATION_MESSAGE.PREVIEW_IMAGE.MAX_LENGTH })
+  public previewImage?: string;
 
   @IsArray({ message: CREATE_OFFER_VALIDATION_MESSAGE.PHOTOS.INVALID_FORMAT })
-  public photos: string[];
+  public photos?: string[];
 
   @IsBoolean({ message: CREATE_OFFER_VALIDATION_MESSAGE.IS_PREMIUM.INVALID_FORMAT })
   public isPremium: boolean;

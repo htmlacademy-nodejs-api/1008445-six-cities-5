@@ -10,8 +10,9 @@ export const UPDATE_OFFER_VALIDATION_MESSAGE = {
   POST_DATE: {
     INVALID_FORMAT: 'postDate must be a valid ISO date',
   },
-  IMAGE: {
-    MAX_LENGTH: 'Too short for field «image»',
+  PREVIEW_IMAGE: {
+    MAX_LENGTH: 'Too short for field «preview image»',
+    INVALID_FORMAT: 'preview image is required',
   },
   BEDROOMS: {
     INVALID_FORMAT: 'Price must be an integer',
@@ -43,6 +44,6 @@ export const UPDATE_OFFER_VALIDATION_MESSAGE = {
   },
   PHOTOS: {
     INVALID_FORMAT: 'Field photos must be an array',
-    MAX_LENGTH: 'Too short for field «image»',
+    MAX_LENGTH: 'Too short for field «photo»',
   },
 } as const;

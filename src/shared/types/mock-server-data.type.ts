@@ -8,8 +8,9 @@ export type MockServerData = {
   types: string[];
   goods: string[];
   users: string[];
-  locations: string[];
+  locations: Record<string, string[]>;
   avatars: string[];
   emails: string[];
   reviewTexts: string[];
+  userType: string[];
 }

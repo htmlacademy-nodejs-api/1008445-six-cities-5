@@ -13,4 +13,5 @@ export interface IOfferService extends IDocumentExists {
   findPremiumByCity(city: City): Promise<DocumentType<OfferEntity>[]>;
   incReviewsCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   exists(offerId: string): Promise<boolean>;
+  updateImagesById(authUserId: string | null, offerId: string, file: Express.Multer.File): Promise<DocumentType<OfferEntity> | null>;
 }

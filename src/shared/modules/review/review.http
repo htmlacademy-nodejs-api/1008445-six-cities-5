@@ -3,12 +3,11 @@
 GET http://localhost:5001/reviews/6533b70719c994f5a07a4b7e HTTP/1.1
 Content-Type: application/json
 ### Создание отзыва
-POST http://localhost:5001/reviews HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4MjI1MTQ3LCJleHAiOjE2OTgzOTc5NDd9.DRV-oYfOFKTtriKnF3iU0pyt--IchoJSknv2mB4zDrk
+POST http://localhost:5001/reviews/6544f0440e50272e1c12f73d HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsIm5hbWUiOiJQaXRlciIsImlkIjoiNjU0NGYwNDQwZTUwMjcyZTFjMTJmNjk0IiwiaWF0IjoxNjk5MDE3ODAyLCJleHAiOjE2OTkxOTA2MDJ9.xfuQR7NISQMGNkDzS-oURROx23oNkl3-movDPOlWDoI
 Content-Type: application/json
 
 {
-  "offerId": "6533b70719c994f5a07a4b7e",
   "comment": "A place!!",
   "rating": 5
 }

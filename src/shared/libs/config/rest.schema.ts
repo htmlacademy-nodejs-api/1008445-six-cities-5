@@ -11,6 +11,8 @@ export type TRestSchema = {
   DB_PORT: string;
   JWT_SECRET: string;
   HOST: string;
+  UPLOAD_DIRECTORY: string;
+  STATIC_DIRECTORY_PATH: string;
 }
 
 convict.addFormats(validator);
@@ -69,5 +71,17 @@ export const configRestSchema = convict<TRestSchema>({
     format: String,
     env: 'HOST',
     default: 'localhost'
+  },
+  UPLOAD_DIRECTORY: {
+    doc: 'Directory for upload files',
+    format: String,
+    env: 'UPLOAD_DIRECTORY',
+    default: null
+  },
+  STATIC_DIRECTORY_PATH: {
+    doc: 'Path to directory with static resources',
+    format: String,
+    env: 'STATIC_DIRECTORY_PATH',
+    default: 'static'
   },
 });
