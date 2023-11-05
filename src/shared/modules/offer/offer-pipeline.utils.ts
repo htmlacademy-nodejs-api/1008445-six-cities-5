@@ -5,6 +5,7 @@ import { DEFAULT_OFFER_COUNT } from './offer.constant.js';
 const getMatchOfferId = (offerId: string) => (
   { $match: { _id: new Types.ObjectId(offerId) } }
 );
+
 const lookupReviews = ({
   $lookup: {
     from: 'reviews',
@@ -13,6 +14,7 @@ const lookupReviews = ({
     as: 'reviews',
   },
 });
+
 const lookupOfferUser = ({
   $lookup: {
     from: 'users',
@@ -21,6 +23,7 @@ const lookupOfferUser = ({
     as: 'user',
   },
 });
+
 const getLookupCurrentUser = (authUserId = '') => ({
   $lookup: {
     from: 'users',
@@ -30,6 +33,7 @@ const getLookupCurrentUser = (authUserId = '') => ({
     as: 'currentUser'
   }
 });
+
 const addRatingAndReviewCountFields = ({
   $addFields: {
     rating: {
@@ -53,13 +57,17 @@ const addRatingAndReviewCountFields = ({
     reviewsCount: { $size: '$reviews' },
   },
 });
+
 const addFavoriteField = ({
   $addFields: {
     favorites: '$currentUser.favoriteOffers'
   },
 });
+
 const unwindFavoriteField = ({ $unwind: '$favorites' });
+
 const unsetReviews = ({ $unset: 'reviews' });
+
 const project = ({
   $project: {
     id: { $toString: '$_id' },
@@ -88,9 +96,12 @@ const project = ({
     },
   }
 });
+
 const getLimitRestriction = (offersLimit: number) => ({ $limit: offersLimit });
-const sort = ({ $sort: { createdAt: SortType.Down } });
-export const getFullOfferPipeline = (offerId: string, currentUserId?: string) :PipelineStage[] =>
+
+const sort = ({ $sort: { postDate: SortType.Down } });
+
+export const getFullOfferPipeline = (offerId: string, currentUserId?: string): PipelineStage[] =>
   currentUserId
     ? [
       getMatchOfferId(offerId),
@@ -112,6 +123,7 @@ export const getFullOfferPipeline = (offerId: string, currentUserId?: string) :P
       unsetReviews,
       project
     ];
+
 export const getOfferPipeline = (currentUserId?: string, limit?: string) :PipelineStage[] => {
   const offersLimit = limit ? parseInt(limit, 10) : DEFAULT_OFFER_COUNT;
   return currentUserId
@@ -123,8 +135,8 @@ export const getOfferPipeline = (currentUserId?: string, limit?: string) :Pipeli
       addFavoriteField,
       unwindFavoriteField,
       unsetReviews,
-      getLimitRestriction(offersLimit),
       sort,
+      getLimitRestriction(offersLimit),
       project
     ]
     : [
@@ -133,8 +145,19 @@ export const getOfferPipeline = (currentUserId?: string, limit?: string) :Pipeli
       addRatingAndReviewCountFields,
       addFavoriteField,
       unsetReviews,
-      getLimitRestriction(offersLimit),
       sort,
+      getLimitRestriction(offersLimit),
       project
     ];
 };
+export const getFavoriteOfferPipeline = (currentUserId: string, favoriteOffers: string[]): PipelineStage[] =>
+  [
+    {
+      $match: {
+        '_id': {
+          $in: favoriteOffers
+        }
+      }
+    },
+    ...getOfferPipeline(currentUserId),
+  ];

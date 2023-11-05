@@ -5,6 +5,7 @@ import { IFavoriteService } from './favorite-service.interface.js';
 import { Component, SortType } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
 import { UserEntity } from '../user/index.js';
+import { getFullOfferPipeline } from '../offer/offer-pipeline.utils.js';
 
 @injectable()
 export class DefaultFavoriteService implements IFavoriteService {
@@ -24,11 +25,10 @@ export class DefaultFavoriteService implements IFavoriteService {
 
     this.logger.info(`${ isSetStatus ? 'Add' : 'Remove' } offer id '${ offerId }'
       ${ isSetStatus ? 'in' : 'from' } favorites of user = '${ userId }'`);
-    return this
-      .offerModel
-      .findById(offerId)
-      .populate([ 'userId' ])
-      .exec();
+
+    const pipeline = getFullOfferPipeline(offerId, userId);
+    const [ offer ] = await this.offerModel.aggregate(pipeline).exec();
+    return offer;
   }
 
   public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[]> {
@@ -36,6 +36,11 @@ export class DefaultFavoriteService implements IFavoriteService {
       .findById(userId)
       .sort({ postDate: SortType.Down })
       .exec() as UserEntity;
-    return this.offerModel.find({ '_id': { $in: favoriteOffers } });
+
+    return Promise.all(favoriteOffers.map(async (offerId) => {
+      const pipeline = getFullOfferPipeline(offerId, userId);
+      const [ offer ] = await this.offerModel.aggregate(pipeline).exec();
+      return offer;
+    }));
   }
 }

@@ -11,7 +11,7 @@ export class ValidateDtoMiddleware implements IMiddleware {
   public async execute({ body, path }: Request, _res: Response, next: NextFunction): Promise<void> {
     const dtoInstance = plainToInstance(this.dto, body);
     const errors = await validate(dtoInstance);
-    console.log(errors);
+
     if (errors.length > 0) {
       throw new ValidationError(`Validation error: ${ path }`, reduceValidationErrors(errors));
     }

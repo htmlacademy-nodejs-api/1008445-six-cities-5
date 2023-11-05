@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import {
   BaseController,
   PrivateRouteMiddleware,
+  UploadFileMiddleware,
   ValidateDtoMiddleware,
   ValidateObjectIdMiddleware
 } from '../../libs/rest/index.js';
@@ -25,6 +26,14 @@ import { DocumentExistsMiddleware } from '../../libs/rest/index.js';
 import { IReviewService } from '../review/review-service.interface.js';
 import { City } from '../../types/city.enum.js';
 import { RequestQuery } from './types/request-query.type.js';
+import { UploadPreviewImageRdo } from './rdo/upload-preview-image.rdo.js';
+import { IConfig, TRestSchema } from '../../libs/config/index.js';
+import { UploadImageRdo } from './rdo/upload-image.rdo.js';
+import { UploadMultiplyFilesMiddleware } from '../../libs/rest/middleware/upload-files.middleware.js';
+
+function isFileArray(value: unknown): value is Express.Multer.File[] {
+  return Array.isArray(value) && value.every((item) => 'filename' in item);
+}
 
 @injectable()
 export class OfferController extends BaseController {
@@ -32,6 +41,7 @@ export class OfferController extends BaseController {
     @inject(Component.Logger) protected readonly logger: ILogger,
     @inject(Component.OfferService) private readonly offerService: IOfferService,
     @inject(Component.ReviewService) private readonly reviewService: IReviewService,
+    @inject(Component.Config) private readonly configService: IConfig<TRestSchema>,
   ) {
     super(logger);
 
@@ -87,6 +97,26 @@ export class OfferController extends BaseController {
       handler: this.getPremiumByCity,
       middlewares: [ new ValidateCityMiddleware('city')]
     });
+    this.addRoute({
+      path: '/:offerId/previewImage',
+      method: HttpMethod.Post,
+      handler: this.uploadPreviewImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'previewImage'),
+      ]
+    });
+    this.addRoute({
+      path: '/:offerId/image',
+      method: HttpMethod.Post,
+      handler: this.uploadImages,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadMultiplyFilesMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'photos'),
+      ]
+    });
   }
 
   public async index({ query, tokenPayload }: Request<unknown, unknown, unknown, RequestQuery>, res: Response): Promise<void> {
@@ -125,5 +155,21 @@ export class OfferController extends BaseController {
   public async getPremiumByCity({ params: { city } }: Request<ParamCity>, res: Response): Promise<void> {
     const offers = await this.offerService.findPremiumByCity(city as City);
     this.ok(res, fillDTO(FullOfferRdo, offers));
+  }
+
+  public async uploadPreviewImage({ params, file } : Request<ParamOfferId>, res: Response) {
+    const { offerId } = params;
+    const updateDto = { previewImage: file?.filename };
+    await this.offerService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadPreviewImageRdo, updateDto));
+  }
+
+  public async uploadImages({ params, files } : Request<ParamOfferId>, res: Response) {
+    const { offerId } = params;
+    if (isFileArray(files)) {
+      const updateDto = { photos: files.map(({ filename }: Express.Multer.File) => filename) };
+      await this.offerService.updateById(offerId, updateDto);
+      this.created(res, fillDTO(UploadImageRdo, updateDto));
+    }
   }
 }

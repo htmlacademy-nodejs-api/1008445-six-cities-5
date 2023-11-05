@@ -4,6 +4,7 @@ import { MockServerData } from '../../shared/types/index.js';
 import { TSVOfferGenerator } from '../../shared/libs/offer-generator/index.js';
 import { TSVFileWriter } from '../../shared/libs/file-writer/index.js';
 import { getErrorMessage } from '../../shared/helpers/index.js';
+
 export class GenerateCommand implements ICommand {
   private initData: MockServerData;
   private async load(url: string) {

@@ -12,7 +12,7 @@ import { ILogger } from '../../libs/logger/index.js';
 import { HttpMethod } from '../../libs/rest/index.js';
 import { IFavoriteService } from './favorite-service.interface.js';
 import { fillDTO } from '../../helpers/index.js';
-import { IOfferService, OfferRdo } from '../offer/index.js';
+import { FullOfferRdo, IOfferService, OfferRdo } from '../offer/index.js';
 
 @injectable()
 export class FavoriteController extends BaseController {
@@ -53,7 +53,7 @@ export class FavoriteController extends BaseController {
     const { offerId, status } = params;
     const offer =
       await this.favoriteService.addOrRemoveOfferFavoriteStatus(tokenPayload.id, offerId, status);
-    const responseData = fillDTO(OfferRdo, offer);
+    const responseData = fillDTO(FullOfferRdo, offer);
     this.ok(res, responseData);
   }
 }

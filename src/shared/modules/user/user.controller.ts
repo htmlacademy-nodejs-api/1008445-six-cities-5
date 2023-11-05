@@ -3,8 +3,8 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import {
   BaseController,
-  HttpError,
-  ValidateDtoMiddleware,
+  HttpError, UploadFileMiddleware,
+  ValidateDtoMiddleware, ValidateObjectIdMiddleware,
 } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
@@ -17,8 +17,10 @@ import { CreateUserRequest } from './create-user-request-type.js';
 import { LoginUserRequest } from './login-user-request-type.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { LoginUserDto } from './dto/login-user.dto.js';
-import { IAuthService } from '../auth/index.js';
+import { IAuthService, TTokenPayload } from '../auth/index.js';
 import { LoggedUserRdo } from './rdo/logged-user.rdo.js';
+import { UploadUserAvatarRdo } from './rdo/upload-user-avatar.rdo.js';
+import { UserEntity } from './user.entity.js';
 
 @injectable()
 export class UserController extends BaseController {
@@ -44,34 +46,28 @@ export class UserController extends BaseController {
       middlewares: [ new ValidateDtoMiddleware(LoginUserDto) ]
     });
     this.addRoute({
+      path: '/logout',
+      method: HttpMethod.Delete,
+      handler: this.logout
+    });
+    this.addRoute({
       path: '/login',
       method: HttpMethod.Get,
       handler: this.checkAuth
     });
-  }
-
-  public async login({ body }: LoginUserRequest, res: Response): Promise<void> {
-    const user = await this.authService.verify(body);
-    const token = await this.authService.authenticate(user);
-    const userData = fillDTO(LoggedUserRdo, user);
-    this.ok(res, Object.assign(userData, { token }));
+    this.addRoute({
+      path: '/avatar/:userId',
+      method: HttpMethod.Post,
+      handler: this.uploadAvatar,
+      middlewares: [
+        new ValidateObjectIdMiddleware('userId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatarUrl'),
+      ]
+    });
   }
 
   public async checkAuth({ tokenPayload }: Request, res: Response) {
-    const notAuthError = new HttpError(
-      StatusCodes.UNAUTHORIZED,
-      'Unauthorized',
-      'UserController'
-    );
-    if (!tokenPayload) {
-      throw notAuthError;
-    }
-    const { email } = tokenPayload;
-    const user = await this.userService.findByEmail(email);
-    if (!user) {
-      throw notAuthError;
-    }
-
+    const user = await this.checkUser(tokenPayload);
     this.ok(res, fillDTO(LoggedUserRdo, user));
   }
 
@@ -86,5 +82,44 @@ export class UserController extends BaseController {
     }
     const user = await this.userService.create(body, this.configService.get('SALT'));
     this.created(res, fillDTO(UserRdo, user));
+  }
+
+  public async login({ body }: LoginUserRequest, res: Response): Promise<void> {
+    const user = await this.authService.verify(body);
+    const token = await this.authService.authenticate(user);
+    const userData = fillDTO(LoggedUserRdo, user);
+    this.ok(res, Object.assign(userData, { token }));
+  }
+
+  public async logout({ tokenPayload }: Request, res: Response) {
+    const user = await this.checkUser(tokenPayload);
+    this.noContent(res, user);
+  }
+
+  public async uploadAvatar({ params, file }: Request, res: Response) {
+    const { userId } = params;
+    const uploadFile = { avatarUrl: file?.filename };
+    await this.userService.updateById(userId, uploadFile);
+    this.created(res, fillDTO(UploadUserAvatarRdo, { filepath: uploadFile.avatarUrl }));
+  }
+
+  private async checkUser(tokenPayload: TTokenPayload): Promise<UserEntity> {
+    if (!tokenPayload) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        'Unauthorized',
+        'UserController'
+      );
+    }
+    const { email } = tokenPayload;
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        'User not found',
+        'UserController'
+      );
+    }
+    return user;
   }
 }

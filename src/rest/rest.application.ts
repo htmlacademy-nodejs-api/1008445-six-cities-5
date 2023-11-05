@@ -7,6 +7,7 @@ import { Component } from '../shared/types/index.js';
 import { IDatabaseClient } from '../shared/libs/database-client/index.js';
 import { getFullServerPath, getMongoURI } from '../shared/helpers/index.js';
 import { IController, IExceptionFilter, ParseTokenMiddleware } from '../shared/libs/rest/index.js';
+import { STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from './rest.constant.js';
 
 @injectable()
 export class RestApplication {
@@ -34,12 +35,20 @@ export class RestApplication {
     this.server.use('/reviews', this.reviewController.router);
     this.server.use('/users', this.userController.router);
     this.server.use('/offers', this.offerController.router);
-    this.server.use('/favorite', this.favoriteController.router);
+    this.server.use('/favorites', this.favoriteController.router);
   }
 
   private async initMiddleware() {
     const authMiddleware = new ParseTokenMiddleware(this.config.get('JWT_SECRET'));
     this.server.use(express.json());
+    this.server.use(
+      STATIC_UPLOAD_ROUTE,
+      express.static(this.config.get('UPLOAD_DIRECTORY'))
+    );
+    this.server.use(
+      STATIC_FILES_ROUTE,
+      express.static(this.config.get('STATIC_DIRECTORY_PATH'))
+    );
     this.server.use(authMiddleware.execute.bind(authMiddleware));
     this.server.use(cors());
   }

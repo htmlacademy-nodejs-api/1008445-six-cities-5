@@ -334,6 +334,37 @@ paths:
         "401":
           description: Доступ запрещен.
 
+
+
+
+  /users/logout:
+    delete:
+      tags:
+        - users
+      parameters:
+        [
+          {
+            in: "header",
+            name: "x-token",
+            required: true,
+            schema: {
+              type: "string",
+            },
+            description: Авторизационный токен пользователя
+          },
+        ]
+      summary: Выход из приложения
+      description: Сервис предоставляет ресурс для завершения пользовательского сеанса
+
+      responses:
+        "204":
+          description: Успешный выход.
+
+        "401":
+          description: Пользователь не авторизован.
+        "404":
+          description: Пользователь не найден.
+
   /favorite:
     get:
       tags:
@@ -537,9 +568,9 @@ components:
           type: string
           example: abc123
 
-        isPro:
-          type: boolean
-          example: true
+        type:
+          type: string
+          example: 'pro'
 
     user:
       type: object
@@ -560,9 +591,9 @@ components:
           type: string
           example: 'Tsfdsfc224fd2rXfsdfDDASD20='
 
-        isPro:
-          type: boolean
-          example: true
+        type:
+          type: string
+          example: 'pro'
 
     loginUser:
       type: object

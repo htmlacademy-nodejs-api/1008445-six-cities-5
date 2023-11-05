@@ -68,4 +68,13 @@ export class DefaultOfferService implements IOfferService {
       .findByIdAndUpdate(offerId, { '$inc': { reviewsCount: 1 } })
       .exec();
   }
+
+  public async updateImagesById(userId: string, offerId: string, file: Express.Multer.File) {
+    await this.offerModel
+      .updateOne(
+        { _id: offerId },
+        { [ 'push' ]: { photos: file } })
+      .exec();
+    return this.offerModel.findById(userId, offerId).exec();
+  }
 }

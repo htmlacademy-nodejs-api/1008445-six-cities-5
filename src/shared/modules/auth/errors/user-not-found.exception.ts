@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { BaseUserException } from './base-user.exception.js';
 
 export class UserNotFoundException extends BaseUserException {
-  constructor() {
-    super(StatusCodes.NOT_FOUND, 'User not found');
+  constructor(email: string) {
+    super(StatusCodes.NOT_FOUND, `User with ${ email } not found`, 'AuthController');
   }
 }

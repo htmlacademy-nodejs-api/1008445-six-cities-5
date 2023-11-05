@@ -8,7 +8,7 @@ Content-Type: application/json
   "avatarUrl": "test.jpg",
   "name": "Max",
   "password": "abc123",
-  "isPro": true
+  "type": "pro"
 }
 ### Авторизовать пользователя
 POST http://localhost:5001/users/login HTTP/1.1
@@ -23,11 +23,11 @@ POST http://localhost:5001/users/6533b70719c994f5a07a4b7c/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="avatar"; filename="screen.png"
+Content-Disposition: form-data; name="avatarUrl"; filename="123.pdf"
 Content-Type: image/png
 
-< /Users/av/Downloads/bmw.jpeg
+< /Users/av/Downloads/123.pdf
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 ### Проверить токен пользователя
 GET http://localhost:5001/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4MjI1MTQ3LCJleHAiOjE2OTgzOTc5NDd9.DRV-oYfOFKTtriKnF3iU0pyt--IchoJSknv2mB4zDrk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4ODM4NjYzLCJleHAiOjE2OTkwMTE0NjN9.Hud5AVj6zmdWtaXGqEM9RUP0d-CNVQTsNxX6lBD1ltY

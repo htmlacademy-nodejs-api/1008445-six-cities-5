@@ -35,16 +35,15 @@ export class UserEntity extends defaultClasses.TimeStamps implements TUser {
   public password?: string;
 
   @prop({
-    required: true,
+    required: false,
     default: ''
   })
-  public avatarUrl: string;
+  public avatarUrl?: string;
 
   @prop({
-    required: true,
-    default: false
+    required: true
   })
-  public isPro: boolean;
+  public type: string;
 
   @prop({
     required: true,
@@ -54,11 +53,10 @@ export class UserEntity extends defaultClasses.TimeStamps implements TUser {
 
   constructor(userData: TUser) {
     super();
-
     this.email = userData.email;
     this.name = userData.name;
     this.avatarUrl = userData.avatarUrl;
-    this.isPro = userData.isPro;
+    this.type = userData.type;
     this.favoriteOffers = [];
   }
 

@@ -12,6 +12,12 @@ export function getRandomItems<T>(items: T[]):T[] {
   return items.slice(start, end);
 }
 
+export function getRandomItemsValue<T>(items: T[], min:number, max: number):T[] {
+  const start = min <= items.length ? min : items.length - 1;
+  const end = min + generateRandomValue(min, max <= items.length ? max : items.length);
+  return items.slice(start, end);
+}
+
 export function getRandomItem<T>(items: T[]):T {
   return items[ generateRandomValue(0, items.length - 1) ];
 }
