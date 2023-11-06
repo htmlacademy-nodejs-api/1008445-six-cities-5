@@ -52,7 +52,9 @@ export class PathTransformer {
 
             if (typeof value === 'string') {
               const rootPath = this.hasDefaultImage(value) ? staticPath : uploadPath;
-              current[ key ] = `${ getFullServerPath(serverHost, serverPort) }${ rootPath }/${ value }`;
+              current[ key ] = isUrl(value)
+                ? value
+                : `${ getFullServerPath(serverHost, serverPort) }${ rootPath }/${ value }`;
             } else if (typeof value === 'object' && Array.isArray(value)) {
               current[ key ] =
                 value.map((element) => isUrl(element)
