@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { SiteData } from '../../types/state';
 import { StoreSlice, SubmitStatus } from '../../const';
-import { fetchOffers, fetchOffer, fetchPremiumOffers, fetchComments, postComment, postFavorite, deleteFavorite, fetchFavoriteOffers, postOffer, editOffer } from '../action';
+import { fetchOffers, fetchOffer, fetchPremiumOffers, fetchComments, postComment, patchFavorite, deleteFavorite, fetchFavoriteOffers, postOffer, editOffer } from '../action';
 
 const initialState: SiteData = {
   offers: [],
@@ -77,7 +77,7 @@ export const siteData = createSlice({
       .addCase(postComment.rejected, (state) => {
         state.commentStatus = SubmitStatus.Rejected;
       })
-      .addCase(postFavorite.fulfilled, (state, action) => {
+      .addCase(patchFavorite.fulfilled, (state, action) => {
         const updatedOffer = action.payload;
         state.offers = state.offers.map((offer) => offer.id === updatedOffer.id ? updatedOffer : offer);
         state.premiumOffers = state.premiumOffers.map((offer) => offer.id === updatedOffer.id ? updatedOffer : offer);

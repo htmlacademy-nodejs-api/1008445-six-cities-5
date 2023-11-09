@@ -482,7 +482,7 @@ img {
 }
 
 .user__avatar-wrapper {
-    /*background-image: url(../img/avatar.svg);*/
+    background-image: url(../img/avatar.svg);
     background-size: 100%;
     background-repeat: no-repeat
 }

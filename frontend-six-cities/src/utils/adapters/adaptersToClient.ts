@@ -33,7 +33,7 @@ export const adaptOfferToClient = (offer: OfferDto): Offer => ({
   type: offer.type,
   bedrooms: offer.bedrooms,
   goods: offer.goods,
-  host: offer.user,
+  host: offer.author,
   images: offer.photos,
   maxAdults: offer.maxAdults
 });

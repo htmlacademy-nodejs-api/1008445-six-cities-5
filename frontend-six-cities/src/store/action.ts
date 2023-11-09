@@ -211,7 +211,7 @@ export const postComment = createAsyncThunk<Comment, CommentAuth, { extra: Extra
     return adaptCommentToClient(data);
   });
 
-export const postFavorite = createAsyncThunk<
+export const patchFavorite = createAsyncThunk<
   Offer,
   FavoriteAuth,
   { extra: Extra }
@@ -219,7 +219,7 @@ export const postFavorite = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.post<OfferDto>(
+    const { data } = await api.patch<OfferDto>(
       `${ApiRoute.Favorite}/${id}/${OFFER_STATUSES.FAVORITE}`
     );
 
@@ -243,7 +243,7 @@ export const deleteFavorite = createAsyncThunk<
   const { api, history } = extra;
 
   try {
-    const { data } = await api.post<OfferDto>(
+    const { data } = await api.patch<OfferDto>(
       `${ApiRoute.Favorite}/${id}/${OFFER_STATUSES.NOT_FAVORITE}`
     );
 
@@ -272,7 +272,7 @@ const postImages = async (api: AxiosInstance, status: number, offerId: string, o
       const payload = new FormData();
       offer.images
         .filter((offerImage) => offerImage)
-        .map(async (offerImage) => {
+        .map(async (offerImage, index) => {
           payload.append('photos', offerImage);
         });
       await api.post(`${ApiRoute.Offers}/${offerId}/image`, payload, {
