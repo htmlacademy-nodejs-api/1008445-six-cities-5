@@ -5,7 +5,8 @@ import {
   PrivateRouteMiddleware,
   UploadFileMiddleware,
   ValidateDtoMiddleware,
-  ValidateObjectIdMiddleware
+  ValidateObjectIdMiddleware,
+  ValidateStatusMiddleware
 } from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { ILogger } from '../../libs/logger/index.js';
@@ -117,6 +118,23 @@ export class OfferController extends BaseController {
         new UploadMultiplyFilesMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'photos'),
       ]
     });
+    this.addRoute({
+      path: '/user/favorites',
+      method: HttpMethod.Get,
+      handler: this.getFavorites,
+      middlewares: [ new PrivateRouteMiddleware() ]
+    });
+    this.addRoute({
+      path: '/user/favorites/:offerId/:status',
+      method: HttpMethod.Patch,
+      handler: this.updateFavoriteStatus,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateStatusMiddleware('status'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
+    });
   }
 
   public async index({ query, tokenPayload }: Request<unknown, unknown, unknown, RequestQuery>, res: Response): Promise<void> {
@@ -171,5 +189,19 @@ export class OfferController extends BaseController {
       await this.offerService.updateById(offerId, updateDto);
       this.created(res, fillDTO(UploadImageRdo, updateDto));
     }
+  }
+
+  public async getFavorites({ tokenPayload }: Request, res: Response): Promise<void> {
+    const offers = await this.offerService.findFavorites(tokenPayload.id);
+    const responseData = fillDTO(OfferRdo, offers);
+    this.ok(res, responseData);
+  }
+
+  public async updateFavoriteStatus({ tokenPayload, params }: Request, res: Response): Promise<void> {
+    const { offerId, status } = params;
+    const offer =
+      await this.offerService.addOrRemoveOfferFavoriteStatus(tokenPayload.id, offerId, status);
+    const responseData = fillDTO(FullOfferRdo, offer);
+    this.ok(res, responseData);
   }
 }

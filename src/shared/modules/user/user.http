@@ -1,6 +1,6 @@
 # Пользователь
 ### Зарегистрировать нового пользователя
-POST http://localhost:5001/users/register HTTP/1.1
+POST http://localhost:5001/user/register HTTP/1.1
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### Авторизовать пользователя
-POST http://localhost:5001/users/login HTTP/1.1
+POST http://localhost:5001/user/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -21,7 +21,7 @@ Content-Type: application/json
 }
 
 ### Отправить изображение
-POST http://localhost:5001/users/avatar/6548de2dcc8898e4387f26ef HTTP/1.1
+POST http://localhost:5001/user/avatar/6548de2dcc8898e4387f26ef HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -32,10 +32,10 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ### Проверить токен пользователя
-GET http://localhost:5001/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5Mjc0NTMzLCJleHAiOjE2OTk0NDczMzN9.IzH18psFqy4TxEWG4P3fvak6zB3-kBytIsjFQ8miYNs
+GET http://localhost:5001/user/login HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0Y2NhMWE0M2VkYTk3MGI1YmJhMTRhIiwiaWF0IjoxNjk5NTQ0NDc2LCJleHAiOjE2OTk3MTcyNzZ9.E3ZIZQdndlKRwjnylzTdKWySG2f7C_0wThpFS8sC7QE
 
 ### Выход пользователя
-DELETE http://localhost:5001/users/logout HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5Mjc0NTMzLCJleHAiOjE2OTk0NDczMzN9.IzH18psFqy4TxEWG4P3fvak6zB3-kBytIsjFQ8miYNs
+DELETE http://localhost:5001/user/logout HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0Y2NhMWE0M2VkYTk3MGI1YmJhMTRhIiwiaWF0IjoxNjk5NTQ0NDc2LCJleHAiOjE2OTk3MTcyNzZ9.E3ZIZQdndlKRwjnylzTdKWySG2f7C_0wThpFS8sC7QE
 

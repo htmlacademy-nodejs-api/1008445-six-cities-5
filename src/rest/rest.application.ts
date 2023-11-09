@@ -19,7 +19,6 @@ export class RestApplication {
     @inject(Component.ReviewController) private readonly reviewController: IController,
     @inject(Component.UserController) private readonly userController: IController,
     @inject(Component.OfferController) private readonly offerController: IController,
-    @inject(Component.FavoriteController) private readonly favoriteController: IController,
     @inject(Component.ExceptionFilter) private readonly appExceptionFilter: IExceptionFilter,
     @inject(Component.AuthExceptionFilter) private readonly authExceptionFilter: IExceptionFilter,
     @inject(Component.HttpExceptionFilter) private readonly httpExceptionFilter: IExceptionFilter,
@@ -33,9 +32,8 @@ export class RestApplication {
 
   private async initControllers() {
     this.server.use('/reviews', this.reviewController.router);
-    this.server.use('/users', this.userController.router);
+    this.server.use('/user', this.userController.router);
     this.server.use('/offers', this.offerController.router);
-    this.server.use('/favorites', this.favoriteController.router);
   }
 
   private async initMiddleware() {
@@ -92,6 +90,6 @@ export class RestApplication {
 
     this.logger.info('Try to init server...');
     await this.initServer();
-    this.logger.info(`Server started on ${ getFullServerPath(this.config.get('HOST'), this.config.get('PORT')) }`);
+    this.logger.info(`Server started on ${ getFullServerPath(this.config.get('HOST'), this.config.get('PORT'), false) }`);
   }
 }

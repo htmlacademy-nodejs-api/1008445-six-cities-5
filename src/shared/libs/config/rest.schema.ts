@@ -31,7 +31,7 @@ export const configRestSchema = convict<TRestSchema>({
     default: null
   },
   DB_HOST: {
-    doc: 'IP address of the database server (MongoDB)',
+    doc: 'IP address of the database server',
     format: 'ipaddress',
     env: 'DB_HOST',
     default: '127.0.0.1'
@@ -49,13 +49,13 @@ export const configRestSchema = convict<TRestSchema>({
     default: null,
   },
   DB_PORT: {
-    doc: 'Port to connect to the database (MongoDB)',
+    doc: 'Port to connect to the database',
     format: 'port',
     env: 'DB_PORT',
     default: '27017',
   },
   DB_NAME: {
-    doc: 'Database name (MongoDB)',
+    doc: 'Database name',
     format: String,
     env: 'DB_NAME',
     default: 'six-cities'

@@ -5,6 +5,7 @@ import * as crypto from 'node:crypto';
 import { IMiddleware } from './middleware.interface.js';
 import { HttpError } from '../errors/index.js';
 import { StatusCodes } from 'http-status-codes';
+import { ALLOWED_IMAGE_EXTENSIONS, OFFER_MAX_IMAGES } from '../../../../const.js';
 
 export class UploadMultiplyFilesMiddleware implements IMiddleware {
   constructor(
@@ -25,7 +26,7 @@ export class UploadMultiplyFilesMiddleware implements IMiddleware {
     const uploadMultiplyFilesMiddleware = multer({
       storage,
       fileFilter: (_req, file, cb) => {
-        if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+        if (ALLOWED_IMAGE_EXTENSIONS.includes(file.mimetype)) {
           return cb(null, true);
         } else {
           const error = new HttpError(
@@ -37,7 +38,7 @@ export class UploadMultiplyFilesMiddleware implements IMiddleware {
         }
       },
     })
-      .array(this.fieldName, 6);
+      .array(this.fieldName, OFFER_MAX_IMAGES);
 
     uploadMultiplyFilesMiddleware(req, res, next);
   }

@@ -5,6 +5,6 @@ import { IMiddleware } from '../middleware/middleware.interface.js';
 export interface IRoute {
   path: string;
   method: HttpMethod;
-  handler: (req: Request, res: Response, next: NextFunction) => void;
+  handler: (req: Request, res: Response, next: NextFunction) => Promise<void>;
   middlewares?: IMiddleware[];
 }

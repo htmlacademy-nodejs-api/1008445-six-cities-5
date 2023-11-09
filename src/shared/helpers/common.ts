@@ -42,6 +42,6 @@ export function createErrorObject(errorType: ApplicationError, error: string, de
   return { errorType, error, details };
 }
 
-export function getFullServerPath(host: string, port: number) {
-  return `http://${ host }:${ port }`;
+export function getFullServerPath(host: string, port: number, isUseSSL: boolean) {
+  return `${ isUseSSL ? 'https' : 'http' }://${ host }:${ port }`;
 }

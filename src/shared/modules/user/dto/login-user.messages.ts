@@ -1,4 +1,4 @@
-export const LoginUserMessages = {
+export const LOGIN_USER_MESSAGES = {
   EMAIL: {
     INVALID_FORMAT: 'email must be a valid address'
   },

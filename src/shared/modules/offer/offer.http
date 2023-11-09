@@ -9,12 +9,12 @@ Content-Type: application/json
 
 ### Получить детальную информацию по предложению с заданным offerId
 GET http://localhost:5001/offers/6544f0440e50272e1c12f696 HTTP/1.1
-#Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5Mjc0NTMzLCJleHAiOjE2OTk0NDczMzN9.IzH18psFqy4TxEWG4P3fvak6zB3-kBytIsjFQ8miYNs
+#Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
 Content-Type: application/json
 
 ### Создание нового предложения
 POST http://localhost:5001/offers HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5Mjc0NTMzLCJleHAiOjE2OTk0NDczMzN9.IzH18psFqy4TxEWG4P3fvak6zB3-kBytIsjFQ8miYNs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
 Content-Type: application/json
 
 {
@@ -81,8 +81,8 @@ Content-Type: application/json
 }
 
 ### Удаление предложения
-DELETE http://localhost:5001/offers/6548e0facc8898e4387f2714 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5Mjc0NTMzLCJleHAiOjE2OTk0NDczMzN9.IzH18psFqy4TxEWG4P3fvak6zB3-kBytIsjFQ8miYNs
+DELETE http://localhost:5001/offers/654cf880f697091b77969d35 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
 Content-Type: application/json
 
 ### Получить список премиальных предложений города
@@ -100,3 +100,13 @@ Content-Type: image/jpeg
 
 < /Users/av/Downloads/paris.jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Получить список избранных предложений
+GET http://localhost:5001/offers/user/favorites HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
+Content-Type: application/json
+
+### Изменить статус избранного у предложения
+PATCH http://localhost:5001/offers/user/favorites/6544f0440e50272e1c12f6a3/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
+Content-Type: application/json
