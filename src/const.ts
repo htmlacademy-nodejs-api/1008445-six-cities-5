@@ -55,3 +55,11 @@ export const CITIES: Record<City, TCity> = {
   },
 } as const;
 export const DEFAULT_CONTENT_TYPE = 'application/json';
+export const OFFER_MAX_IMAGES = 6;
+export const ALLOWED_IMAGE_EXTENSIONS = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+];
+
+

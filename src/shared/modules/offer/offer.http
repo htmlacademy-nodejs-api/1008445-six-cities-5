@@ -2,23 +2,27 @@
 ### Получить список предложений
 GET http://localhost:5001/offers HTTP/1.1
 Content-Type: application/json
-### Получить список из 10 предложений
-GET http://localhost:5001/offers?limit=10 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4MjI1MTQ3LCJleHAiOjE2OTgzOTc5NDd9.DRV-oYfOFKTtriKnF3iU0pyt--IchoJSknv2mB4zDrk
+
+### Получить список из 100 предложений
+GET http://localhost:5001/offers?limit=100 HTTP/1.1
 Content-Type: application/json
+
 ### Получить детальную информацию по предложению с заданным offerId
-GET http://localhost:5001/offers/6533b70719c994f5a07a4b99 HTTP/1.1
-#Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4MjI1MTQ3LCJleHAiOjE2OTgzOTc5NDd9.DRV-oYfOFKTtriKnF3iU0pyt--IchoJSknv2mB4zDrk
+GET http://localhost:5001/offers/6544f0440e50272e1c12f696 HTTP/1.1
+#Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
 Content-Type: application/json
+
 ### Создание нового предложения
 POST http://localhost:5001/offers HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsIm5hbWUiOiJQaXRlciIsImlkIjoiNjU0NGYwNDQwZTUwMjcyZTFjMTJmNjk0IiwiaWF0IjoxNjk5MDE3ODAyLCJleHAiOjE2OTkxOTA2MDJ9.xfuQR7NISQMGNkDzS-oURROx23oNkl3-movDPOlWDoI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
 Content-Type: application/json
 
 {
   "userId": "6533b70719c994f5a07a4b7c",
   "title": "The Tile House",
   "description": "I am happy to welcome you to my apartment in the city center! Yo!",
+  "previewImage": "https://13.design.pages.academy/static/hotel/1.jpg",
+  "postDate": "2023-05-01T12:01:01",
   "city": {
     "name": "Brussels",
     "location": {
@@ -31,7 +35,6 @@ Content-Type: application/json
   "bedrooms": 1,
   "maxAdults": 1,
   "price": 100,
-  "postDate": "2023-05-01T12:01:01",
   "location": {
     "latitude": 50.836557,
     "longitude": 4.341697
@@ -39,17 +42,20 @@ Content-Type: application/json
   "goods": [
       "Breakfast",
       "Washer"
-    ]
+    ],
+  "photos": [ "https://13.design.pages.academy/static/hotel/1.jpg" ]
 }
+
 ### Редактирование предложения
-PATCH http://localhost:5001/offers/6533a144cb990d6d93c5c345 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4MjI1MTQ3LCJleHAiOjE2OTgzOTc5NDd9.DRV-oYfOFKTtriKnF3iU0pyt--IchoJSknv2mB4zDrk
+PATCH http://localhost:5001/offers/6548e0facc8898e4387f2714 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5Mjc0NTMzLCJleHAiOjE2OTk0NDczMzN9.IzH18psFqy4TxEWG4P3fvak6zB3-kBytIsjFQ8miYNs
 Content-Type: application/json
 
 {
-  "userId": "6533a144cb990d6d93c5c343",
+  "userId": "6533b70719c994f5a07a4b7c",
   "title": "The Tile House!",
   "description": "I am happy to welcome you to my apartment in the city center! Yo!",
+  "previewImage": "https://13.design.pages.academy/static/hotel/3.jpg",
   "postDate": "2023-10-15T09:44:46.438Z",
   "city": {
     "name": "Brussels",
@@ -60,10 +66,9 @@ Content-Type: application/json
   },
   "isPremium": false,
   "type": "Apartment",
-  "bedrooms": 1,
-  "maxAdults": 1,
-  "price": 200,
-  "date": "2023-05-01T12:01:01",
+  "bedrooms": 2,
+  "maxAdults": 2,
+  "price": 222,
   "location": {
     "latitude": 48.85661,
     "longitude": 2.351499
@@ -71,23 +76,37 @@ Content-Type: application/json
   "goods": [
     "Breakfast",
     "Washer"
-  ]
+  ],
+  "photos": [ "https://13.design.pages.academy/static/hotel/2.jpg" ]
 }
+
 ### Удаление предложения
-DELETE http://localhost:5001/offers/6533b70719c994f5a07a4b7e HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsIm5hbWUiOiJBbmdlbGluYSIsImlkIjoiNjUzM2I3MDcxOWM5OTRmNWEwN2E0YjdjIiwiaWF0IjoxNjk4MjI1MTQ3LCJleHAiOjE2OTgzOTc5NDd9.DRV-oYfOFKTtriKnF3iU0pyt--IchoJSknv2mB4zDrk
+DELETE http://localhost:5001/offers/654cf880f697091b77969d35 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
 Content-Type: application/json
+
 ### Получить список премиальных предложений города
 GET http://localhost:5001/offers/premium/Brussels HTTP/1.1
 Content-Type: application/json
-### Загрузить изображение для объявления
-POST http://localhost:4000/offers/65258514a30fc6ef77c0edf7/image HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJmaXJzdG5hbWUiOiJKYWNrIiwibGFzdG5hbWUiOiJUb3JyYW5jZSIsImlkIjoiNjUyNTk2ZjdlMGE2OTEyZDI5MzA1ZGQ2IiwiaWF0IjoxNjk4Njc3ODAyLCJleHAiOjE2OTg4NTA2MDJ9.HDAdzzjP9Cnfrl9c_TdIzXdjAls2dboO_FU-bScOwmU
+
+### Загрузить изображения для объявления
+POST http://localhost:5001/offers/6544f0440e50272e1c12f6e0/image HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5Mjc0NTMzLCJleHAiOjE2OTk0NDczMzN9.IzH18psFqy4TxEWG4P3fvak6zB3-kBytIsjFQ8miYNs
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="image"; filename="screen.png"
-Content-Type: image/png
+Content-Disposition: form-data; name="photos"; filename="paris.jpeg"
+Content-Type: image/jpeg
 
-< /Users/spider_net/Desktop/screen.png
+< /Users/av/Downloads/paris.jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Получить список избранных предложений
+GET http://localhost:5001/offers/user/favorites HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
+Content-Type: application/json
+
+### Изменить статус избранного у предложения
+PATCH http://localhost:5001/offers/user/favorites/6544f0440e50272e1c12f6a3/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5NTI1NzY1LCJleHAiOjE2OTk2OTg1NjV9.I1SjKHbuJ7TG-9RFEOkKmZBzFEH-FJmQNwQyK-nDyew
+Content-Type: application/json

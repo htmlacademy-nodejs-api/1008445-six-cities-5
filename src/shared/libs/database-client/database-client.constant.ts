@@ -1,0 +1,4 @@
+export const RETRY_OPTIONS = {
+  RETRY_COUNT: 5,
+  RETRY_TIMEOUT: 5
+};

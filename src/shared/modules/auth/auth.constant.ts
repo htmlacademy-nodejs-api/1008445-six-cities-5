@@ -1,2 +1,4 @@
-export const JWT_ALGORITHM = 'HS256';
-export const JWT_EXPIRED = '2d';
+export const JWT_OPTIONS = {
+  JWT_ALGORITHM: 'HS256',
+  JWT_EXPIRED: '2d'
+};

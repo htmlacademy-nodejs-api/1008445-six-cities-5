@@ -12,7 +12,7 @@ tags:
     description: Действия с предложениями.
   - name: comments
     description: Действия с комментариями.
-  - name: users
+  - name: user
     description: Действия с пользователем.
   - name: favorites
     description: Действия с избранными предложениями.
@@ -249,10 +249,10 @@ paths:
         "404":
           description: Предложение с таким offerId не найдено.
 
-  /users/register:
+  /user/register:
     post:
       tags:
-        - users
+        - user
       summary: Регистрация пользователя
       description: Сервис предоставляет ресурс для создания нового пользователя.
 
@@ -278,10 +278,10 @@ paths:
         "409":
           description: Пользователь с таким email уже существует.
 
-  /users/login:
+  /user/login:
     post:
       tags:
-        - users
+        - user
       summary: Авторизация пользователя
       description: Сервис предоставляет ресурс для аутентификации и авторизации пользователя на основе логина и пароля
 
@@ -309,7 +309,7 @@ paths:
 
     get:
       tags:
-        - users
+        - user
       parameters:
         [ {
           in: "header",
@@ -337,10 +337,10 @@ paths:
 
 
 
-  /users/logout:
+  /user/logout:
     delete:
       tags:
-        - users
+        - user
       parameters:
         [
           {

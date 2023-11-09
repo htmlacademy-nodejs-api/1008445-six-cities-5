@@ -45,9 +45,9 @@ export class FullOfferRdo {
   @Expose()
   public goods: string[];
 
-  @Expose({ name: 'userId' })
+  @Expose({ name: 'author' })
   @Type(() => UserRdo)
-  public user: UserRdo;
+  public author: UserRdo;
 
   @Expose()
   public location: TLocation;

@@ -5,6 +5,7 @@ import * as crypto from 'node:crypto';
 import { IMiddleware } from './middleware.interface.js';
 import { HttpError } from '../errors/index.js';
 import { StatusCodes } from 'http-status-codes';
+import { ALLOWED_IMAGE_EXTENSIONS } from '../../../../const.js';
 
 export class UploadFileMiddleware implements IMiddleware {
   constructor(
@@ -25,7 +26,7 @@ export class UploadFileMiddleware implements IMiddleware {
     const uploadSingleFileMiddleware = multer({
       storage,
       fileFilter: (_req, file, cb) => {
-        if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+        if (ALLOWED_IMAGE_EXTENSIONS.includes(file.mimetype)) {
           return cb(null, true);
         } else {
           const error = new HttpError(

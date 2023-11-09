@@ -1,6 +1,5 @@
 import { MAX_PERCENT_STARS_WIDTH, STARS_COUNT } from './const';
 import { NewOrEditOffer, Offer } from './types/types';
-
 export const formatDate = (date: string) => new Intl.DateTimeFormat(
   'en-US',
   {'month':'long','year':'numeric'}

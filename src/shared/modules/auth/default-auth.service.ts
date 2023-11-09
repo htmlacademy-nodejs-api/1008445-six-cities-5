@@ -7,7 +7,7 @@ import { ILogger } from '../../libs/logger/index.js';
 import { IAuthService } from './auth-service.interface.js';
 import { TRestSchema } from '../../libs/config/index.js';
 import { TTokenPayload } from './types/token-payload.js';
-import { JWT_ALGORITHM, JWT_EXPIRED } from './auth.constant.js';
+import { JWT_OPTIONS } from './auth.constant.js';
 import { LoginUserDto, UserEntity, IUserService } from '../user/index.js';
 import { UserNotFoundException, UserPasswordIncorrectException } from './errors/index.js';
 
@@ -29,9 +29,9 @@ export class DefaultAuthService implements IAuthService {
     };
     this.logger.info(`Create token for ${ user.email }`);
     return new SignJWT(tokenPayload)
-      .setProtectedHeader({ alg: JWT_ALGORITHM })
+      .setProtectedHeader({ alg: JWT_OPTIONS.JWT_ALGORITHM })
       .setIssuedAt()
-      .setExpirationTime(JWT_EXPIRED)
+      .setExpirationTime(JWT_OPTIONS.JWT_EXPIRED)
       .sign(secretKey);
   }
 

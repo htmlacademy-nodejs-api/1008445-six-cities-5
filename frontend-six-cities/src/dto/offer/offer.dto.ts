@@ -15,7 +15,7 @@ export default class OfferDto {
   public maxAdults!: number;
   public price!: number;
   public goods!: string[];
-  public user!: UserDto;
+  public author!: UserDto;
   public location!: Location;
   public reviewsCount!: number;
   public isFavorite!: boolean;

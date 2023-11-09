@@ -1,10 +1,10 @@
 # Отзывы
 ### Получить список отзывов
-GET http://localhost:5001/reviews/6533b70719c994f5a07a4b7e HTTP/1.1
+GET http://localhost:5001/reviews/6544f0440e50272e1c12f696 HTTP/1.1
 Content-Type: application/json
 ### Создание отзыва
-POST http://localhost:5001/reviews/6544f0440e50272e1c12f73d HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsIm5hbWUiOiJQaXRlciIsImlkIjoiNjU0NGYwNDQwZTUwMjcyZTFjMTJmNjk0IiwiaWF0IjoxNjk5MDE3ODAyLCJleHAiOjE2OTkxOTA2MDJ9.xfuQR7NISQMGNkDzS-oURROx23oNkl3-movDPOlWDoI
+POST http://localhost:5001/reviews/6544f0440e50272e1c12f696 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imtla3NAaHRtbGFjYWRlbXkucnUiLCJuYW1lIjoiS2VrcyIsImlkIjoiNjU0OGRlMmRjYzg4OThlNDM4N2YyNmVmIiwiaWF0IjoxNjk5Mjc0NTMzLCJleHAiOjE2OTk0NDczMzN9.IzH18psFqy4TxEWG4P3fvak6zB3-kBytIsjFQ8miYNs
 Content-Type: application/json
 
 {
