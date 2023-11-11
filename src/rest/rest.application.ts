@@ -7,7 +7,7 @@ import { Component } from '../shared/types/index.js';
 import { IDatabaseClient } from '../shared/libs/database-client/index.js';
 import { getFullServerPath, getMongoURI } from '../shared/helpers/index.js';
 import { IController, IExceptionFilter, ParseTokenMiddleware } from '../shared/libs/rest/index.js';
-import { STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from './rest.constant.js';
+import { APP_LOGS, STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from './rest.constant.js';
 
 @injectable()
 export class RestApplication {
@@ -71,25 +71,28 @@ export class RestApplication {
   }
 
   public async init() {
-    this.logger.info('App initialization');
-    this.logger.info('Init database...');
+    this.logger.info(APP_LOGS.INIT);
+    this.logger.info(APP_LOGS.INIT_DB);
     await this.initDb();
-    this.logger.info('Init database completed');
+    this.logger.info(APP_LOGS.INIT_DB_COMPLETED);
 
-    this.logger.info('Init app-level middleware...');
+    this.logger.info(APP_LOGS.INIT_MIDDLEWARE);
     await this.initMiddleware();
-    this.logger.info('App-level middleware initialization completed');
+    this.logger.info(APP_LOGS.INIT_MIDDLEWARE_COMPLETED);
 
-    this.logger.info('Init controllers...');
+    this.logger.info(APP_LOGS.INIT_CONTROLLERS);
     await this.initControllers();
-    this.logger.info('Controller initialization completed');
+    this.logger.info(APP_LOGS.INIT_CONTROLLERS_COMPLETED);
 
-    this.logger.info('Init exception filters...');
+    this.logger.info(APP_LOGS.INIT_EXCEPTION_FILTER);
     await this.initExceptionFilters();
-    this.logger.info('Exception filters initialization completed');
+    this.logger.info(APP_LOGS.INIT_EXCEPTION_FILTER_COMPLETED);
 
-    this.logger.info('Try to init server...');
+    this.logger.info(APP_LOGS.INIT_SERVER);
     await this.initServer();
-    this.logger.info(`Server started on ${ getFullServerPath(this.config.get('HOST'), this.config.get('PORT'), false) }`);
+    this.logger.info(
+      APP_LOGS.INIT_SERVER_COMPLETED.replace(
+        '{ path }',
+        `${ getFullServerPath(this.config.get('HOST'), this.config.get('PORT'), false) }`));
   }
 }
